@@ -1,27 +1,123 @@
 const { PrismaClient } = require('@prisma/client');
-const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+
 const prisma = new PrismaClient();
 
 async function main() {
   try {
-    // Clear existing data
-    await prisma.event.deleteMany({});
-    await prisma.adminConfig.deleteMany({});
+    console.log('开始数据库种子数据填充...');
 
-    // Create default admin password
-    const DEFAULT_ADMIN_PASSWORD = 'utchinese';
-    const DEFAULT_PASSWORD_HASH = crypto.createHash('sha256').update(DEFAULT_ADMIN_PASSWORD).digest('hex');
-    
-    await prisma.adminConfig.create({
-      data: {
-        key: 'admin_password',
-        value: DEFAULT_PASSWORD_HASH
+    // Create or update admin account
+    const adminPassword = await bcrypt.hash('123', 10);
+    const admin = await prisma.staff.upsert({
+      where: { username: 'xuanyi.lyu' },
+      update: {
+        // 只更新必要的字段，保留现有数据
+        email: 'xuanyi.lyu@mail.utoronto.ca',
+        role: 'admin',
+        canManageEvents: true,
+        canReviewProfiles: true,
+        canManageStaff: true,
+        isActive: true
+      },
+      create: {
+        username: 'xuanyi.lyu',
+        email: 'xuanyi.lyu@mail.utoronto.ca',
+        passwordHash: adminPassword,
+        role: 'admin',
+        canManageEvents: true,
+        canReviewProfiles: true,
+        canManageStaff: true,
+        isActive: true
       }
     });
-    
-    console.log('Admin password initialized successfully');
 
-    // Add seed events with bilingual content
+    // Create or update admin staff profile
+    await prisma.staffProfile.upsert({
+      where: { staffId: admin.id },
+      update: {
+        name_en: 'Xuanyi Lyu',
+        name_zh: '吕宣谊',
+        position_en: 'Information Solution Director',
+        position_zh: '信息解决方案部负责人',
+        department: 'OPERATION GROUP',
+        bio_en: 'I am currently pursuing a double major in Computer Science and Statistics at the University of Toronto, with a minor in Economics. My areas of interest include Human-Computer Interaction, Artificial Intelligence, and Machine Learning. I enjoy creating solutions that combine technical excellence with user-centered design. I am committed to academic exploration and technological innovation, hoping to make meaningful contributions to society through my work in computer science and data analysis.',
+        bio_zh: '我目前在多伦多大学攻读计算机科学与统计学双专业，辅修经济学。我的兴趣领域包括人机交互、人工智能和机器学习。我喜欢创造结合技术卓越和以用户为中心设计的解决方案。我致力于学术探索和技术创新，希望通过我在计算机科学和数据分析方面的工作为社会做出有意义的贡献。',
+        avatarUrl: 'xuanyilyu.jpg',
+        email: 'xuanyi.lyu@mail.utoronto.ca',
+        github: 'https://github.com/justLxy',
+        linkedin: 'https://linkedin.com/in/xuanyi-lyu',
+        wechat: 'yukiyah',
+        mbti: 'INFJ-T',
+        status: 'approved',
+        isVisible: true,
+        displayOrder: 1
+      },
+      create: {
+        staffId: admin.id,
+        name_en: 'Xuanyi Lyu',
+        name_zh: '吕宣谊',
+        position_en: 'Information Solution Director',
+        position_zh: '信息解决方案部负责人',
+        department: 'OPERATION GROUP',
+        bio_en: 'I am currently pursuing a double major in Computer Science and Statistics at the University of Toronto, with a minor in Economics. My areas of interest include Human-Computer Interaction, Artificial Intelligence, and Machine Learning. I enjoy creating solutions that combine technical excellence with user-centered design. I am committed to academic exploration and technological innovation, hoping to make meaningful contributions to society through my work in computer science and data analysis.',
+        bio_zh: '我目前在多伦多大学攻读计算机科学与统计学双专业，辅修经济学。我的兴趣领域包括人机交互、人工智能和机器学习。我喜欢创造结合技术卓越和以用户为中心设计的解决方案。我致力于学术探索和技术创新，希望通过我在计算机科学和数据分析方面的工作为社会做出有意义的贡献。',
+        avatarUrl: 'xuanyilyu.jpg',
+        email: 'xuanyi.lyu@mail.utoronto.ca',
+        github: 'https://github.com/justLxy',
+        linkedin: 'https://linkedin.com/in/xuanyi-lyu',
+        wechat: 'yukiyah',
+        mbti: 'INFJ-T',
+        status: 'approved',
+        isVisible: true,
+        displayOrder: 1
+      }
+    });
+
+    console.log('Admin account created/updated successfully');
+
+    // Create or update superuser account
+    const superuserPassword = adminPassword; // reuse hashed '123'
+    const superuser = await prisma.staff.upsert({
+      where: { username: 'karenjiujiu.shu' },
+      update: {
+        email: 'karenjiujiu.shu@mail.utoronto.ca',
+        role: 'admin',
+        canManageEvents: true,
+        canReviewProfiles: true,
+        canManageStaff: true,
+        isActive: true
+      },
+      create: {
+        username: 'karenjiujiu.shu',
+        email: 'karenjiujiu.shu@mail.utoronto.ca',
+        passwordHash: superuserPassword,
+        role: 'admin',
+        canManageEvents: true,
+        canReviewProfiles: true,
+        canManageStaff: true,
+        isActive: true
+      }
+    });
+
+    console.log('Superuser account created/updated successfully');
+
+    // Helper function to calculate event status
+    const calculateEventStatus = (startDate, endDate) => {
+      const now = new Date();
+      const start = new Date(startDate);
+      const end = endDate ? new Date(endDate) : null;
+      
+      if (end && now > end) {
+        return 'past';
+      } else if (start > now) {
+        return 'upcoming';
+      } else {
+        return 'ongoing';
+      }
+    };
+
+    // Add seed events with bilingual content - 只在不存在时才创建
     const events = [
       {
         title_en: 'UNIC Case Competition',
@@ -33,7 +129,6 @@ async function main() {
         endDate: new Date('2023-11-20'),
         location_en: 'Room 534, 21 Sussex Ave, Toronto',
         location_zh: '多伦多萨塞克斯大道21号534室',
-        status: 'past',
         featured: true,
       },
       {
@@ -42,11 +137,10 @@ async function main() {
         description_en: 'Creating platforms for you to find your dream jobs and realize your full career potential. Extraordinary job opportunities from amazing companies with amazing products and services, and exciting career options that you might not have even thought of.',
         description_zh: '为您提供寻找理想工作并发挥职业潜能的平台。来自拥有优质产品和服务的优秀公司的非凡工作机会，以及您可能从未想过的激动人心的职业选择。',
         imageUrl: '/uploads/events/AceCareerFair.jpg',
-        startDate: new Date('2024-02-10'),
-        endDate: new Date('2024-02-10'),
+        startDate: new Date('2024-02-10T10:00:00'),
+        endDate: new Date('2024-02-10T16:00:00'),
         location_en: 'Multi-Faith Centre (Koffler House)',
         location_zh: '多信仰中心（科夫勒楼）',
-        status: 'past',
         featured: true,
       },
       {
@@ -55,11 +149,10 @@ async function main() {
         description_en: 'EXCITE Panel Talk is dedicated to providing a platform for peer-to-peer communication. Everyone\'s growth background is very different, and there is no success in the world that can be completely replicated, but EXCITE hopes that every participant can generate new thinking from peers\' growth experiences.',
         description_zh: 'EXCITE Panel Talk致力于提供一个同龄人与同龄人交流的平台。每个人的成长背景大不相同，世界上也没有能完全复制的成功，但EXCITE希望每一位参与者都能从同龄人的成长经历中产生新的思考和思路，发现校园之外无穷的可能。',
         imageUrl: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-        startDate: new Date('2024-03-05'),
-        endDate: new Date('2024-03-05'),
+        startDate: new Date('2024-03-05T14:00:00'),
+        endDate: new Date('2024-03-05T17:00:00'),
         location_en: 'Online',
         location_zh: '线上',
-        status: 'past',
       },
       {
         title_en: 'New Year Concert',
@@ -67,11 +160,10 @@ async function main() {
         description_en: 'Music is a language without borders and our way of supporting children\'s education and development. Great sound inspires, great love leaves no trace. Experience winter with music at UTChinese Network\'s New Year Concert.',
         description_zh: '音乐是没有国界的语言，也是我们支持儿童教育和发展的方式。大音希声，大爱无痕。与多大中文新年音乐会一起走过有音乐相伴的寒冬。',
         imageUrl: '/uploads/events/NewYearConcert.jpg',
-        startDate: new Date('2024-01-20'),
-        endDate: new Date('2024-01-20'),
+        startDate: new Date('2024-01-20T19:00:00'),
+        endDate: new Date('2024-01-20T21:30:00'),
         location_en: 'Isabel Bader Theatre',
         location_zh: '伊莎贝尔·巴德剧院',
-        status: 'past',
         featured: true,
         link: 'https://www.youtube.com/watch?v=RX_vrxenzBM'
       },
@@ -85,7 +177,6 @@ async function main() {
         endDate: new Date('2024-04-15'),
         location_en: 'Various Company Locations',
         location_zh: '各公司地点',
-        status: 'past',
         featured: false,
       },
       {
@@ -98,16 +189,47 @@ async function main() {
         endDate: new Date('2024-11-27'),
         location_en: 'Hart House',
         location_zh: '哈特之家',
-        status: 'past',
         featured: true,
         link: 'https://www.youtube.com/watch?v=8HbfgZVLNHM&t=3s'
+      },
+      {
+        title_en: 'Qin Society Summer Outdoor Gathering',
+        title_zh: '古琴会夏日户外雅集',
+        description_en: 'Join us for our first outdoor gathering of the new academic year! This event will be more vibrant and authentic, truly restoring the atmosphere of ancient gatherings. The activity will focus on social music appreciation, and we are honored to invite qin players from our homeland to join us for exchange. UofT alumni will perform pieces such as "Guangling San" and "Ai Nai". Please come and quietly listen to the beautiful qin music.',
+        description_zh: '下午一点，多大中文古琴会诚邀诸位参加新学年的第一次活动 -- 本社的首次室外雅集🎋 此次的雅集跟以往的活动相比会更为生动，更加还原古时雅集的样子 -- 本次活动将会以social欣赏音乐为主，我们更是有幸请到了来自祖国的琴人一起交流。届时，多大校友们将演出《广陵散》，《欸乃》等等雅乐，请诸位静听琴音一曲。',
+        imageUrl: '/uploads/events/QinSocietySummerOutdoorGathering.jpg',
+        startDate: new Date('2025-06-27T17:00:00'),
+        endDate: new Date('2025-06-27T19:00:00'),
+        location_en: 'Philosopher\'s Walk, University of Toronto',
+        location_zh: '多伦多大学哲学家小径',
+        featured: true,
+        link: 'https://docs.google.com/forms/d/e/1FAIpQLSdCAaPfNFDTFaFwIEp4cYsugSvLQPhBPo_j2hMVa0UlCZ3Fpw/viewform'
       }
     ];
 
+    // 使用事件的title_en作为唯一标识符来避免重复
     for (const event of events) {
-      await prisma.event.create({
-        data: event,
+      // Calculate status dynamically based on dates
+      const status = calculateEventStatus(event.startDate, event.endDate);
+      
+      // 检查事件是否已存在
+      const existingEvent = await prisma.event.findFirst({
+        where: {
+          title_en: event.title_en
+        }
       });
+
+      if (!existingEvent) {
+        await prisma.event.create({
+          data: {
+            ...event,
+            status: status,
+          },
+        });
+        console.log(`Event created: ${event.title_en}`);
+      } else {
+        console.log(`Event already exists, skipping: ${event.title_en}`);
+      }
     }
 
     console.log('Database has been seeded!');

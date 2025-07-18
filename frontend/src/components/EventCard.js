@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiCalendar, FiMapPin, FiExternalLink } from 'react-icons/fi';
-import { formatDate } from '../utils/dateUtils';
+import { formatEventDateTime } from '../utils/dateUtils';
 import { BASE_URL } from '../utils/api';
 
 const Card = styled(motion.div)`
@@ -243,9 +243,7 @@ const EventCard = ({ event, index, onClick }) => {
     featured 
   } = event;
 
-  const formattedStartDate = formatDate(new Date(startDate));
-  const formattedEndDate = endDate ? formatDate(new Date(endDate)) : null;
-  const dateDisplay = formattedEndDate ? `${formattedStartDate} - ${formattedEndDate}` : formattedStartDate;
+  const dateDisplay = formatEventDateTime(startDate, endDate);
 
   // Default placeholder image from an external source
   const defaultImage = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80";
@@ -268,6 +266,7 @@ const EventCard = ({ event, index, onClick }) => {
         duration: 0.5
       }}
       whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
     >
       {featured && <FeaturedBadge>{t('events.featured')}</FeaturedBadge>}
       <StatusBadge status={status}>{t(`events.status.${status}`)}</StatusBadge>
@@ -296,4 +295,4 @@ const EventCard = ({ event, index, onClick }) => {
   );
 };
 
-export default EventCard; 
+export default memo(EventCard); 

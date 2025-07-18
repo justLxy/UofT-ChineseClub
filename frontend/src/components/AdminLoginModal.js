@@ -3,32 +3,47 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiLock } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
-import { verifyAdmin } from '../utils/api';
+import { useAuth } from '../contexts/AuthContext';
+import Portal from './Portal';
 
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 10000;
   padding: 20px;
+  pointer-events: auto;
+  box-sizing: border-box;
+  margin: 0;
+  overflow: hidden;
 `;
 
 const ModalContainer = styled(motion.div)`
   position: relative;
   width: 100%;
   max-width: 450px;
+  min-width: 320px;
   background: white;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
   padding: 2rem;
+  margin: auto;
+  box-sizing: border-box;
+  transform: none;
+  
+  @media (max-width: 480px) {
+    margin: 1rem;
+    padding: 1.5rem;
+    max-width: calc(100vw - 2rem);
+  }
 `;
 
 const Title = styled.h2`
@@ -140,11 +155,12 @@ const modalVariants = {
   }
 };
 
-const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
+const AdminLoginModal = ({ isOpen, onClose, onSuccess }) => {
+  const { login } = useAuth();
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -154,26 +170,25 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
       setLoading(true);
       setError('');
       
-      // 使用verifyAdmin函数验证管理员密码
-      const data = await verifyAdmin(password);
-      
-      // 存储认证token
-      localStorage.setItem('adminToken', data.token);
-      localStorage.setItem('adminAuthenticated', 'true');
+      // 使用AuthContext的login函数
+      await login('admin', password);
       
       // 调用登录回调
-      onLogin(true);
+      onSuccess && onSuccess();
       onClose();
+      
+      // 清空表单
+      setPassword('');
     } catch (error) {
       console.error('Login error:', error);
-      let errorMessage = 'Authentication failed';
+      let errorMessage = t('admin.login.error.failed');
       
       if (error.response) {
         // 服务器响应了错误状态码
         errorMessage = error.response.data?.error || errorMessage;
       } else if (error.request) {
         // 请求发送但没有收到响应
-        errorMessage = 'Server not responding. Please try again.';
+        errorMessage = t('admin.login.error.serverError');
       }
       
       setError(errorMessage);
@@ -183,22 +198,23 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <Overlay
-          variants={overlayVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          onClick={onClose}
-        >
-          <ModalContainer
-            variants={modalVariants}
+    <Portal>
+      <AnimatePresence>
+        {isOpen && (
+                    <Overlay
+            variants={overlayVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            onClick={(e) => e.stopPropagation()}
+            onClick={onClose}
           >
+                      <ModalContainer
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={(e) => e.stopPropagation()}
+            >
             <CloseButton 
               onClick={onClose}
               whileHover={{ scale: 1.1 }}
@@ -207,14 +223,14 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
               <FiX />
             </CloseButton>
             
-            <Title>{t('admin.loginTitle', 'Admin Authentication')}</Title>
+            <Title>{t('admin.login.title')}</Title>
             
             <Form onSubmit={handleSubmit}>
               <InputGroup>
                 <FiLock />
                 <Input
                   type="password"
-                  placeholder={t('admin.passwordPlaceholder', 'Enter admin password')}
+                  placeholder={t('admin.login.passwordPlaceholder')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -227,7 +243,7 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {loading ? t('admin.authenticating', 'Authenticating...') : t('admin.login', 'Login')}
+                {loading ? t('admin.login.authenticating') : t('admin.login.loginButton')}
               </Button>
               
               {error && (
@@ -243,6 +259,7 @@ const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
         </Overlay>
       )}
     </AnimatePresence>
+    </Portal>
   );
 };
 

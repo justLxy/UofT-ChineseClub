@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const StyledNotFound = styled.div`
   height: 100vh;
@@ -104,6 +105,7 @@ const StyledNotFound = styled.div`
 `;
 
 const NotFound = () => {
+  const location = useLocation();
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -119,6 +121,11 @@ const NotFound = () => {
   
   return (
     <StyledNotFound>
+      <SEO
+        title="页面未找到 | UTChinese Network 多大中文"
+        description="您访问的页面不存在，请返回多大中文官网首页。"
+        url={`https://www.utchinese.org${location.pathname}`}
+      />
       <div className="animated-bg">
         <div className="circle"></div>
         <div className="circle"></div>

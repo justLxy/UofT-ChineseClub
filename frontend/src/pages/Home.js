@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ImageCarousel from '../components/ImageCarousel';
+import SEO from '../components/SEO';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -555,6 +556,11 @@ const Home = () => {
   
   return (
     <StyledHome>
+      <SEO
+        title="多大中文 | UTChinese Network"
+        description="UTChinese Network (多大中文) - Premier Chinese student organization at University of Toronto bringing together culture, career and community."
+        url="https://www.utchinese.org/"
+      />
       {/* Hero Section */}
       <section className="hero" ref={heroRef}>
         <div className="hero-bg">

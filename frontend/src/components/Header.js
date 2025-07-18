@@ -1,83 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from 'styled-components';
-
-const ThemeToggleIcon = ({ theme }) => {
-  return theme === 'light' ? (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ) : (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-};
-
-// 下拉菜单样式
-const NavDropdownWrapper = styled.div`
-  position: relative;
-  display: inline-block; 
-
-  &:hover > div {
-    display: block;
-  }
-`;
-
-const DropdownMenu = styled.div`
-  display: none;
-  position: absolute;
-  top: 100%; /* 稍微下移，避免遮挡主菜单 */
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 180px;
-  background: #fff8ef;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-  border-radius: 8px;
-  z-index: 200;
-  padding: 0.5rem 0;
-`;
-
-const DropdownLink = styled(Link)`
-  display: block;
-  width: 100%;
-  padding: 0.7rem 1.5rem;
-  color: #b85a1c;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 0.18s, color 0.18s;
-  border-radius: 0;
-
-  &:hover:not(.dropdown-toggle) {
-    background: #ffe7c2;
-    color: #e74c3c;
-  }
-`;
-
-// 鼠标悬停时显示下拉菜单
-const NavDropdown = ({ label, to, children, active }) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <NavDropdownWrapper
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <DropdownLink
-        to={to}
-        className={`nav-link dropdown-toggle${active ? ' active' : ''}`}
-        style={{ cursor: 'pointer' }}
-      >
-        {label}
-      </DropdownLink>
-      <DropdownMenu>
-        {children}
-      </DropdownMenu>
-    </NavDropdownWrapper>
-  );
-};
+import { FiUser, FiLogIn, FiLogOut, FiSettings, FiUsers } from 'react-icons/fi';
+import { useAuth } from '../contexts/AuthContext';
+import UnifiedLoginModal from './UnifiedLoginModal';
+import ThemeSwitch from './ThemeSwitch';
+import LanguageSelector from './LanguageSelector';
 
 const StyledHeader = styled.header`
   position: fixed;
@@ -103,6 +33,17 @@ const StyledHeader = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    
+    @media (max-width: 1024px) {
+      gap: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      gap: 0.75rem;
+      padding: 0 1rem;
+    }
   }
 
   .logo {
@@ -110,10 +51,15 @@ const StyledHeader = styled.header`
     align-items: center;
     gap: 0.5rem;
     z-index: 101;
+    flex-shrink: 0;
     
     img {
       height: 2.5rem;
       transition: height 0.3s ease;
+      
+      @media (max-width: 768px) {
+        height: 2rem;
+      }
     }
     
     h1 {
@@ -121,19 +67,58 @@ const StyledHeader = styled.header`
       margin: 0;
       white-space: nowrap;
       font-weight: 600;
+      
+      @media (max-width: 768px) {
+        font-size: 1.1rem;
+      }
     }
   }
 
   nav {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
+    flex: 1;
+    justify-content: flex-end;
+    
+    @media (max-width: 1024px) {
+      gap: 0.8rem;
+    }
+    
+    @media (max-width: 768px) {
+      flex: 0;
+      justify-content: flex-end;
+    }
+  }
+
+  .header-controls-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 0.1rem;
+    transform: translateY(-1px);
+    
+    [data-theme="dark"] & {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   .nav-links {
     display: flex;
     gap: 1.2rem;
-    align-items: center;
+    
+    @media (max-width: 1024px) {
+      gap: 0.8rem;
+    }
     
     @media (max-width: 768px) {
       display: none;
@@ -250,145 +235,211 @@ const StyledHeader = styled.header`
         }
       }
     }
-  }
-
-  .language-switch {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.04);
-    border-radius: 24px;
-    padding: 3px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
     
-    [data-theme="dark"] & {
-      background-color: rgba(255, 255, 255, 0.07);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
-    
-    &::before {
-      content: '';
-      position: absolute;
-      width: 50%;
-      height: calc(100% - 6px);
-      border-radius: 20px;
-      background: linear-gradient(45deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
-      top: 3px;
-      z-index: 0;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    .mobile-controls-section {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
       
       [data-theme="dark"] & {
-        background: linear-gradient(45deg, rgba(50,50,50,0.9), rgba(40,40,40,0.7));
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
       }
     }
     
-    &.en::before {
-      transform: translateX(0);
-    }
-    
-    &.zh::before {
-      transform: translateX(100%);
-    }
-    
-    button {
-      background: none;
+    .mobile-login-button {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
       border: none;
-      padding: 6px 10px;
-      font-size: 0.85rem;
-      letter-spacing: 0.3px;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
       cursor: pointer;
-      border-radius: 20px;
-      color: var(--text-secondary);
       transition: all 0.3s ease;
-      position: relative;
-      z-index: 1;
-      flex: 1;
-      text-align: center;
-      min-width: 35px;
-      white-space: nowrap;
       display: flex;
-      justify-content: center;
       align-items: center;
+      gap: 0.75rem;
+      min-width: 200px;
+      justify-content: center;
       
-      &.active {
-        font-weight: 600;
-        color: var(--text);
-        transform: scale(1.05);
-      }
-      
-      &:hover:not(.active) {
-        color: var(--text);
-      }
-      
-      &:active {
-        transform: scale(0.95);
-      }
-    }
-    
-    .divider {
-      width: 1px;
-      height: 1rem;
-      background-color: rgba(0, 0, 0, 0.1);
-      margin: 0 1px;
-      z-index: 1;
-      
-      [data-theme="dark"] & {
-        background-color: rgba(255, 255, 255, 0.1);
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(224, 43, 32, 0.3);
       }
     }
   }
 
-  .theme-toggle {
-    margin-left: 5px;
-    padding: 8px;
-    background: none;
-    border: none;
-    color: var(--text);
-    cursor: pointer;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-      transform: rotate(15deg);
-    }
-    
-    &:active {
-      transform: scale(0.9);
-    }
-    
-    [data-theme="dark"] &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    
-    svg {
-      transition: transform 0.5s ease;
-    }
-    
-    &:hover svg {
-      transform: rotate(30deg);
-    }
-  }
-  
   .controls-group {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.6rem;
+    
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .auth-section {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-left: 0.2rem;
+    
+    @media (max-width: 1024px) {
+      gap: 0.5rem;
+      margin-left: 0.1rem;
+    }
+    
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .login-button {
+    border: 1px solid rgba(224, 43, 32, 0.2);
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    background: rgba(224, 43, 32, 0.08);
+    color: var(--primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    min-width: 90px;
+    height: 32px;
+    justify-content: center;
+    
+    &:hover {
+      transform: translateY(-1px);
+      background: rgba(224, 43, 32, 0.12);
+      border-color: rgba(224, 43, 32, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    [data-theme="dark"] & {
+      border-color: rgba(224, 43, 32, 0.3);
+      background: rgba(224, 43, 32, 0.1);
+      color: var(--primary);
+    }
+
+    [data-theme="dark"] &:hover {
+      background: rgba(224, 43, 32, 0.15);
+      border-color: rgba(224, 43, 32, 0.5);
+    }
+    
+    span {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+  }
+
+  .user-menu {
+    position: relative;
+    
+    .user-button {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 0.35rem 0.75rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      font-size: 0.8rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      min-width: 90px;
+      height: 32px;
+      justify-content: space-between;
+      
+      &:hover {
+        border-color: rgba(224, 43, 32, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        transform: translateY(-1px);
+      }
+
+      [data-theme="dark"] & {
+        border-color: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+      }
+
+      [data-theme="dark"] &:hover {
+        border-color: rgba(224, 43, 32, 0.5);
+      }
+    }
+    
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 0.5rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(224, 43, 32, 0.1);
+      min-width: 200px;
+      overflow: hidden;
+      z-index: 1000;
+      
+      [data-theme="dark"] & {
+        background: var(--background-secondary);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        font-size: 0.9rem;
+        
+        &:hover {
+          background: rgba(224, 43, 32, 0.05);
+          color: var(--primary);
+        }
+        
+        &.danger {
+          color: #ef4444;
+          
+          &:hover {
+            background: rgba(239, 68, 68, 0.05);
+          }
+        }
+      }
+    }
   }
 `;
 
 const Header = ({ changeLanguage, theme, toggleTheme }) => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { 
+    isAuthenticated,
+    user,
+    hasPermission,
+    logout
+  } = useAuth();
+  
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -403,13 +454,24 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
     setMobileMenuOpen(false);
   }, [location]);
 
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showUserMenu && !event.target.closest('.user-menu')) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showUserMenu]);
+  
   const navLinks = [
-    { path: '/', label: 'home' },
-    { path: '/about', label: 'about' },
-    { path: '/join', label: 'join' },
-    // { path: '/qin-society', label: 'QinSociety' },
-    // { path: '/ny-concert', label: 'NYConcert' },
-    { path: '/events', label: 'events' },
+    { path: '/', label: t('header.home') },
+    { path: '/about', label: t('header.about') },
+    { path: '/team', label: t('header.team') },
+    { path: '/events', label: t('header.events') },
+    { path: '/join', label: t('header.join') }
   ];
 
   const menuVariants = {
@@ -441,68 +503,131 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
     })
   };
 
+  const handleLoginSuccess = (response) => {
+    setShowLoginModal(false);
+    
+    // 根据用户权限进行适当的跳转
+    if (response.user.hasProfile) {
+      navigate('/staff/profile');
+    } else if (hasPermission('accessAdmin')) {
+      navigate('/admin/events');
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    setShowUserMenu(false);
+    navigate('/');
+  };
+  
   return (
     <StyledHeader className={scrolled ? 'scrolled' : ''}>
       <div className="container">
         <Link to="/" className="logo">
           <img src="/logo.png" alt="UTChinese Network Logo" />
           <h1>
-            {i18n.language === 'en' ? 'UTChinese Network' : '多大中文'}
+            UTChinese Network
           </h1>
         </Link>
 
         <nav>
           <div className="nav-links">
-            {navLinks.map(({ path, to, active, label }) => {
-              if (label === 'events') {
-                return (
-                  <NavDropdown
-                    key={path}
-                    label={t(`header.${label}`)}
-                    to="/events"
-                    active={location.pathname.startsWith('/events') || location.pathname.startsWith('/qin') || location.pathname.startsWith('/ny')}
-                  >
-                    {/* 可以继续在这里添加其他的events导航页面, 记得修改i18n文件 */}
-                    <DropdownLink to="/qin-society">{t('header.QinSociety')}</DropdownLink>
-                    <DropdownLink to="/ny-concert">{t('header.NYConcert')}</DropdownLink>
-                    {/* <DropdownLink to="/your-new-page">{t('header.YourNewPage')}</DropdownLink> */}
-                    {/* <DropdownLink to="/your-new-page">{t('header.YourNewPage')}</DropdownLink> */}
-                    {/* <DropdownLink to="/your-new-page">{t('header.YourNewPage')}</DropdownLink> */}
-                </NavDropdown>
-              );
-            }
-            return (
-            <Link
-              key={path}
-              to={path}
-              className={`nav-link ${location.pathname === path ? 'active' : ''}`}
-            >
-              {t(`header.${label}`)}
-            </Link>
-            );
-          })}
+            {navLinks.map(({ path, label }) => (
+              <Link 
+                key={path} 
+                to={path} 
+                className={`nav-link ${location.pathname === path ? 'active' : ''}`}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+          
+          <div className="header-controls-wrapper">
+            <div className="auth-section">
+            {isAuthenticated ? (
+              <div className="user-menu">
+                <button 
+                  className="user-button"
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                >
+                  <FiUser />
+                  {user?.username || 'User'}
+                </button>
+                
+                <AnimatePresence>
+                  {showUserMenu && (
+                    <motion.div
+                      className="dropdown"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {hasPermission('manageEvents') && (
+                        <button 
+                          className="dropdown-item"
+                          onClick={() => {
+                            navigate('/admin/events');
+                            setShowUserMenu(false);
+                          }}
+                        >
+                          <FiSettings />
+                          {t('header.eventManagement')}
+                        </button>
+                      )}
+                      
+                      {(hasPermission('manageStaff') || hasPermission('reviewProfiles')) && (
+                        <button 
+                          className="dropdown-item"
+                          onClick={() => {
+                            navigate('/admin/staff');
+                            setShowUserMenu(false);
+                          }}
+                        >
+                          <FiUsers />
+                          {t('header.staffManagement')}
+                        </button>
+                      )}
+                      
+                      <button 
+                        className="dropdown-item"
+                        onClick={() => {
+                          navigate('/staff/profile');
+                          setShowUserMenu(false);
+                        }}
+                      >
+                        <FiUser />
+                        {t('header.myProfile')}
+                      </button>
+                      
+                      <button 
+                        className="dropdown-item danger"
+                        onClick={handleLogout}
+                      >
+                        <FiLogOut />
+                        {t('header.logout')}
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <button 
+                className="login-button unified-login"
+                onClick={() => setShowLoginModal(true)}
+              >
+                <FiLogIn />
+                <span>{t('header.login')}</span>
+              </button>
+            )}
           </div>
 
-          <div className="controls-group">
-            <div className={`language-switch ${i18n.language}`}>
-              <button
-                className={i18n.language === 'en' ? 'active' : ''}
-                onClick={() => changeLanguage('en')}
-              >
-                EN
-              </button>
-              <div className="divider"></div>
-              <button
-                className={i18n.language === 'zh' ? 'active' : ''}
-                onClick={() => changeLanguage('zh')}
-              >
-                中文
-              </button>
+            <div className="controls-group">
+              <LanguageSelector changeLanguage={changeLanguage} />
+              
+              <ThemeSwitch theme={theme} toggleTheme={toggleTheme} />
             </div>
-
-            <button className="theme-toggle" onClick={toggleTheme} aria-label={theme === 'light' ? t('header.darkMode') : t('header.lightMode')}>
-              <ThemeToggleIcon theme={theme} />
-            </button>
           </div>
 
           <div
@@ -535,43 +660,198 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
                 exit="closed"
               >
                 <Link to={path}>
-                  {t(`header.${label}`)}
+                  {label}
                 </Link>
               </motion.div>
             ))}
-
+            
+            {/* Settings and Controls Section */}
             <motion.div
-              className={`language-switch ${i18n.language}`}
+              className="mobile-controls-section"
               custom={navLinks.length}
               variants={linkVariants}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.5rem',
+                padding: '1.5rem',
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '16px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                width: '100%',
+                maxWidth: '280px'
+              }}
             >
-              <button
-                className={i18n.language === 'en' ? 'active' : ''}
-                onClick={() => changeLanguage('en')}
-              >
-                EN
-              </button>
-              <div className="divider"></div>
-              <button
-                className={i18n.language === 'zh' ? 'active' : ''}
-                onClick={() => changeLanguage('zh')}
-              >
-                中文
-              </button>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '1rem'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.25rem'
+                }}>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    color: 'var(--text-secondary)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    fontWeight: '500'
+                  }}>
+                    Language
+                  </span>
+                  <LanguageSelector changeLanguage={changeLanguage} />
+                </div>
+                
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.25rem',
+                  alignItems: 'center'
+                }}>
+                  <span style={{
+                    fontSize: '0.75rem',
+                    color: 'var(--text-secondary)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    fontWeight: '500'
+                  }}>
+                    Theme
+                  </span>
+                  <ThemeSwitch theme={theme} toggleTheme={toggleTheme} />
+                </div>
+              </div>
             </motion.div>
-
-            <motion.button
-              className="theme-toggle"
-              custom={navLinks.length + 1}
-              variants={linkVariants}
-              onClick={toggleTheme}
-            >
-              {theme === 'light' ? t('header.darkMode') : t('header.lightMode')}
-              <ThemeToggleIcon theme={theme} />
-            </motion.button>
+            
+            {/* Mobile Login/User Menu */}
+            {isAuthenticated ? (
+              <motion.div
+                className="mobile-user-section"
+                custom={navLinks.length + 1}
+                variants={linkVariants}
+                                 style={{
+                   display: 'flex',
+                   flexDirection: 'column',
+                   gap: '1rem',
+                   padding: '1rem',
+                   background: 'var(--card-bg, rgba(224, 43, 32, 0.05))',
+                   borderRadius: '15px',
+                   border: '1px solid rgba(224, 43, 32, 0.1)',
+                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                 }}
+              >
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  color: 'var(--primary)'
+                }}>
+                  <FiUser />
+                  {user?.username || 'User'}
+                </div>
+                
+                {hasPermission('manageEvents') && (
+                  <Link 
+                    to="/admin/events"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      fontSize: '1rem',
+                      color: 'var(--text)',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    <FiSettings />
+                    {t('header.eventManagement')}
+                  </Link>
+                )}
+                
+                {(hasPermission('manageStaff') || hasPermission('reviewProfiles')) && (
+                  <Link 
+                    to="/admin/staff"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      fontSize: '1rem',
+                      color: 'var(--text)',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    <FiUsers />
+                    {t('header.staffManagement')}
+                  </Link>
+                )}
+                
+                <Link 
+                  to="/staff/profile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: '1rem',
+                    color: 'var(--text)',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <FiUser />
+                  {t('header.myProfile')}
+                </Link>
+                
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMobileMenuOpen(false);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: '1rem',
+                    color: '#dc2626',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0.5rem 0',
+                    textAlign: 'left'
+                  }}
+                >
+                  <FiLogOut />
+                  {t('header.logout')}
+                </button>
+              </motion.div>
+            ) : (
+              <motion.button
+                className="mobile-login-button"
+                custom={navLinks.length + 1}
+                variants={linkVariants}
+                onClick={() => {
+                  setShowLoginModal(true);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <FiLogIn />
+                {t('header.login')}
+              </motion.button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
+
+      <UnifiedLoginModal 
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={handleLoginSuccess}
+      />
     </StyledHeader>
   );
 };
