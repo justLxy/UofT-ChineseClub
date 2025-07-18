@@ -3,14 +3,18 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiEdit2, FiTrash2, FiStar, FiUpload } from 'react-icons/fi';
 import { getEvents, createEvent, updateEvent, deleteEvent, BASE_URL, API_BASE_URL } from '../utils/api';
+import { formatEventDateTime } from '../utils/dateUtils';
 import axios from 'axios';
 
 
 const AdminContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  padding-top: 120px; /* 增加顶部内边距，防止被header覆盖 */
+  padding: 120px 20px 20px;
+  
+  @media (max-width: 768px) {
+    padding: 130px 20px 20px;
+  }
 `;
 
 const Header = styled.div`
@@ -19,6 +23,12 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  
+  /* NEW: prevent horizontal overflow on very narrow screens */
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 const Title = styled.h1`
@@ -206,20 +216,35 @@ const ActionButton = styled(motion.button)`
     margin-right: ${props => props.text ? '6px' : '0'};
   }
   
-  &.edit {
-    background: #4776E6;
-    &:hover {
-      background: #3366cc;
-      box-shadow: 0 4px 10px rgba(71, 118, 230, 0.3);
+  background: ${({ variant }) => {
+    switch (variant) {
+      case 'delete':
+        return '#FF4B2B';
+      case 'edit':
+      default:
+        return '#4776E6';
     }
-  }
-  
-  &.delete {
-    background: #FF4B2B;
-    &:hover {
-      background: #ff3615;
-      box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
-    }
+  }};
+
+  &:hover {
+    background: ${({ variant }) => {
+      switch (variant) {
+        case 'delete':
+          return '#ff3615';
+        case 'edit':
+        default:
+          return '#3366cc';
+      }
+    }};
+    box-shadow: ${({ variant }) => {
+      switch (variant) {
+        case 'delete':
+          return '0 4px 10px rgba(255, 75, 43, 0.3)';
+        case 'edit':
+        default:
+          return '0 4px 10px rgba(71, 118, 230, 0.3)';
+      }
+    }};
   }
 `;
 
@@ -346,15 +371,18 @@ const Button = styled(motion.button)`
   font-weight: 600;
   cursor: pointer;
   
-  &.cancel {
-    background: #f0f0f0;
-    color: #505050;
-  }
-  
-  &.submit {
-    background: linear-gradient(135deg, #FF4B2B, #FF416C);
-    color: white;
-  }
+  background: ${({ variant }) => {
+    switch (variant) {
+      case 'cancel':
+        return '#f0f0f0';
+      case 'submit':
+        return 'linear-gradient(135deg, #FF4B2B, #FF416C)';
+      default:
+        return '#f0f0f0';
+    }
+  }};
+
+  color: ${({ variant }) => (variant === 'cancel' ? '#505050' : 'white')};
 `;
 
 const NoEventsMessage = styled.div`
@@ -440,7 +468,9 @@ const EventsAdmin = () => {
     description_zh: '',
     imageUrl: '',
     startDate: '',
+    startTime: '',
     endDate: '',
+    endTime: '',
     location_en: '',
     location_zh: '',
     link: '',
@@ -475,7 +505,9 @@ const EventsAdmin = () => {
         description_zh: event.description_zh || '',
         imageUrl: event.imageUrl || '',
         startDate: new Date(event.startDate).toISOString().split('T')[0],
+        startTime: new Date(event.startDate).toTimeString().split(' ')[0].substring(0, 5),
         endDate: event.endDate ? new Date(event.endDate).toISOString().split('T')[0] : '',
+        endTime: event.endDate ? new Date(event.endDate).toTimeString().split(' ')[0].substring(0, 5) : '',
         location_en: event.location_en || '',
         location_zh: event.location_zh || '',
         link: event.link || '',
@@ -498,7 +530,9 @@ const EventsAdmin = () => {
         description_zh: '',
         imageUrl: '',
         startDate: '',
+        startTime: '',
         endDate: '',
+        endTime: '',
         location_en: '',
         location_zh: '',
         link: '',
@@ -545,10 +579,10 @@ const EventsAdmin = () => {
     }
     
     try {
-      const response = await axios.post(`${API_BASE_URL}/upload/image`, formDataWithFile, {
+      const response = await axios.post(`${API_BASE_URL}/admin/upload/image`, formDataWithFile, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
         }
       });
       
@@ -565,10 +599,27 @@ const EventsAdmin = () => {
     try {
       let eventData = { ...formData };
       
+      // Combine date and time for startDate
+      if (eventData.startDate) {
+        eventData.startDate = eventData.startTime 
+          ? `${eventData.startDate}T${eventData.startTime}:00`
+          : `${eventData.startDate}T00:00:00`;
+      }
+      
+      // Combine date and time for endDate
+      if (eventData.endDate) {
+        eventData.endDate = eventData.endTime 
+          ? `${eventData.endDate}T${eventData.endTime}:00`
+          : `${eventData.endDate}T23:59:59`;
+      }
+      
+      // Remove separate time fields before sending to API
+      delete eventData.startTime;
+      delete eventData.endTime;
+      
       // If there's a new image file, upload it first
       if (imageFile) {
-        const imageUrl = await uploadImage(imageFile);
-        eventData.imageUrl = imageUrl;
+        eventData.imageUrl = await uploadImage(imageFile);
       }
       
       if (currentEvent) {
@@ -607,8 +658,8 @@ const EventsAdmin = () => {
         description_en: event.description_en,
         description_zh: event.description_zh,
         imageUrl: event.imageUrl,
-        startDate: new Date(event.startDate).toISOString().split('T')[0],
-        endDate: event.endDate ? new Date(event.endDate).toISOString().split('T')[0] : '',
+        startDate: event.startDate, // 保持完整的日期时间
+        endDate: event.endDate || '', // 保持完整的日期时间
         location_en: event.location_en,
         location_zh: event.location_zh,
         link: event.link,
@@ -686,8 +737,7 @@ const EventsAdmin = () => {
               <EventId>{event.id}</EventId>
               <EventTitle>{event.title}</EventTitle>
               <EventDate>
-                {new Date(event.startDate).toLocaleDateString('zh-CN')}
-                {event.endDate && ` ~ ${new Date(event.endDate).toLocaleDateString('zh-CN')}`}
+                {formatEventDateTime(event.startDate, event.endDate)}
               </EventDate>
               <EventStatus status={event.status}>
                 {statusText[event.status]}
@@ -701,7 +751,7 @@ const EventsAdmin = () => {
               </FeaturedIndicator>
               <ActionsContainer>
                 <ActionButton 
-                  className="edit"
+                  variant="edit"
                   onClick={() => handleOpenModal(event)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -710,7 +760,7 @@ const EventsAdmin = () => {
                   <FiEdit2 /> 编辑
                 </ActionButton>
                 <ActionButton 
-                  className="delete"
+                  variant="delete"
                   onClick={() => handleDeleteEvent(event.id)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -844,6 +894,20 @@ const EventsAdmin = () => {
                 </FormGroup>
                 
                 <FormGroup>
+                  <Label htmlFor="startTime">开始时间 (可选)</Label>
+                  <Input 
+                    type="time" 
+                    id="startTime" 
+                    name="startTime" 
+                    value={formData.startTime} 
+                    onChange={handleInputChange}
+                    placeholder="HH:mm"
+                  />
+                </FormGroup>
+              </FormRow>
+              
+              <FormRow>
+                <FormGroup>
                   <Label htmlFor="endDate">结束日期 (可选)</Label>
                   <Input 
                     type="date" 
@@ -851,6 +915,18 @@ const EventsAdmin = () => {
                     name="endDate" 
                     value={formData.endDate} 
                     onChange={handleInputChange}
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label htmlFor="endTime">结束时间 (可选)</Label>
+                  <Input 
+                    type="time" 
+                    id="endTime" 
+                    name="endTime" 
+                    value={formData.endTime} 
+                    onChange={handleInputChange}
+                    placeholder="HH:mm"
                   />
                 </FormGroup>
               </FormRow>
@@ -913,7 +989,7 @@ const EventsAdmin = () => {
               
               <ButtonGroup>
                 <Button 
-                  className="cancel" 
+                  variant="cancel" 
                   type="button" 
                   onClick={handleCloseModal}
                   whileHover={{ scale: 1.03 }}
@@ -922,7 +998,7 @@ const EventsAdmin = () => {
                   取消
                 </Button>
                 <Button 
-                  className="submit" 
+                  variant="submit" 
                   type="submit"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}

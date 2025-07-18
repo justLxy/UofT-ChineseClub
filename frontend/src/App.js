@@ -18,8 +18,11 @@ const About = lazy(() => import('./pages/About'));
 const Join = lazy(() => import('./pages/Join'));
 const QinSociety = lazy(() => import('./pages/QinSociety'));
 const NYConcert = lazy(() => import('./pages/NYConcert'));
+const Team = lazy(() => import('./pages/Team'));
 const Events = lazy(() => import('./pages/Events'));
 const EventsAdmin = lazy(() => import('./pages/EventsAdmin'));
+const StaffProfile = lazy(() => import('./pages/StaffProfile'));
+const StaffAdmin = lazy(() => import('./pages/StaffAdmin'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 
@@ -40,6 +43,7 @@ function App() {
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     document.documentElement.lang = lng;
+    localStorage.setItem('preferredLanguage', lng);
     
     // Animation for language change
     const flashElement = document.querySelector('.language-change-flash');
@@ -61,6 +65,22 @@ function App() {
     // Apply theme to document element
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  // Sync language with ?lang= parameter in URL on every navigation
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const langParam = urlParams.get('lang');
+    if (langParam && ['en', 'zh'].includes(langParam) && langParam !== i18n.language) {
+      i18n.changeLanguage(langParam);
+      document.documentElement.lang = langParam;
+      localStorage.setItem('preferredLanguage', langParam);
+    }
+  }, [location.search, i18n]);
+
+  // Ensure html lang attribute stays in sync with i18n language
+  useEffect(() => {
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
 
   // Toggle theme between light and dark
   const toggleTheme = () => {
@@ -93,10 +113,14 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/join" element={<Join />} />
+                <Route path="/team" element={<Team />} />
+                <Route path="/team/:member" element={<Team />} />
                 <Route path="/events" element={<Events />} />
                 <Route path="/admin/events" element={<EventsAdmin />} />
                 <Route path="/qin-society" element={<QinSociety />} />
                 <Route path="/ny-concert" element={<NYConcert />} />  
+                <Route path="/admin/staff" element={<StaffAdmin />} />
+                <Route path="/staff/profile" element={<StaffProfile />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

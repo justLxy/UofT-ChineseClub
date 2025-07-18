@@ -159,12 +159,12 @@ const Indicators = styled.div`
   
   @media (max-width: 768px) {
     bottom: 0.8rem;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
   
   @media (max-width: 480px) {
     bottom: 0.6rem;
-    gap: 0.4rem;
+    gap: 0.3rem;
   }
 `;
 
@@ -192,13 +192,61 @@ const Indicator = styled.button`
   }
   
   @media (max-width: 768px) {
-    width: ${props => props.$active ? '16px' : '5px'};
-    height: 5px;
+    width: ${props => props.$active ? '12px' : '4px'};
+    height: 4px;
+    border-radius: ${props => props.$active ? '6px' : '50%'};
+    min-width: 24px; // 确保足够的触摸目标大小
+    min-height: 24px; // 确保足够的触摸目标大小
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      transform: none; // 禁用移动端的悬浮缩放效果
+      background: ${props => props.$active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.6)'};
+    }
+    
+    // 创建一个伪元素来显示实际的指示器
+    &:before {
+      content: '';
+      width: ${props => props.$active ? '12px' : '4px'};
+      height: 4px;
+      border-radius: ${props => props.$active ? '6px' : '50%'};
+      background: ${props => props.$active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.6)'};
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    // 隐藏原本的背景，因为我们使用伪元素
+    background: transparent !important;
   }
   
   @media (max-width: 480px) {
-    width: ${props => props.$active ? '12px' : '4px'};
-    height: 4px;
+    width: ${props => props.$active ? '10px' : '3px'};
+    height: 3px;
+    border-radius: ${props => props.$active ? '5px' : '50%'};
+    min-width: 20px; // 小屏设备的最小触摸目标
+    min-height: 20px; // 小屏设备的最小触摸目标
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      transform: none; // 禁用小屏移动端的悬浮缩放效果
+      background: ${props => props.$active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.6)'};
+    }
+    
+    // 创建一个伪元素来显示实际的指示器
+    &:before {
+      content: '';
+      width: ${props => props.$active ? '10px' : '3px'};
+      height: 3px;
+      border-radius: ${props => props.$active ? '5px' : '50%'};
+      background: ${props => props.$active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.6)'};
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    // 隐藏原本的背景，因为我们使用伪元素
+    background: transparent !important;
   }
   
   &:after {
@@ -212,6 +260,11 @@ const Indicator = styled.button`
     transform: translateX(-100%);
     transition: transform 0.6s ease;
     pointer-events: none;
+    border-radius: inherit;
+    
+    @media (max-width: 768px) {
+      display: none; // 在移动端禁用光效，简化视觉效果
+    }
   }
   
   ${props => props.$active && `

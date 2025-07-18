@@ -6,6 +6,7 @@ const enTranslations = {
   header: {
     about: 'About Us',
     join: 'Join Us',
+    team: 'Our Team',
     events: 'Events',
     QinSociety: 'Qin Society',
     NYConcert: 'New Year Concert',
@@ -14,7 +15,12 @@ const enTranslations = {
     home: 'Home',
     viewMore: 'View More',
     darkMode: 'Dark Mode',
-    lightMode: 'Light Mode'
+    lightMode: 'Light Mode',
+    login: 'Login',
+    logout: 'Logout',
+    eventManagement: 'Events',
+    staffManagement: 'Staff',
+    myProfile: 'Profile'
   },
   home: {
     hero: {
@@ -58,12 +64,28 @@ const enTranslations = {
     title: 'Are You Ready to Join UTChinese?',
     intro: 'We\'re not a high-end, prestigious club - just a group of perfectionists who never compromise on the things we love. We invite all kinds of friends to join our team and find a sense of belonging in college during your spare time.',
     requirements: 'You don\'t need special skills or outstanding experiences. As long as you like us and are willing to pursue perfection with us, laughing through our youth together, our doors are always open to you!',
-    sections: 'The following will introduce UTChinese\'s four business groups and their recruitment requirements. We welcome friends to click the link at the end to fill out the application questionnaire. We look forward to your joining us!',
+    sections: 'The following will introduce UTChinese\'s five departments and their recruitment requirements. We welcome friends to click the link at the end to fill out the application questionnaire. We look forward to your joining us!',
     welcomeMembers: 'What kind of members are we looking for?',
     arts: {
       req1: 'Interested in culture and art, with curiosity and humanistic care',
       req2: 'Responsible for project operations, including but not limited to platform construction and content planning',
-      req3: 'Good at communication and expression, with execution ability and responsibility'
+      req3: 'Good at communication and expression, with execution ability and responsibility',
+      subgroup1: {
+        title: 'New Year Concert',
+        description: 'New Year Concert is a charity music event meticulously crafted by UTChinese Network, representing our tradition and pride. This concert brings together artists and music lovers from around the world, offering audiences a cross-cultural audiovisual feast through beautiful melodies. Most importantly, all proceeds are donated to UNICEF Canada to provide medical care and living assistance to children in need worldwide, spreading hope and care through music. Since its inception in 2007, the concert has been successfully held for multiple years, raising over $110,000 CAD for UNICEF Canada and other charitable organizations.'
+      },
+      subgroup2: {
+        title: 'Book Club',
+        description: 'The Book Club is a cozy intellectual gathering where literature enthusiasts come together to explore the depths of Chinese and international literature. Through regular reading sessions, book discussions, and author meet-and-greets, we create a space for meaningful conversations about books, ideas, and cultural perspectives. Whether you\'re passionate about classical Chinese literature, contemporary fiction, or cross-cultural narratives, our book club offers a platform to share insights, discover new voices, and deepen your understanding of diverse cultures through the power of reading.'
+      },
+      subgroup3: {
+        title: 'Cultural Exchange',
+        description: 'In the multicultural landscape of Toronto, we are dedicated to promoting authentic Chinese traditional culture through rich, diverse, and highly interactive activities that build bridges for cross-cultural exchange. Through traditional festival celebrations, handicraft experiences, culinary culture sharing, and themed discussions, we showcase the charm of festivals like Mid-Autumn and Spring Festival, while organizing activities such as paper cutting, calligraphy, and pottery to let more people experience the essence of Chinese culture firsthand. We actively connect with students from different cultural backgrounds, promoting cross-cultural understanding and integration.'
+      },
+      subgroup4: {
+        title: 'Qin Society',
+        description: 'The Qin Society is dedicated to preserving and promoting the art of Guqin, a traditional Chinese instrument with over 3,000 years of history. As one of the most ancient and culturally significant instruments in China, the Guqin has long been cherished by Chinese scholars and intellectuals, embodying the profound essence of Chinese aesthetics. Our society provides a platform for students who love Chinese traditional culture to learn about and experience the cultural charm of Guqin through regular workshops, masterclasses with renowned Toronto Guqin artists, and elegant gatherings where members can immerse themselves in the grace and beauty of this ancient art form.'
+      }
     },
     career: {
       req1: 'Creative, with novel and bold ideas in the business workplace',
@@ -88,22 +110,21 @@ const enTranslations = {
       req1: 'Love photography and be good at discovering interesting details in life',
       req2: 'Have the necessary photographic equipment',
       req3: 'Have the ability to shoot videos, process images, and edit videos',
-      req4: 'Love computer technology',
-      req5: 'Have a certain programming foundation, at least above CSC108 level',
-      req6: 'Love negotiation and have certain negotiation skills',
-      req7: 'Have strong understanding, communication, and coordination abilities, with team awareness',
-      req8: 'Are careful and thorough, agile in thinking, with a strong sense of responsibility',
+      req4: 'Familiar with or interested in diving deep into mainstream full-stack development technologies like JavaScript, React, Express.js, Prisma',
+      req5: 'Experience with version control systems (Git/GitHub) and collaborative development workflows',
+      req6: 'CSC309 (Programming on the Web) or similar course with B or above grade is preferred',
+      req7: 'Passionate about programming, eager to learn, and pursuing code quality and user experience',
+      req8: 'Love negotiation and have certain negotiation skills',
+      req9: 'Have strong understanding, communication, and coordination abilities, with team awareness',
+      req10: 'Are careful and thorough, agile in thinking, with a strong sense of responsibility',
+      req11: 'Good at communication, team spirit, innovation, and willing to take initiative',
       subgroup1: {
-        title: 'Design and Art',
-        description: 'We believe that art, images, and design can provide people with better interactive experiences, and we hope to bring positive and effective energy to society through these methods.'
+        title: 'Information Solutions',
+        description: 'Information Solutions is the technical engine of UTChinese Network, responsible for supporting and driving the design and development of our official website. We are a young but professional full-stack development team, focusing on using cutting-edge technology to efficiently display and manage campus event information, helping more students conveniently learn about, participate in, and join our community.\n\nHere, you will not only work with mainstream technology stacks (React、Express.js、Prisma), but also deeply participate in the complete product development process: from requirements gathering and architecture design to deployment and maintenance - every step is implemented by your own hands. We believe you are as great as your product, and you are as young as your dreams.\n\nWe encourage efficient collaboration and open discussion, welcoming everyone to hone their skills, accumulate works, and amplify their influence through practice, using code to turn ideas into reality.'
       },
       subgroup2: {
-        title: 'Information Solutions',
-        description: 'If you are a CS or Engineering major student and want to develop a software product, then at UTChinese, you have the opportunity to participate in the development of some practical tools or larger applications.'
-      },
-      subgroup3: {
-        title: 'Sponsorship',
-        description: 'We are the "investment promotion" department of UTChinese. We are responsible for coordinating the social relations between UTChinese and sponsoring institutions, maintaining communication and good cooperation with off-campus enterprises and businesses.'
+        title: 'Human Resources',
+        description: 'The HR department brings together the internal personnel of the organization, organizing online and offline team building activities, ensuring everyone can eat well, drink well, play well, and get to know each other better.'
       }
     },
     support: {
@@ -119,9 +140,19 @@ const enTranslations = {
         description: 'At UTChinese, there are no marketing experts; we are explorers, learners, and executors. We wrote the freshman manual, built a new media creation platform, held charity classical music concerts, and coordinated job fairs.'
       },
       subgroup2: {
-        title: 'Human Resources',
-        description: 'The HR department brings together the internal personnel of the club, organizes online and offline team building, so that everyone can eat well, drink well, play well, and get to know each other better.'
+        title: 'Sponsorship',
+        description: 'We are the "investment promotion" department of UTChinese. We are responsible for coordinating the social relations between UTChinese and sponsoring institutions, maintaining communication and good cooperation with off-campus enterprises and businesses.'
+      },
+      subgroup3: {
+        title: 'Design and Art',
+        description: 'We believe that art, images, and design can provide people with better interactive experiences, and we hope to bring positive and effective energy to society through these methods.'
       }
+    },
+    engagement: {
+      req1: 'Passionate about building community and connecting people',
+      req2: 'Have strong interpersonal skills and enjoy organizing social activities',
+      req3: 'Able to work independently and take initiative in member engagement activities',
+      req4: 'Committed to fostering an inclusive and welcoming environment for all members'
     },
     form: {
       name: 'Your Name',
@@ -134,13 +165,13 @@ const enTranslations = {
       submit: 'Submit Application',
       title: 'UTChinese Network Application Form',
       description: 'Please fill out our official application form to join UTChinese Network. The form will open in a new tab or you can complete it directly below.',
-      openForm: 'Open Form in New Tab'
+              openForm: 'Open Form in New Tab'
     }
   },
   groups: {
     overview: {
       title: 'UTChinese Departments',
-      description: 'UTChinese Network is comprised of four key departments that work together to create a vibrant community. From cultural events and career services to operational support and content creation, each department plays a vital role in our mission to connect Chinese culture with the UofT community.'
+      description: 'UTChinese Network is comprised of five key departments that work together to create a vibrant community. From cultural events and career services to operational support, content creation, and member engagement, each department plays a vital role in our mission to connect Chinese culture with the UofT community.'
     },
     arts: {
       title: 'ARTS & CULTURE GROUP',
@@ -152,11 +183,15 @@ const enTranslations = {
     },
     operation: {
       title: 'OPERATION GROUP',
-      description: 'We believe that art, images, and design can provide people with better interactive experiences, and we hope to bring positive and effective energy to society through these methods.'
+      description: 'The Operation Group is dedicated to providing technical support and human resources management for the organization. Our team includes Information Solutions and Human Resources divisions, responsible for developing technical tools, managing internal team building, and optimizing operational processes.'
     },
     support: {
       title: 'SUPPORT GROUP',
-      description: 'At UTChinese, there are no marketing experts; we are explorers, learners, and executors. We wrote the freshman manual, built a new media creation platform, held charity classical music concerts, coordinated job fairs, and even held events that compete with world-class brands. Although every promotion is a huge challenge, these are invaluable opportunities to step out of the ivory tower.'    
+      description: 'The Support Group is responsible for the organization\'s external image building and resource acquisition. Our team includes Content Marketing, Sponsorship, and Design & Art divisions, committed to promoting the organization\'s brand and activities through creative content, partnerships, and visual design.'
+    },
+    engagement: {
+      title: 'ENGAGEMENT',
+      description: 'The Engagement department is an independent division focused on member engagement, community building, and maintaining strong relationships within the organization. We organize team activities, foster member connections, and ensure everyone feels included and valued in our community.'
     }
   },
   contact: {
@@ -234,6 +269,240 @@ const enTranslations = {
       edit: 'Edit Event',
       add: 'Add New Event'
     }
+  },
+  staff: {
+    login: {
+      title: 'Staff Login',
+      subtitle: 'Access your staff account to manage your profile',
+      username: 'Username or Email',
+      usernamePlaceholder: 'Enter your username or email',
+      password: 'Password',
+      passwordPlaceholder: 'Enter your password',
+      loginButton: 'Login',
+      loggingIn: 'Logging in...',
+      error: {
+        required: 'Please enter both username and password',
+        failed: 'Login failed. Please check your credentials.'
+      }
+    },
+    profile: {
+      title: 'Staff Profile',
+      subtitle: 'Manage your personal information and profile settings',
+      viewPermission: 'View Permission',
+      logout: 'Logout',
+      status: {
+        approved: {
+          title: 'Profile Approved',
+          message: 'Your profile has been approved and is now visible on the team page.'
+        },
+        pending: {
+          title: 'Profile Pending Review',
+          message: 'Your profile is currently under review by administrators.'
+        },
+        rejected: {
+          title: 'Profile Rejected',
+          message: 'Your profile was rejected. Please make necessary changes and resubmit.'
+        },
+        new: {
+          title: 'New Profile',
+          message: 'Please complete your profile information.'
+        }
+      },
+      changeAvatar: 'Change Avatar',
+      uploading: 'Uploading...',
+      nameEn: 'English Name',
+      nameEnPlaceholder: 'Enter your English name',
+      nameZh: 'Chinese Name',
+      nameZhPlaceholder: 'Enter your Chinese name',
+      positionEn: 'Position (English)',
+      positionEnPlaceholder: 'Enter your position in English',
+      positionZh: 'Position (Chinese)',
+      positionZhPlaceholder: 'Enter your position in Chinese',
+      department: 'Department',
+      selectDepartment: 'Select a department',
+      departments: {
+        arts: 'ARTS & CULTURE GROUP',
+        career: 'CAREER & ACADEMIC GROUP',
+        operation: 'OPERATION GROUP',
+        support: 'SUPPORT GROUP',
+        engagement: 'ENGAGEMENT'
+      },
+      bioEn: 'Bio (English)',
+      bioEnPlaceholder: 'Tell us about yourself in English...',
+      bioZh: 'Bio (Chinese)',
+      bioZhPlaceholder: 'Tell us about yourself in Chinese...',
+      email: 'Email',
+      emailPlaceholder: 'Enter your email address',
+      phone: 'Phone',
+      phonePlaceholder: 'Enter your phone number',
+      linkedin: 'LinkedIn',
+      linkedinPlaceholder: 'Enter your LinkedIn profile URL',
+      github: 'GitHub',
+      githubPlaceholder: 'Enter your GitHub profile URL',
+      wechat: 'WeChat',
+      wechatPlaceholder: 'Enter your WeChat ID',
+      mbti: 'MBTI Personality Type',
+      mbtiPlaceholder: 'Select your MBTI type',
+      save: 'Save Changes',
+      saving: 'Saving...',
+      saved: 'Profile saved successfully!',
+      avatarUploaded: 'Avatar uploaded successfully!',
+      error: {
+        required: 'Please fill in all required fields',
+        invalidFile: 'Please select a valid image file',
+        fileTooLarge: 'File size is too large (max 5MB)',
+        uploadFailed: 'Failed to upload avatar',
+        saveFailed: 'Failed to save profile'
+      },
+      permissions: {
+        title: 'My Permissions',
+        manageEvents: 'Event',
+        manageEventsDesc: 'Can create, edit, and delete events',
+        reviewProfiles: 'Review',
+        reviewProfilesDesc: 'Can review and approve staff profiles',
+        manageStaff: 'Account',
+        manageStaffDesc: 'Can create and manage staff accounts',
+        adminNote: 'As an admin, you have all permissions automatically',
+        defaultPosition: 'Staff Member',
+        noBio: 'No bio available'
+      },
+      verified: 'Profile Verified',
+      unverified: 'Profile Pending Verification'
+    }
+  },
+  common: {
+    loading: 'Loading...',
+    save: 'Save',
+    cancel: 'Cancel',
+    edit: 'Edit',
+    delete: 'Delete',
+    confirm: 'Confirm',
+    yes: 'Yes',
+    no: 'No',
+    manageStaffDesc: '可以创建和管理员工账户',
+    adminNote: '作为管理员，您自动拥有所有权限',
+    defaultPosition: '社团成员',
+    noBio: '暂无个人简介'
+  },
+  login: {
+    title: 'Login',
+    subtitle: 'Access your account to manage your profile and content',
+    identifier: 'Username / Email',
+    identifierPlaceholder: 'Username or email',
+    password: 'Password',
+    passwordPlaceholder: 'Enter your password',
+    signIn: 'Sign In',
+    signingIn: 'Signing In...',
+    error: {
+      required: 'Please enter username and password',
+      failed: 'Login failed. Please check your credentials.'
+    }
+  },
+  changePassword: {
+    title: 'Change Password',
+    subtitle: 'Update your account password to keep it secure',
+    currentPassword: 'Current Password',
+    currentPasswordPlaceholder: 'Enter your current password',
+    newPassword: 'New Password',
+    newPasswordPlaceholder: 'Enter new password',
+    confirmPassword: 'Confirm New Password',
+    confirmPasswordPlaceholder: 'Confirm new password',
+    passwordRequirements: 'Password must be at least 6 characters long',
+    changeButton: 'Change Password',
+    changing: 'Changing...',
+    success: 'Password changed successfully!',
+    error: {
+      currentPasswordRequired: 'Current password is required',
+      newPasswordRequired: 'New password is required',
+      confirmPasswordRequired: 'Please confirm your new password',
+      passwordTooShort: 'Password must be at least 6 characters long',
+      passwordsDoNotMatch: 'New passwords do not match',
+      samePassword: 'New password must be different from current password',
+      failed: 'Failed to change password. Please try again.'
+    }
+  },
+  admin: {
+    login: {
+      title: 'Admin Authentication',
+      passwordPlaceholder: 'Enter admin password',
+      loginButton: 'Login',
+      authenticating: 'Authenticating...',
+      error: {
+        failed: 'Authentication failed',
+        serverError: 'Server not responding. Please try again.'
+      },
+    },
+    staff: {
+      managementTitle: 'Staff Management',
+      managementSubtitle: 'Manage staff accounts and review profile submissions',
+      tabs: {
+        accounts: 'Staff Accounts',
+        profiles: 'Profile Reviews'
+      },
+      searchPlaceholder: 'Search staff...',
+      filters: {
+        all: 'All',
+        active: 'Active',
+        inactive: 'Inactive',
+        pending: 'Pending',
+        approved: 'Approved',
+        rejected: 'Rejected'
+      },
+      createAccount: 'Create Account',
+      modal: {
+        create: 'Create Staff Account',
+        edit: 'Edit Staff Account',
+        review: 'Review Profile'
+      },
+      form: {
+        username: 'Username',
+        email: 'Email',
+        password: 'Password',
+        role: 'Role',
+        active: 'Active',
+        status: 'Status',
+        displayOrder: 'Display Order',
+        displayOrderDesc: 'Lower numbers appear first in team page',
+        reviewNote: 'Review Note',
+        reviewNotePlaceholder: 'Add a note about this review...',
+        roles: {
+          staff: 'Staff',
+          admin: 'Admin'
+        },
+        statuses: {
+          pending: 'Pending',
+          approved: 'Approved',
+          rejected: 'Rejected'
+        },
+        buttons: {
+          cancel: 'Cancel',
+          create: 'Create',
+          update: 'Update',
+          save: 'Save'
+        }
+      },
+      noPermissions: 'No special permissions',
+      emptyStates: {
+        noAccounts: 'No staff accounts found',
+        noAccountsDesc: 'There are no staff accounts matching your criteria.',
+        noProfiles: 'No profiles to review',
+        noProfilesDesc: 'There are no pending or rejected profiles at this time.',
+        noResults: 'No results found',
+        noResultsDesc: 'Try adjusting your search or filter criteria.'
+      },
+      batchDelete: {
+        button: 'Batch Delete',
+        noSelection: 'Please select at least one item to delete.',
+        confirm: 'Are you sure you want to delete {{count}} staff account(s)? This action cannot be undone.',
+        success: 'Successfully deleted {{count}} staff account(s).',
+        error: 'Failed to delete selected accounts. Please try again.'
+      },
+      selectAll: {
+        selectAll: 'Select All',
+        deselectAll: 'Deselect All',
+        selected: '{{count}} selected'
+      }
+    }
   }
 };
   
@@ -243,6 +512,7 @@ const zhTranslations = {
   header: {
     about: '关于我们',
     join: '加入我们',
+    team: '我们的团队',
     events: '活动',
     QinSociety: '古琴会',
     NYConcert: '新年音乐会',
@@ -251,7 +521,12 @@ const zhTranslations = {
     home: '首页',
     viewMore: '查看更多',
     darkMode: '夜间模式',
-    lightMode: '日间模式'
+    lightMode: '日间模式',
+    login: '登录',
+    logout: '退出登录',
+    eventManagement: '活动管理',
+    staffManagement: '员工管理',
+    myProfile: '我的资料'
   },
   home: {
     hero: {
@@ -295,12 +570,28 @@ const zhTranslations = {
     title: '你准备好加入多大中文了吗?',
     intro: '我们不是高端大气上档次的社团，只是一群强迫症患者，对自己喜欢的事情从不将就。我们诚邀各路小伙伴加入我们的团队，在课余时间找到大学的归属。',
     requirements: '你不必身怀绝技，也不必有出众的经历。只要你喜欢我们，愿意跟我们强迫症到底，一起笑傲青春，我们的大门永远为你敞开！',
-    sections: '以下内容将介绍多大中文四个部门及其招新要求，欢迎小伙伴们点击文末链接填写报名问卷。我们期待你的加入！',
+    sections: '以下内容将介绍多大中文五个部门及其招新要求，欢迎小伙伴们点击文末链接填写报名问卷。我们期待你的加入！',
     welcomeMembers: '欢迎什么样的小伙伴？',
     arts: {
       req1: '对文化艺术感兴趣，怀有好奇心与人文关怀',
       req2: '负责项目的运营工作，包括但不限于平台建设、内容规划等',
-      req3: '善于沟通和表达，具有执行能力和责任感'
+      req3: '善于沟通和表达，具有执行能力和责任感',
+      subgroup1: {
+        title: 'New Year Concert',
+        description: 'New Year Concert 是多大中文倾力打造的新年慈善音乐会，也是我们社团的传统与骄傲。音乐会汇聚了来自世界各地热爱音乐的艺术家与爱好者，用美妙的旋律为观众带来一场跨越国界的视听盛宴。更重要的是，音乐会的所有盈利将全数捐赠给 UNICEF Canada（联合国儿童基金会），为全球受难的儿童提供医疗和生活援助，用音乐传递希望与关怀。自 2007 年创办以来，New Year Concert 已成功举办多届，共筹集善款超过 11 万加币，并悉数捐赠给 UNICEF Canada 等慈善机构。'
+      },
+      subgroup2: {
+        title: 'Book Club',
+        description: 'Book Club 是一个温馨的学术聚会，文学爱好者们聚集在一起，探索中国及国际文学的深度。通过定期的阅读会、书籍讨论和作家见面会，我们为有意义的对话创造了一个交流书籍、思想和文化观点的空间。无论你热爱中国古典文学、当代小说还是跨文化叙事，我们的读书会都为你提供了一个分享见解、发现新声音、通过阅读力量加深对多元文化理解的平台。'
+      },
+      subgroup3: {
+        title: 'Cultural Exchange',
+        description: '在多元文化交融的多伦多，我们致力于宣扬真正的中国传统文化，通过丰富多样且互动性强的活动，搭建跨文化交流的桥梁。通过传统节日庆祝、手工艺体验、美食文化分享及主题对话等形式，我们不仅展示中秋、春节等节日的魅力，还组织剪纸、书法、陶艺等手工活动，让更多人亲身感受中国文化的精髓。我们积极与不同文化背景的学子连接，促进跨文化理解与融合，让中国传统文化成为校园里的一抹亮色。'
+      },
+      subgroup4: {
+        title: 'Qin Society',
+        description: '古琴会致力于传承和推广古琴艺术，这是一种有着 3000 多年历史的中国传统乐器。古琴拥有中华民族最古老且文化地位最高的地位，承载着中式美学的深厚内涵。多大中文古琴会为热爱中国传统文化的学子提供一个了解古琴艺术的平台，通过定期的工作坊、与多伦多知名琴家的大师班以及优雅的雅集活动，让成员们沉浸在古琴音乐的优雅与美妙中，感受这一古老艺术形式的独特魅力。'
+      }
     },
     career: {
       req1: '有创造力，在商业职场方面有新奇，大胆的想法',
@@ -325,22 +616,21 @@ const zhTranslations = {
       req1: '热爱摄影、善于发现生活中有趣的细节',
       req2: '拥有必要的摄影器材',
       req3: '有视频拍摄、图片处理、视频剪辑的能力',
-      req4: '热爱计算机技术',
-      req5: '有一定编程的基础，至少CSC108以上水平',
-      req6: '热爱谈判，拥有一定的谈判技巧',
-      req7: '有较强的理解、沟通、协调能力，具备团队意识',
-      req8: '认真细致，思维敏捷，具有较强的责任感',
+      req4: '熟悉或有兴趣深入 JavaScript、React、Express.js、Prisma 等主流全栈开发技术',
+      req5: '具有版本控制系统（Git/GitHub）和协作开发流程的经验',
+      req6: 'CSC309（网页编程）或类似课程成绩 B 及以上者优先考虑',
+      req7: '热爱编程，乐于钻研，追求代码质量与用户体验',
+      req8: '热爱谈判，拥有一定的谈判技巧',
+      req9: '有较强的理解、沟通、协调能力，具备团队意识',
+      req10: '认真细致，思维敏捷，具有较强的责任感',
+      req11: '善于沟通、富有团队精神、敢于创新，愿意主动承担责任',
       subgroup1: {
-        title: 'Design and Art',
-        description: '相信艺术、影像和设计能够给人更好的交互体验，希望通过这些方式来给这个社会带来积极且有效的能量。'
+        title: 'Information Solutions',
+        description: 'Information Solutions 是 UTChinese Network 的技术引擎，负责支撑和推动整个官方网站的设计与开发。我们是一支年轻但专业的全栈开发团队，专注用前沿技术实现校园活动信息的高效展示与管理，帮更多同学更方便地了解、参与、加入我们的社团。\n\n在这里，你不仅能用到主流技术栈（React、Express.js、Prisma），还能深度参与完整的产品开发流程：从需求对接、架构设计到上线维护，每一步都由你亲手落地。我们相信，你和你的产品一样伟大，你和你的梦想一样年轻。\n\n我们鼓励高效协作与自由讨论，欢迎每个人在实战中磨炼技术、积累作品、放大影响力，用代码把想法做成现实。'
       },
       subgroup2: {
-        title: 'Information Solutions',
-        description: '如果你是CS或者Engineering专业的学生，并且想要开发一个软件产品，那么在多大中文，你有机会参与开发一些实用的工具或者规模大一些的应用程序。'
-      },
-      subgroup3: {
-        title: 'Sponsorship',
-        description: '我们是多大中文的"招商引资"部门，我们负责协调多大中文与赞助机构的社会关系，保持与校外企业和商家的沟通以及良好合作。'
+        title: 'Human Resources',
+        description: 'HR 部门凝聚社团的内部人员，组织线上线下团建，让大家吃好喝好玩好的同时对彼此更加熟悉。'
       }
     },
     support: {
@@ -356,9 +646,19 @@ const zhTranslations = {
         description: '在多大中文，没有 marketing 的专家，我们是探索者、学习者和执行者。我们撰写了新生手册、搭建了新媒体创作平台，举办了慈善古典音乐会，统筹了招聘会，甚至还会举办跟世界级品牌竞争的活动。虽然每一场宣传都是一次巨大的挑战，但这都是走出象牙塔，无比宝贵的机会。'
       },
       subgroup2: {
-        title: 'Human Resources',
-        description: 'HR 部门凝聚社团的内部人员，组织线上线下团建，让大家吃好喝好玩好的同时对彼此更加熟悉。'
+        title: 'Sponsorship',
+        description: '我们是多大中文的"招商引资"部门，我们负责协调多大中文与赞助机构的社会关系，保持与校外企业和商家的沟通以及良好合作。'
+      },
+      subgroup3: {
+        title: 'Design and Art',
+        description: '相信艺术、影像和设计能够给人更好的交互体验，希望通过这些方式来给这个社会带来积极且有效的能量。'
       }
+    },
+    engagement: {
+      req1: '热爱社区建设，善于连接人与人之间的关系',
+      req2: '具有较强的人际交往能力，喜欢组织社交活动',
+      req3: '能够独立工作，在成员参与活动方面积极主动',
+      req4: '致力于为所有成员营造包容友好的环境'
     },
     form: {
       name: '您的姓名',
@@ -371,13 +671,13 @@ const zhTranslations = {
       submit: '提交申请',
       title: '多大中文招新报名表',
       description: '请填写我们的官方申请表以加入多大中文。表单将在新标签页中打开，或者您可以直接在下方完成。',
-      openForm: '在新标签页中打开表单'
+              openForm: '在新标签页中打开表单'
     }
   },
   groups: {
     overview: {
       title: '多大中文部门',
-      description: '多大中文由四个关键部门组成，共同创建一个充满活力的社区。从文化活动和职业服务到运营支持和内容创作，每个部门在我们连接中国文化与多伦多大学社区的使命中都发挥着重要作用。'
+      description: '多大中文由五个关键部门组成，共同创建一个充满活力的社区。从文化活动和职业服务到运营支持、内容创作和成员参与，每个部门在我们连接中国文化与多伦多大学社区的使命中都发挥着重要作用。'
     },
     arts: {
       title: '文化艺术部门',
@@ -389,11 +689,15 @@ const zhTranslations = {
     },
     operation: {
       title: '运营部门',
-      description: '相信艺术、影像和设计能够给人更好的交互体验，希望通过这些方式来给这个社会带来积极且有效的能量。我们的团队包括摄影/视频、信息解决方案和赞助三个小组，致力于为社团提供全方位的运营支持。'
+      description: '运营部门致力于为社团提供技术支持和人力资源管理。我们的团队包括信息解决方案和人力资源两个小组，负责开发技术工具、管理内部团队建设和优化运营流程。'
     },
     support: {
       title: '支持部门',
-      description: '在多大中文，没有营销专家，我们是探索者、学习者和执行者。我们撰写了新生手册、搭建了新媒体创作平台，举办了慈善古典音乐会，统筹了招聘会，甚至还会举办跟世界级品牌竞争的活动。虽然每一场宣传都是一次巨大的挑战，但这都是走出象牙塔，无比宝贵的机会。'
+      description: '支持部门负责社团的对外形象建设和资源获取。我们的团队包括内容营销、赞助合作和设计艺术三个小组，致力于通过创意内容、合作伙伴关系和视觉设计来推广社团品牌和活动。'
+    },
+    engagement: {
+      title: '活动部',
+      description: '活动部是一个独立的部门，专注于成员参与、社区建设和维护组织内部的良好关系。我们组织团队活动，促进成员之间的联系，确保每个人都能在我们的社区中感受到被包容和重视。'
     }
   },
   contact: {
@@ -470,8 +774,245 @@ const zhTranslations = {
       edit: '编辑活动',
       add: '添加新活动'
     }
+  },
+  staff: {
+    login: {
+      title: '员工登录',
+      subtitle: '登录您的员工账户以管理个人资料',
+      username: '用户名或邮箱',
+      usernamePlaceholder: '请输入用户名或邮箱',
+      password: '密码',
+      passwordPlaceholder: '请输入密码',
+      loginButton: '登录',
+      loggingIn: '登录中...',
+      error: {
+        required: '请输入用户名和密码',
+        failed: '登录失败，请检查您的凭据。'
+      }
+    },
+    profile: {
+      title: '员工资料',
+      subtitle: '管理您的个人信息和资料设置',
+      viewPermission: '查看权限',
+      logout: '退出登录',
+      status: {
+        approved: {
+          title: '资料已通过审核',
+          message: '您的资料已通过审核，现在已在团队页面显示。'
+        },
+        pending: {
+          title: '资料审核中',
+          message: '您的资料正在等待管理员审核。'
+        },
+        rejected: {
+          title: '资料被拒绝',
+          message: '您的资料被拒绝，请进行必要的修改后重新提交。'
+        },
+        new: {
+          title: '新建资料',
+          message: '请完善您的个人资料信息。'
+        }
+      },
+      changeAvatar: '更换头像',
+      uploading: '上传中...',
+      nameEn: '英文姓名',
+      nameEnPlaceholder: '请输入您的英文姓名',
+      nameZh: '中文姓名',
+      nameZhPlaceholder: '请输入您的中文姓名',
+      positionEn: '职位（英文）',
+      positionEnPlaceholder: '请输入您的英文职位',
+      positionZh: '职位（中文）',
+      positionZhPlaceholder: '请输入您的中文职位',
+      department: '部门',
+      selectDepartment: '请选择部门',
+      departments: {
+        arts: '文化艺术部门',
+        career: '职业学术部门',
+        operation: '运营部门',
+        support: '支持部门',
+        engagement: '活动部'
+      },
+      bioEn: '个人简介（英文）',
+      bioEnPlaceholder: '请用英文介绍一下您自己...',
+      bioZh: '个人简介（中文）',
+      bioZhPlaceholder: '请用中文介绍一下您自己...',
+      email: '邮箱',
+      emailPlaceholder: '请输入您的邮箱地址',
+      phone: '电话',
+      phonePlaceholder: '请输入您的电话号码',
+      linkedin: 'LinkedIn',
+      linkedinPlaceholder: '请输入您的 LinkedIn 个人资料链接',
+      github: 'GitHub',
+      githubPlaceholder: '请输入您的 GitHub 个人资料链接',
+      wechat: '微信',
+      wechatPlaceholder: '请输入您的微信号',
+      mbti: '性格类型（MBTI）',
+      mbtiPlaceholder: '请选择您的MBTI类型',
+      save: '保存更改',
+      saving: '保存中...',
+      saved: '资料保存成功！',
+      avatarUploaded: '头像上传成功！',
+      error: {
+        required: '请填写所有必填字段',
+        invalidFile: '请选择有效的图片文件',
+        fileTooLarge: '文件大小过大（最大5MB）',
+        uploadFailed: '头像上传失败',
+        saveFailed: '资料保存失败'
+      },
+      permissions: {
+        title: '我的权限',
+        manageEvents: '活动管理',
+        manageEventsDesc: '可以增删改查活动',
+        reviewProfiles: '资料审核',
+        reviewProfilesDesc: '可以审核和批准员工资料',
+        manageStaff: '账户管理',
+        manageStaffDesc: '可以创建和管理员工账户',
+        adminNote: '作为管理员，您自动拥有所有权限',
+        defaultPosition: '社团成员',
+        noBio: '暂无个人简介'
+      },
+      verified: '资料已认证',
+      unverified: '资料待认证'
+    }
+  },
+  common: {
+    loading: '加载中...',
+    save: '保存',
+    cancel: '取消',
+    edit: '编辑',
+    delete: '删除',
+    confirm: '确认',
+    yes: '是',
+    no: '否',
+    manageStaffDesc: '可以创建和管理员工账户',
+    adminNote: '作为管理员，您自动拥有所有权限',
+    defaultPosition: '社团成员',
+    noBio: '暂无个人简介'
+  },
+  login: {
+    title: '登录',
+    subtitle: '登录您的账户以管理个人资料和内容',
+    identifier: '用户名/邮箱',
+    identifierPlaceholder: '用户名或邮箱',
+    password: '密码',
+    passwordPlaceholder: '请输入密码',
+    signIn: '登录',
+    signingIn: '登录中...',
+    error: {
+      required: '请输入用户名和密码',
+      failed: '登录失败，请检查您的凭据。'
+    }
+  },
+  changePassword: {
+    title: '更改密码',
+    subtitle: '更新您的账户密码以保证安全',
+    currentPassword: '当前密码',
+    currentPasswordPlaceholder: '请输入当前密码',
+    newPassword: '新密码',
+    newPasswordPlaceholder: '请输入新密码',
+    confirmPassword: '确认新密码',
+    confirmPasswordPlaceholder: '请确认新密码',
+    passwordRequirements: '密码长度至少为6位',
+    changeButton: '更改密码',
+    changing: '更改中...',
+    success: '密码更改成功！',
+    error: {
+      currentPasswordRequired: '请输入当前密码',
+      newPasswordRequired: '请输入新密码',
+      confirmPasswordRequired: '请确认新密码',
+      passwordTooShort: '密码长度至少为6位',
+      passwordsDoNotMatch: '新密码不一致',
+      samePassword: '新密码必须与当前密码不同',
+      failed: '更改密码失败，请重试。'
+    }
+  },
+  admin: {
+    login: {
+      title: '管理员认证',
+      passwordPlaceholder: '请输入管理员密码',
+      loginButton: '登录',
+      authenticating: '认证中...',
+      error: {
+        failed: '认证失败',
+        serverError: '服务器无响应，请重试。'
+      }
+    },
+    staff: {
+      managementTitle: '员工管理',
+      managementSubtitle: '管理员工账户并审核个人资料提交',
+      tabs: {
+        accounts: '员工账户',
+        profiles: '资料审核'
+      },
+      searchPlaceholder: '搜索员工...',
+      filters: {
+        all: '全部',
+                 active: '激活状态',
+        inactive: '不活跃',
+        pending: '待审核',
+        approved: '已通过',
+        rejected: '已拒绝'
+      },
+      createAccount: '创建账户',
+      modal: {
+        create: '创建员工账户',
+        edit: '编辑员工账户',
+        review: '审核资料'
+      },
+      form: {
+        username: '用户名',
+        email: '邮箱',
+        password: '密码',
+        role: '角色',
+        active: '激活状态',
+        status: '状态',
+        displayOrder: '显示顺序',
+        displayOrderDesc: '数字越小在团队页面中越靠前',
+        reviewNote: '审核备注',
+        reviewNotePlaceholder: '添加关于此次审核的备注...',
+        roles: {
+          staff: '员工',
+          admin: '管理员'
+        },
+        statuses: {
+          pending: '待审核',
+          approved: '已通过',
+          rejected: '已拒绝'
+        },
+        buttons: {
+          cancel: '取消',
+          create: '创建',
+          update: '更新',
+          save: '保存'
+        }
+      },
+      noPermissions: '无特殊权限',
+      emptyStates: {
+        noAccounts: '未找到员工账户',
+        noAccountsDesc: '没有符合您条件的员工账户。',
+        noProfiles: '暂无资料需要审核',
+        noProfilesDesc: '目前没有待审核或被拒绝的资料。',
+        noResults: '未找到结果',
+        noResultsDesc: '请尝试调整您的搜索或筛选条件。'
+      },
+      batchDelete: {
+        button: '批量删除',
+        noSelection: '请至少选择一个项目进行删除。',
+        confirm: '您确定要删除 {{count}} 个员工账户吗？此操作无法撤销。',
+        success: '成功删除了 {{count}} 个员工账户。',
+        error: '删除选中账户失败，请重试。'
+      },
+      selectAll: {
+        selectAll: '全选',
+        deselectAll: '取消全选',
+        selected: '已选择 {{count}} 个'
+      }
+    }
   }
 };
+
+// Add saved language preference from localStorage
+const savedLanguage = typeof window !== 'undefined' ? localStorage.getItem('preferredLanguage') : null;
 
 i18n
   .use(initReactI18next)
@@ -480,7 +1021,7 @@ i18n
       en: { translation: enTranslations },
       zh: { translation: zhTranslations }
     },
-    lng: 'en',
+    lng: savedLanguage || 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false
