@@ -471,26 +471,26 @@ const zhTranslations = {
     contact: '联系方式',
     language: '语言',
     home: '首页',
-    viewMore: '查看更多',
+    viewMore: '了解更多',
     darkMode: '夜间模式',
     lightMode: '日间模式',
     login: '登录',
     logout: '退出登录',
-    eventManagement: '活动管理',
-    staffManagement: '员工管理',
-    myProfile: '我的资料'
+    eventManagement: '活动运营',
+    staffManagement: '成员管理',
+    myProfile: '个人资料'
   },
   home: {
     hero: {
       title: '多大中文',
-      subtitle: '连接中国文化与多伦多大学社区',
+      subtitle: '连接中华文化与多大社区',
       cta: '加入我们'
     },
     about: {
       title: '什么是多大中文?',
-      content: '多大中文是一个致力于促进中国文化传播和文化交流的学生组织，为多伦多大学的学生提供了一个交流的平台。'
+      content: '多大中文是一个致力于促进中华文化传播和交流的学生组织，为多伦多大学的同学们搭建了一个文化交流的平台。'
     },
-    scroll: '向下滚动'
+    scroll: '继续浏览'
   },
   about: {
     title: '什么是多大中文?',
@@ -617,7 +617,7 @@ const zhTranslations = {
       namePlaceholder: '请输入您的姓名',
       email: '电子邮箱',
       emailPlaceholder: '请输入您的电子邮箱',
-      group: '感兴趣的小组',
+      group: '感兴趣的部门',
       message: '为什么想要加入我们？',
       messagePlaceholder: '请简单介绍一下您自己以及为什么想要加入我们',
       submit: '提交申请',
@@ -629,7 +629,7 @@ const zhTranslations = {
   groups: {
     overview: {
       title: '多大中文部门',
-      description: '多大中文由五个关键部门组成，共同创建一个充满活力的社区。从文化活动和职业服务到运营支持、内容创作和成员参与，每个部门在我们连接中国文化与多伦多大学社区的使命中都发挥着重要作用。'
+      description: '多大中文由五个核心部门组成，共同打造充满活力的社区。从文化活动和职业服务到运营支持、内容创作和成员参与，每个部门都在连接中华文化与多大社区的使命中发挥着重要作用。'
     },
     arts: {
       title: '文化艺术部门',
@@ -687,8 +687,8 @@ const zhTranslations = {
   },
   staff: {
     login: {
-      title: '员工登录',
-      subtitle: '登录您的员工账户以管理个人资料',
+      title: '成员登录',
+      subtitle: '登录您的成员账户以管理个人资料',
       username: '用户名或邮箱',
       usernamePlaceholder: '请输入用户名或邮箱',
       password: '密码',
@@ -697,11 +697,11 @@ const zhTranslations = {
       loggingIn: '登录中...',
       error: {
         required: '请输入用户名和密码',
-        failed: '登录失败，请检查您的凭据。'
+        failed: '登录失败，请检查您的凭据'
       }
     },
     profile: {
-      title: '员工资料',
+      title: '个人资料',
       subtitle: '管理您的个人信息和资料设置',
       viewPermission: '查看权限',
       logout: '退出登录',
@@ -771,14 +771,14 @@ const zhTranslations = {
       },
       permissions: {
         title: '我的权限',
-        manageEvents: '活动管理',
-        manageEventsDesc: '可以增删改查活动',
+        manageEvents: '活动运营',
+        manageEventsDesc: '可以创建、编辑和管理活动',
         reviewProfiles: '资料审核',
-        reviewProfilesDesc: '可以审核和批准员工资料',
-        manageStaff: '账户管理',
-        manageStaffDesc: '可以创建和管理员工账户',
+        reviewProfilesDesc: '可以审核和批准成员资料',
+        manageStaff: '成员管理',
+        manageStaffDesc: '可以创建和管理成员账户',
         adminNote: '作为管理员，您自动拥有所有权限',
-        defaultPosition: '社团成员',
+        defaultPosition: '团队成员',
         noBio: '暂无个人简介'
       },
       verified: '资料已认证',
@@ -794,23 +794,23 @@ const zhTranslations = {
     confirm: '确认',
     yes: '是',
     no: '否',
-    manageStaffDesc: '可以创建和管理员工账户',
+    manageStaffDesc: '可以创建和管理成员账户',
     adminNote: '作为管理员，您自动拥有所有权限',
-    defaultPosition: '社团成员',
+    defaultPosition: '团队成员',
     noBio: '暂无个人简介'
   },
   login: {
     title: '登录',
     subtitle: '登录您的账户以管理个人资料和内容',
     identifier: '用户名/邮箱',
-    identifierPlaceholder: '用户名或邮箱',
+    identifierPlaceholder: '请输入用户名或邮箱',
     password: '密码',
     passwordPlaceholder: '请输入密码',
     signIn: '登录',
     signingIn: '登录中...',
     error: {
       required: '请输入用户名和密码',
-      failed: '登录失败，请检查您的凭据。'
+      failed: '登录失败，请检查您的凭据'
     }
   },
   changePassword: {
@@ -833,7 +833,7 @@ const zhTranslations = {
       passwordTooShort: '密码长度至少为6位',
       passwordsDoNotMatch: '新密码不一致',
       samePassword: '新密码必须与当前密码不同',
-      failed: '更改密码失败，请重试。'
+      failed: '更改密码失败，请重试'
     }
   },
   admin: {
@@ -844,29 +844,29 @@ const zhTranslations = {
       authenticating: '认证中...',
       error: {
         failed: '认证失败',
-        serverError: '服务器无响应，请重试。'
+        serverError: '服务器无响应，请重试'
       }
     },
     staff: {
-      managementTitle: '员工管理',
-      managementSubtitle: '管理员工账户并审核个人资料提交',
+      managementTitle: '成员管理',
+      managementSubtitle: '管理成员账户并审核个人资料提交',
       tabs: {
-        accounts: '员工账户',
+        accounts: '成员账户',
         profiles: '资料审核'
       },
-      searchPlaceholder: '搜索员工...',
+      searchPlaceholder: '搜索成员...',
       filters: {
         all: '全部',
-                 active: '激活状态',
-        inactive: '不活跃',
+        active: '已激活',
+        inactive: '未激活',
         pending: '待审核',
         approved: '已通过',
         rejected: '已拒绝'
       },
       createAccount: '创建账户',
       modal: {
-        create: '创建员工账户',
-        edit: '编辑员工账户',
+        create: '创建成员账户',
+        edit: '编辑成员账户',
         review: '审核资料'
       },
       form: {
@@ -881,7 +881,7 @@ const zhTranslations = {
         reviewNote: '审核备注',
         reviewNotePlaceholder: '添加关于此次审核的备注...',
         roles: {
-          staff: '员工',
+          staff: '成员',
           admin: '管理员'
         },
         statuses: {
@@ -898,19 +898,19 @@ const zhTranslations = {
       },
       noPermissions: '无特殊权限',
       emptyStates: {
-        noAccounts: '未找到员工账户',
-        noAccountsDesc: '没有符合您条件的员工账户。',
+        noAccounts: '未找到成员账户',
+        noAccountsDesc: '没有符合您条件的成员账户',
         noProfiles: '暂无资料需要审核',
-        noProfilesDesc: '目前没有待审核或被拒绝的资料。',
+        noProfilesDesc: '目前没有待审核或被拒绝的资料',
         noResults: '未找到结果',
-        noResultsDesc: '请尝试调整您的搜索或筛选条件。'
+        noResultsDesc: '请尝试调整您的搜索或筛选条件'
       },
       batchDelete: {
         button: '批量删除',
-        noSelection: '请至少选择一个项目进行删除。',
-        confirm: '您确定要删除 {{count}} 个员工账户吗？此操作无法撤销。',
-        success: '成功删除了 {{count}} 个员工账户。',
-        error: '删除选中账户失败，请重试。'
+        noSelection: '请至少选择一个项目进行删除',
+        confirm: '您确定要删除 {{count}} 个成员账户吗？此操作无法撤销',
+        success: '成功删除了 {{count}} 个成员账户',
+        error: '删除选中账户失败，请重试'
       },
       selectAll: {
         selectAll: '全选',
