@@ -178,7 +178,8 @@ const StyledStaffProfile = styled.div`
           padding: 0.5rem 0;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
           border: 1px solid rgba(224, 43, 32, 0.1);
-          min-width: 200px;
+          min-width: 320px;
+          max-width: 400px;
           z-index: 10;
           margin-top: 0.5rem;
           
@@ -189,10 +190,8 @@ const StyledStaffProfile = styled.div`
           }
           
           .permission-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
+            display: block;
+            padding: 1rem 1.25rem;
             color: var(--text);
             font-size: 0.9rem;
             transition: background-color 0.2s ease;
@@ -893,51 +892,69 @@ const StaffProfile = () => {
           </div>
           
           <div className="actions">
-            <div className="permission-dropdown">
-              <button 
-                className="action-button secondary"
-                onClick={() => setShowPermissionMenu(!showPermissionMenu)}
-              >
-                <FiEye />
-                {t('staff.profile.viewPermission')}
-              </button>
+            {hasAnyPermission && (
+              <div className="permission-dropdown">
+                <button 
+                  className="action-button secondary"
+                  onClick={() => setShowPermissionMenu(!showPermissionMenu)}
+                >
+                  <FiEye />
+                  {t('staff.profile.viewPermission')}
+                </button>
               
-              <AnimatePresence>
-                {showPermissionMenu && (
-                  <motion.div
-                    className="permission-menu"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {user?.permissions?.canManageEvents && (
-                      <div className="permission-item events">
-                        <FiSettings />
-                        <span>{t('staff.profile.permissions.manageEvents')}</span>
-                      </div>
-                    )}
-                    {user?.permissions?.canReviewProfiles && (
-                      <div className="permission-item reviews">
-                        <FiFileText />
-                        <span>{t('staff.profile.permissions.reviewProfiles')}</span>
-                      </div>
-                    )}
-                    {user?.permissions?.canManageStaff && (
-                      <div className="permission-item staff">
-                        <FiUsers />
-                        <span>{t('staff.profile.permissions.manageStaff')}</span>
-                      </div>
-                    )}
-                    {!hasAnyPermission && (
-                      <div className="permission-item no-permissions">
-                        <span>{t('admin.staff.noPermissions')}</span>
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                <AnimatePresence>
+                  {showPermissionMenu && (
+                    <motion.div
+                      className="permission-menu"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {user?.permissions?.canManageEvents && (
+                        <div className="permission-item events">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <FiSettings />
+                            <div>
+                              <div style={{ fontWeight: '600' }}>{t('staff.profile.permissions.manageEvents')}</div>
+                              <div style={{ fontSize: '0.8rem', color: 'var(--text-light)', marginTop: '0.25rem' }}>
+                                {t('staff.profile.permissions.manageEventsDesc')}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {user?.permissions?.canReviewProfiles && (
+                        <div className="permission-item reviews">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <FiFileText />
+                            <div>
+                              <div style={{ fontWeight: '600' }}>{t('staff.profile.permissions.reviewProfiles')}</div>
+                              <div style={{ fontSize: '0.8rem', color: 'var(--text-light)', marginTop: '0.25rem' }}>
+                                {t('staff.profile.permissions.reviewProfilesDesc')}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {user?.permissions?.canManageStaff && (
+                        <div className="permission-item staff">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <FiUsers />
+                            <div>
+                              <div style={{ fontWeight: '600' }}>{t('staff.profile.permissions.manageStaff')}</div>
+                              <div style={{ fontSize: '0.8rem', color: 'var(--text-light)', marginTop: '0.25rem' }}>
+                                {t('staff.profile.permissions.manageStaffDesc')}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
             
             <button 
               className="action-button primary"

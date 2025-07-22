@@ -1264,7 +1264,7 @@ const StaffAdmin = () => {
                               {item.profile?.avatarUrl ? (
                                 <img 
                                   src={getFullAvatarUrl(item.profile.avatarUrl)} 
-                                  alt={`${item.username} avatar`}
+                                  alt={`${item.username || 'User'} avatar`}
                                   style={{ 
                                     width: '45px', 
                                     height: '45px', 
@@ -1286,7 +1286,7 @@ const StaffAdmin = () => {
                                   fontWeight: 'bold',
                                   fontSize: '1.1rem'
                                 }}>
-                                  {item.username.charAt(0).toUpperCase()}
+                                  {(item.username || 'U').charAt(0).toUpperCase()}
                                 </div>
                               )}
                             </div>
@@ -1294,7 +1294,7 @@ const StaffAdmin = () => {
                             {/* Account Info */}
                             <div style={{ flex: 1 }}>
                               <h3 style={{ margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                {item.username}
+                                {item.username || 'Unknown User'}
                                 {item.role === 'admin' && (
                                   <span style={{ 
                                     background: 'linear-gradient(135deg, #f59e0b, #d97706)', 
@@ -1321,7 +1321,7 @@ const StaffAdmin = () => {
                           <div className="meta">
                             <div className="meta-item">
                               <FiMail />
-                              {item.email}
+                              {item.email || 'No email'}
                             </div>
                             <div className="meta-item">
                               <FiKey />
@@ -1411,7 +1411,7 @@ const StaffAdmin = () => {
                               {item.avatarUrl ? (
                                 <img 
                                   src={getFullAvatarUrl(item.avatarUrl)} 
-                                  alt={`${item.name_en} avatar`}
+                                  alt={`${item.name_en || 'User'} avatar`}
                                   style={{ 
                                     width: '50px', 
                                     height: '50px', 
@@ -1821,6 +1821,168 @@ const StaffAdmin = () => {
                       <div className="form-group">
                         <label>Display Order</label>
                         <input type="number" value={formData.displayOrder || 0} onChange={(e)=>setFormData(prev=>({...prev,displayOrder:parseInt(e.target.value)}))} />
+                      </div>
+                    </>
+                  )}
+
+                  {modalType === 'review' && selectedItem && (
+                    <>
+                      {/* Profile Information Display */}
+                      <div className="profile-review-section">
+                        <h4 style={{ marginBottom: '1rem', color: 'var(--primary)', borderBottom: '2px solid var(--primary)', paddingBottom: '0.5rem' }}>
+                          {i18n.language === 'zh' ? '资料预览' : 'Profile Information'}
+                        </h4>
+                        {/* Avatar */}
+                        {selectedItem.avatarUrl && (
+                          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                            <img
+                              src={getFullAvatarUrl(selectedItem.avatarUrl)}
+                              alt="Profile Avatar"
+                              style={{
+                                width: '100px',
+                                height: '100px',
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                border: '3px solid var(--primary)'
+                              }}
+                            />
+                          </div>
+                        )}
+
+                        {/* Basic Information Grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '英文姓名：' : 'English Name:'}</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.name_en || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '中文姓名：' : 'Chinese Name:'}</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.name_zh || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '英文职位：' : 'English Position:'}</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.position_en || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '中文职位：' : 'Chinese Position:'}</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.position_zh || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '部门：' : 'Department:'}</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.department || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '用户名：' : 'Username:'}</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.staff?.username || (i18n.language === 'zh' ? '未知' : 'Not available')}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Contact Information Grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                          <div className="info-item">
+                            <strong>Email:</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.email || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '电话：' : 'Phone:'}</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.phone || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item" style={{ gridColumn: '1 / -1' }}>
+                            <strong>LinkedIn:</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.linkedin ? (
+                                <a href={selectedItem.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>
+                                  {selectedItem.linkedin}
+                                </a>
+                              ) : (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>GitHub:</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.github ? (
+                                <a href={selectedItem.github} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>
+                                  {selectedItem.github}
+                                </a>
+                              ) : (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '微信：' : 'WeChat:'}</strong>
+                            <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
+                              {selectedItem.wechat || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bio Information */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                          <div className="info-item" style={{ marginBottom: '1rem' }}>
+                            <strong>{i18n.language === 'zh' ? '英文简介：' : 'English Bio:'}</strong>
+                            <div style={{ padding: '0.75rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem', minHeight: '60px', whiteSpace: 'pre-wrap' }}>
+                              {selectedItem.bio_en || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                          <div className="info-item">
+                            <strong>{i18n.language === 'zh' ? '中文简介：' : 'Chinese Bio:'}</strong>
+                            <div style={{ padding: '0.75rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem', minHeight: '60px', whiteSpace: 'pre-wrap' }}>
+                              {selectedItem.bio_zh || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Timestamps */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem', fontSize: '0.9rem', color: 'var(--text-light)' }}>
+                          <div>
+                            <strong>{i18n.language === 'zh' ? '创建时间：' : 'Created:'}</strong> {selectedItem.createdAt ? new Date(selectedItem.createdAt).toLocaleString() : (i18n.language === 'zh' ? '不可用' : 'Not available')}
+                          </div>
+                          <div>
+                            <strong>{i18n.language === 'zh' ? '更新时间：' : 'Updated:'}</strong> {selectedItem.updatedAt ? new Date(selectedItem.updatedAt).toLocaleString() : (i18n.language === 'zh' ? '不可用' : 'Not available')}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Review Controls */}
+                      <div className="review-controls-section" style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+                        <h4 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>
+                          {i18n.language === 'zh' ? '审核操作' : 'Review Actions'}
+                        </h4>
+
+                        <div className="form-group">
+                          <label>{t('admin.staff.form.status')}</label>
+                          <select
+                            value={formData.status}
+                            onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
+                          >
+                            <option value="pending">{t('admin.staff.form.statuses.pending')}</option>
+                            <option value="rejected">{t('admin.staff.form.statuses.rejected')}</option>
+                          </select>
+                        </div>
+
+                        <div className="form-group">
+                          <label>{t('admin.staff.form.reviewNote')}</label>
+                          <textarea
+                            value={formData.reviewNote}
+                            onChange={(e) => setFormData(prev => ({ ...prev, reviewNote: e.target.value }))}
+                            placeholder={t('admin.staff.form.reviewNotePlaceholder')}
+                          />
+                        </div>
                       </div>
                     </>
                   )}
