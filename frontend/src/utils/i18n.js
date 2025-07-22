@@ -483,7 +483,7 @@ const zhTranslations = {
   home: {
     hero: {
       title: '多大中文',
-      subtitle: '连接中华文化与多大社区',
+      subtitle: '连接中华文化与多伦多大学社区',
       cta: '加入我们'
     },
     about: {
