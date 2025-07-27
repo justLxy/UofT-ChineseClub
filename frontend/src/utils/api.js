@@ -11,24 +11,16 @@ export const getFullAvatarUrl = (avatarUrl) => {
   // 如果已经是完整URL，直接返回
   if (avatarUrl.startsWith('http')) return avatarUrl;
   // 如果是相对路径，拼接BASE_URL
-  if (avatarUrl.startsWith('/')) return `${BASE_URL}${avatarUrl}`;
-  // 如果只是文件名，拼接完整路径
-  return `${BASE_URL}/uploads/staff/${avatarUrl}`;
+  return `${BASE_URL}${avatarUrl.startsWith('/') ? '' : '/uploads/staff/'}${avatarUrl}`;
 };
 
 // 工具函数：处理活动图片URL
 export const getFullEventImageUrl = (imageUrl) => {
   if (!imageUrl) return null;
-  if (imageUrl.startsWith('http')) {
-    // 若当前站点为 https 而图片为 http，自动升级为 https 避免混合内容被阻止
-    if (typeof window !== 'undefined' && window.location.protocol === 'https:' && imageUrl.startsWith('http://')) {
-      return imageUrl.replace('http://', 'https://');
-    }
-    return imageUrl; // 已经是完整 URL
-  }
-  // 去掉可能存在的开头斜杠，防止重复 //
-  const normalized = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
-  return `${BASE_URL}${normalized}`;
+  if (imageUrl.startsWith('http')) return imageUrl; // 已经是完整 URL
+  // 确保路径以 / 开头
+  const imagePath = imageUrl.startsWith('/') ? imageUrl : `/uploads/events/${imageUrl}`;
+  return `${BASE_URL}${imagePath}`;
 };
 
 // 创建axios实例
