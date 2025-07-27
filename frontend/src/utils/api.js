@@ -18,8 +18,10 @@ export const getFullAvatarUrl = (avatarUrl) => {
 export const getFullEventImageUrl = (imageUrl) => {
   if (!imageUrl) return null;
   if (imageUrl.startsWith('http')) return imageUrl; // 已经是完整 URL
-  // 确保路径以 / 开头
-  const imagePath = imageUrl.startsWith('/') ? imageUrl : `/uploads/events/${imageUrl}`;
+
+  // 从 /uploads/events/some-image.jpg 转换为 /static/events/some-image.jpg
+  const imagePath = imageUrl.replace(/^\/uploads\//, '/static/');
+  
   return `${BASE_URL}${imagePath}`;
 };
 

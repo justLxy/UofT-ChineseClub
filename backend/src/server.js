@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-// const path = require('path');
+const path = require('path');
 const { PORT, FRONTEND_URL } = require('./config/constants');
 // const AuthService = require('./services/authService');
 const { uploadsDir } = require('./middleware/upload');
@@ -20,6 +20,10 @@ app.use(express.json());
 // Serve static files
 const staticPath = process.env.UPLOADS_DIR || uploadsDir;
 app.use('/uploads', express.static(staticPath));
+
+// Serve static assets from src/assets
+const assetsPath = path.join(__dirname, 'src', 'assets');
+app.use('/static', express.static(assetsPath));
 
 // Mount API routes
 app.use('/api', routes);
