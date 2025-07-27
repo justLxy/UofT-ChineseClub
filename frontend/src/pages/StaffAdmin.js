@@ -850,11 +850,11 @@ const StaffAdmin = () => {
     setShowModal(true);
   };
 
-  const handleReviewProfile = (profile) => {
+  const handleReviewProfile = (profile, presetStatus = null) => {
     setModalType('review');
     setSelectedItem(profile);
     setFormData({
-      status: profile.status,
+      status: presetStatus || profile.status,
       reviewNote: profile.reviewNote || '',
     });
     setShowModal(true);
@@ -862,6 +862,12 @@ const StaffAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validation for rejection
+    if (modalType === 'review' && formData.status === 'rejected' && !formData.reviewNote.trim()) {
+      alert(t('admin.staff.form.requiredForRejection'));
+      return;
+    }
     
     try {
       if (modalType === 'create') {
@@ -1678,7 +1684,14 @@ const StaffAdmin = () => {
                             )}
                             {item.reviewNote && (
                               <div style={{ marginBottom: '0.25rem' }}>
-                                <strong style={{ color: '#8b5cf6' }}>{i18n.language === 'zh' ? '审核备注：' : 'Review Note:'} </strong> 
+                                <strong style={{ color: '#8b5cf6' }}>
+                                  {item.status === 'pending' 
+                                    ? t('staff.profile.status.pending.lastRejectionReason')
+                                    : (item.status === 'rejected' 
+                                       ? t('staff.profile.status.rejected.reason')
+                                       : (i18n.language === 'zh' ? '审核备注：' : 'Review Note:'))
+                                  } 
+                                </strong> 
                                 <span style={{ color: '#8b5cf6', fontStyle: 'italic' }}>
                                   {item.reviewNote.length > 80 ? `${item.reviewNote.substring(0, 80)}...` : item.reviewNote}
                                 </span>
@@ -1754,7 +1767,7 @@ const StaffAdmin = () => {
                               </button>
                               <button 
                                 className="action-btn reject"
-                                onClick={() => handleQuickReview(item.id, 'rejected')}
+                                onClick={() => handleReviewProfile(item, 'rejected')}
                                 title="Reject"
                               >
                                 <FiX />
@@ -2163,12 +2176,34 @@ const StaffAdmin = () => {
                         </div>
 
                         <div className="form-group">
-                          <label>{t('admin.staff.form.reviewNote')}</label>
+                          <label>
+                            {t('admin.staff.form.reviewNote')}
+                            {formData.status === 'rejected' && (
+                              <span style={{ color: 'var(--primary)', marginLeft: '0.25rem' }}>*</span>
+                            )}
+                          </label>
                           <textarea
                             value={formData.reviewNote}
                             onChange={(e) => setFormData(prev => ({ ...prev, reviewNote: e.target.value }))}
-                            placeholder={t('admin.staff.form.reviewNotePlaceholder')}
+                            placeholder={formData.status === 'rejected' 
+                              ? t('admin.staff.form.requiredForRejection') 
+                              : t('admin.staff.form.reviewNotePlaceholder')
+                            }
+                            style={{
+                              borderColor: formData.status === 'rejected' && !formData.reviewNote 
+                                ? 'var(--primary)' 
+                                : undefined
+                            }}
                           />
+                          {formData.status === 'rejected' && !formData.reviewNote && (
+                            <p style={{ 
+                              color: 'var(--primary)', 
+                              fontSize: '0.8rem', 
+                              margin: '0.25rem 0 0 0' 
+                            }}>
+                              {t('admin.staff.form.requiredForRejection')}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </>

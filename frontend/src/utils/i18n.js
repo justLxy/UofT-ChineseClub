@@ -324,6 +324,26 @@ const enTranslations = {
         noAltName: '无名氏',
         notProvided: 'Not provided'
       },
+      status: {
+        rejected: {
+          title: 'Profile Rejected',
+          message: 'Your profile has been rejected. Please review the feedback below and make necessary changes.',
+          reason: 'Rejection Reason:'
+        },
+        pending: {
+          title: 'Profile Under Review',
+          message: 'Your profile is currently under review. Please check back later for updates.',
+          lastRejectionReason: 'Previous rejection reason:'
+        },
+        approved: {
+          title: 'Profile Approved',
+          message: 'Your profile has been approved and is now visible on the team page.'
+        },
+        new: {
+          title: 'Profile Incomplete',
+          message: 'Please complete your profile to be included on the team page.'
+        }
+      },
       verified: 'Profile Verified',
       unverified: 'Profile Pending Verification'
     }
@@ -432,6 +452,8 @@ const enTranslations = {
           approved: 'Approved',
           rejected: 'Rejected'
         },
+        rejectionReason: 'Rejection Reason',
+        requiredForRejection: 'Please provide a reason for rejection',
         buttons: {
           cancel: 'Cancel',
           create: 'Create',
@@ -811,6 +833,26 @@ const zhTranslations = {
         noAltName: 'Anonymous',
         notProvided: '未填写'
       },
+      status: {
+        rejected: {
+          title: '资料被拒绝',
+          message: '您的资料已被拒绝。请查看下方反馈并进行必要的修改。',
+          reason: '拒绝原因：'
+        },
+        pending: {
+          title: '资料审核中',
+          message: '您的资料正在审核中。请稍后查看审核状态。',
+          lastRejectionReason: '上次拒绝原因：'
+        },
+        approved: {
+          title: '资料已通过',
+          message: '您的资料已通过审核，现在已在团队页面显示。'
+        },
+        new: {
+          title: '资料未完成',
+          message: '请完善您的资料以便在团队页面中显示。'
+        }
+      },
       verified: '资料已认证',
       unverified: '资料待认证'
     }
@@ -919,6 +961,8 @@ const zhTranslations = {
           approved: '已通过',
           rejected: '已拒绝'
         },
+        rejectionReason: '拒绝原因',
+        requiredForRejection: '拒绝时请提供拒绝原因',
         buttons: {
           cancel: '取消',
           create: '创建',

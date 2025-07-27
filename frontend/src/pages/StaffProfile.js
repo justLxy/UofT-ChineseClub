@@ -869,7 +869,8 @@ const StaffProfile = () => {
     setImageLoadError(false);
   }, [formData.avatarUrl]);
 
-  const getStatusInfo = (status) => {
+  const getStatusInfo = (profileData) => {
+    const status = profileData?.status;
     switch (status) {
       case 'approved':
         return {
@@ -878,16 +879,24 @@ const StaffProfile = () => {
           message: t('staff.profile.status.approved.message')
         };
       case 'pending':
+        const pendingBaseMessage = t('staff.profile.status.pending.message');
+        const lastRejectionMessage = profileData?.reviewNote 
+          ? `${t('staff.profile.status.pending.lastRejectionReason')} ${profileData.reviewNote}`
+          : '';
         return {
           icon: <FiClock className="status-icon" />,
           title: t('staff.profile.status.pending.title'),
-          message: t('staff.profile.status.pending.message')
+          message: lastRejectionMessage ? `${pendingBaseMessage}\n\n${lastRejectionMessage}` : pendingBaseMessage
         };
       case 'rejected':
+        const baseMessage = t('staff.profile.status.rejected.message');
+        const reasonMessage = profileData?.reviewNote 
+          ? `${t('staff.profile.status.rejected.reason')}${profileData.reviewNote}`
+          : '';
         return {
           icon: <FiX className="status-icon" />,
           title: t('staff.profile.status.rejected.title'),
-          message: t('staff.profile.status.rejected.message')
+          message: reasonMessage ? `${baseMessage}\n\n${reasonMessage}` : baseMessage
         };
       default:
         return {
@@ -917,7 +926,7 @@ const StaffProfile = () => {
 
   const hasAnyPermission = user?.role === 'admin' || user?.permissions?.canManageEvents || user?.permissions?.canReviewProfiles || user?.permissions?.canManageStaff;
 
-  const statusInfo = getStatusInfo(profile?.status);
+          const statusInfo = getStatusInfo(profile);
 
   return (
     <StyledStaffProfile>
@@ -1030,7 +1039,7 @@ const StaffProfile = () => {
             {statusInfo.icon}
             <div className="status-content">
               <h4>{statusInfo.title}</h4>
-              <p>{statusInfo.message}</p>
+              <p style={{ whiteSpace: 'pre-line' }}>{statusInfo.message}</p>
             </div>
           </StatusBanner>
         )}
