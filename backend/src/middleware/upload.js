@@ -11,6 +11,11 @@ const uploadsDir = process.env.UPLOADS_DIR
 const eventImagesDir = path.join(uploadsDir, 'events');
 const staffImagesDir = path.join(uploadsDir, 'staff');
 
+console.log(`📂 Upload directories configured:`);
+console.log(`   Main: ${uploadsDir}`);
+console.log(`   Events: ${eventImagesDir}`);
+console.log(`   Staff: ${staffImagesDir}`);
+
 [uploadsDir, eventImagesDir, staffImagesDir].forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });

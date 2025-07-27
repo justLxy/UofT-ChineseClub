@@ -405,12 +405,15 @@ const AvatarSection = styled.div`
       }
       
       .loading-spinner {
-        width: 16px;
-        height: 16px;
+        width: 16px !important;
+        height: 16px !important;
+        min-height: auto !important;
         border: 2px solid rgba(255, 255, 255, 0.3);
         border-top: 2px solid white;
         border-radius: 50%;
         animation: spin 1s linear infinite;
+        display: inline-block !important;
+        flex-shrink: 0;
       }
       
       @keyframes spin {
@@ -677,6 +680,7 @@ const StaffProfile = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [message, setMessage] = useState('');
+  const [avatarError, setAvatarError] = useState('');
   const [showPermissionMenu, setShowPermissionMenu] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
@@ -750,17 +754,20 @@ const StaffProfile = () => {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Clear previous avatar error
+    setAvatarError('');
+
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      setMessage(t('staff.profile.error.invalidFile'));
-      setTimeout(() => setMessage(''), 5000);
+      setAvatarError(t('staff.profile.error.invalidFile'));
+      setTimeout(() => setAvatarError(''), 5000);
       return;
     }
 
     // Validate file size (5MB)
     if (file.size > 5 * 1024 * 1024) {
-      setMessage(t('staff.profile.error.fileTooLarge'));
-      setTimeout(() => setMessage(''), 5000);
+      setAvatarError(t('staff.profile.error.fileTooLarge'));
+      setTimeout(() => setAvatarError(''), 5000);
       return;
     }
 
@@ -782,8 +789,8 @@ const StaffProfile = () => {
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error('Error uploading avatar:', error);
-      setMessage(error.response?.data?.error || t('staff.profile.error.uploadFailed'));
-      setTimeout(() => setMessage(''), 5000);
+      setAvatarError(error.response?.data?.error || t('staff.profile.error.uploadFailed'));
+      setTimeout(() => setAvatarError(''), 5000);
     } finally {
       setIsUploading(false);
     }
@@ -1056,6 +1063,28 @@ const StaffProfile = () => {
                 onChange={handleAvatarUpload}
                 className="hidden-input"
               />
+              
+              {/* Avatar error message display */}
+              {avatarError && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  style={{
+                    background: '#fee2e2',
+                    color: '#dc2626',
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: '8px',
+                    marginTop: '0.5rem',
+                    textAlign: 'center',
+                    fontSize: '0.85rem',
+                    fontWeight: '500',
+                    border: '1px solid #fecaca'
+                  }}
+                >
+                  {avatarError}
+                </motion.div>
+              )}
             </AvatarSection>
 
             <FormGrid>

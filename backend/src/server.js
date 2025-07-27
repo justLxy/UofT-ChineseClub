@@ -18,10 +18,11 @@ app.use(cors({
 app.use(express.json());
 
 // Serve static files
-app.use(
-  '/uploads',
-  express.static(process.env.UPLOADS_DIR || uploadsDir)
-);
+const staticPath = process.env.UPLOADS_DIR || uploadsDir;
+console.log(`📁 Static files served from: ${staticPath}`);
+console.log(`🔗 Uploads URL: ${process.env.BACKEND_URL || 'http://localhost:8000'}/uploads`);
+
+app.use('/uploads', express.static(staticPath));
 
 // Mount API routes
 app.use('/api', routes);
