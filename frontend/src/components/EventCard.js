@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiCalendar, FiMapPin, FiExternalLink } from 'react-icons/fi';
 import { formatEventDateTime } from '../utils/dateUtils';
-import { BASE_URL } from '../utils/api';
+import { getFullEventImageUrl } from '../utils/api';
 
 const Card = styled(motion.div)`
   position: relative;
@@ -249,8 +249,7 @@ const EventCard = ({ event, index, onClick }) => {
   const defaultImage = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80";
   
   // Process image URL - add backend server prefix if it's a local path
-  const processedImageUrl = !imageUrl ? defaultImage : 
-                            imageUrl.startsWith('/') ? `${BASE_URL}${imageUrl}` : imageUrl;
+  const processedImageUrl = !imageUrl ? defaultImage : getFullEventImageUrl(imageUrl);
   
   // 确保描述文本以纯文本形式显示，移除可能的HTML标签
   const cleanDescription = description ? description.replace(/<[^>]*>/g, '') : '';

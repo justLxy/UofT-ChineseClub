@@ -16,6 +16,15 @@ export const getFullAvatarUrl = (avatarUrl) => {
   return `${BASE_URL}/uploads/staff/${avatarUrl}`;
 };
 
+// 工具函数：处理活动图片URL
+export const getFullEventImageUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+  if (imageUrl.startsWith('http')) return imageUrl; // 已经是完整 URL
+  // 去掉可能存在的开头斜杠，防止重复 //
+  const normalized = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+  return `${BASE_URL}${normalized}`;
+};
+
 // 创建axios实例
 const api = axios.create({
   baseURL: API_BASE_URL,

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
 
-import { getEvents, BASE_URL } from '../utils/api';
+import { getEvents, getFullEventImageUrl } from '../utils/api';
 import EventCard from '../components/EventCard';
 import EventDetailModal from '../components/EventDetailModal';
 import EventFilters from '../components/EventFilters';
@@ -261,11 +261,11 @@ const Events = () => {
             ...event,
             imageUrl: externalImages[Math.floor(Math.random() * externalImages.length)]
           };
-        } else if (event.imageUrl.startsWith('/')) {
-          // Prepend backend URL to local image paths
+        } else if (event.imageUrl && !event.imageUrl.startsWith('http')) {
+          // 处理相对路径（无论是否带前导 /）
           return {
             ...event,
-            imageUrl: `${BASE_URL}${event.imageUrl}`
+            imageUrl: getFullEventImageUrl(event.imageUrl)
           };
         }
         return event;
