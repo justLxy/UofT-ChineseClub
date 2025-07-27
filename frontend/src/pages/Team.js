@@ -815,7 +815,7 @@ const Team = () => {
   // Reset image load errors when staff data changes
   useEffect(() => {
     setImageLoadErrors({});
-  }, [staff]);
+  }, [teamMembers]);
 
   if (loading) {
     return (

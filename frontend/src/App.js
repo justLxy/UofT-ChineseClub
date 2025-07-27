@@ -9,7 +9,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
-import LoadingAnimation from './components/LoadingAnimation';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -24,16 +23,8 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Loading component
 const LoadingSpinner = () => (
-  <div style={{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '200px',
-    flexDirection: 'column',
-    gap: '1rem'
-  }}>
-    <LoadingAnimation type="wave" />
-    <p style={{ color: 'var(--text-light)', margin: 0 }}>Loading...</p>
+  <div className="loading-spinner">
+    <div className="spinner"></div>
   </div>
 );
 
