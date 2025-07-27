@@ -27,8 +27,6 @@ The platform includes a range of features for community members, staff, and admi
 
 ## Technology Stack
 
-The platform is built using the following technologies:
-
 ### Frontend
 
 - **Framework**: React
@@ -62,6 +60,6 @@ Contributions to the project are welcome. Please refer to the contribution guide
 
 ## License
 
-Copyright (c) 2024 UTChinese Network. All Rights Reserved.
+© 2025 UTChinese Network. All rights reserved.
 
 This project is licensed under the GNU Affero General Public License, version 3. See the [LICENSE](LICENSE) file for details.
