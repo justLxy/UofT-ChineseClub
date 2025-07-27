@@ -5,6 +5,7 @@ import { FiX, FiLock, FiEye, FiEyeOff, FiKey } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { changePassword } from '../utils/api';
 import Portal from './Portal';
+import LoadingAnimation from './LoadingAnimation';
 
 const ModalOverlay = styled(motion.div)`
   position: fixed;
@@ -481,7 +482,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSuccess }) => {
                 >
                   {isLoading ? (
                     <>
-                      <div className="loading-spinner" />
+                      <LoadingAnimation type="ring" size={16} />
                       {t('changePassword.changing')}
                     </>
                   ) : (

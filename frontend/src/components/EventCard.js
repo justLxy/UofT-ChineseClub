@@ -17,10 +17,10 @@ const Card = styled(motion.div)`
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: all 0.4s ease, background-color 0.3s ease;
+  transition: box-shadow 0.4s ease, background-color 0.3s ease;
+  will-change: transform;
 
   &:hover {
-    transform: translateY(-10px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   }
   
@@ -264,7 +264,11 @@ const EventCard = ({ event, index, onClick }) => {
         delay: index * 0.1,
         duration: 0.5
       }}
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ 
+        scale: 1.02,
+        y: -8,
+        transition: { duration: 0.3, ease: "easeOut" }
+      }}
       whileTap={{ scale: 0.98 }}
     >
       {featured && <FeaturedBadge>{t('events.featured')}</FeaturedBadge>}

@@ -5,6 +5,7 @@ import { FiX, FiUser, FiLock, FiEye, FiEyeOff, FiLogIn } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import Portal from './Portal';
+import LoadingAnimation from './LoadingAnimation';
 
 const ModalOverlay = styled(motion.div)`
   position: fixed;
@@ -362,7 +363,7 @@ const StaffLoginModal = ({ isOpen, onClose, onSuccess }) => {
               >
                 {isLoading ? (
                   <>
-                    <div className="loading-spinner" />
+                    <LoadingAnimation type="ring" size={16} />
                     {t('staff.login.loggingIn')}
                   </>
                 ) : (

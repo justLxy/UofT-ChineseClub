@@ -9,6 +9,7 @@ import { FiMail, FiLinkedin, FiGithub, FiPhone } from 'react-icons/fi';
 import { FaWeixin } from 'react-icons/fa';
 import { getTeamMembers, getTeamDepartments, getFullAvatarUrl } from '../utils/api';
 import StaffDetailModal from '../components/StaffDetailModal';
+import LoadingAnimation from '../components/LoadingAnimation';
 import i18n from 'i18next';
 import SEO from '../components/SEO';
 
@@ -283,7 +284,7 @@ const StyledTeam = styled.div`
         color: var(--text);
         border-radius: 25px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
         font-weight: 500;
         position: relative;
         overflow: hidden;
@@ -312,7 +313,6 @@ const StyledTeam = styled.div`
         }
         
         &:hover {
-          transform: translateY(-2px);
           box-shadow: 0 10px 25px rgba(224, 43, 32, 0.2);
           
           &:before {
@@ -452,10 +452,11 @@ const StyledTeam = styled.div`
     border: 1px solid rgba(224, 43, 32, 0.1);
     position: relative;
     overflow: hidden;
-    transition: all 0.2s ease;
+    transition: box-shadow 0.2s ease;
     cursor: pointer;
     width: 100%;
     max-width: 100%;
+    will-change: transform;
     
     @media (max-width: 768px) {
       padding: 1.5rem;
@@ -478,16 +479,12 @@ const StyledTeam = styled.div`
     }
     
     &:hover {
-      transform: translateY(-10px);
       box-shadow: 0 20px 40px rgba(224, 43, 32, 0.15);
       
       .member-avatar {
         transform: scale(1.05);
       }
-      
-      .member-info {
-        transform: translateY(-2px);
-      }
+    }
     }
     
     &:active {
@@ -507,7 +504,8 @@ const StyledTeam = styled.div`
       margin: 0 auto 1.5rem;
       overflow: hidden;
       border: 4px solid rgba(224, 43, 32, 0.1);
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease;
+      will-change: transform;
       
       img {
         width: 100%;
@@ -809,8 +807,16 @@ const Team = () => {
   if (loading) {
     return (
       <StyledTeam>
-        <div className="loading-spinner">
-          <div className="spinner"></div>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          minHeight: '60vh',
+          flexDirection: 'column',
+          gap: '1rem'
+        }}>
+          <LoadingAnimation type="pulse" />
+          <p style={{ color: 'var(--text-light)' }}>Loading team members...</p>
         </div>
       </StyledTeam>
     );
@@ -858,7 +864,7 @@ const Team = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               {i18n.language === 'zh' 
-                ? '认识多伦多大学中文社团背后的优秀团队成员' 
+                ? '认识多大中文社团背后的优秀团队成员' 
                 : 'Meet the amazing team members behind UTChinese Network'}
             </motion.p>
             <motion.div 
@@ -896,7 +902,10 @@ const Team = () => {
               <motion.button
                 className={`filter-button ${selectedDepartment === 'all' ? 'active' : ''}`}
                 onClick={() => setSelectedDepartment('all')}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { duration: 0.15, ease: "easeOut" }
+                }}
                 whileTap={{ scale: 0.95 }}
               >
                 {i18n.language === 'zh' ? '全部' : 'All'}
@@ -908,7 +917,10 @@ const Team = () => {
                   key={dept.name}
                   className={`filter-button ${selectedDepartment === dept.name ? 'active' : ''}`}
                   onClick={() => setSelectedDepartment(dept.name)}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    transition: { duration: 0.15, ease: "easeOut" }
+                  }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {getDepartmentLabel(dept.name)}
@@ -953,7 +965,10 @@ const Team = () => {
                             delay: index * 0.1,
                             ease: "easeOut" 
                           }}
-                          whileHover={{ y: -5 }}
+                          whileHover={{ 
+                            y: -8,
+                            transition: { duration: 0.2, ease: "easeOut" }
+                          }}
                           onClick={() => handleStaffClick(member.username)}
                           style={{ cursor: 'pointer' }}
                         >
@@ -1088,7 +1103,10 @@ const Team = () => {
                            delay: index * 0.1,
                            ease: "easeOut" 
                          }}
-                        whileHover={{ y: -5 }}
+                        whileHover={{ 
+                          y: -8,
+                          transition: { duration: 0.2, ease: "easeOut" }
+                        }}
                         onClick={() => handleStaffClick(member.username)}
                         style={{ cursor: 'pointer' }}
                       >

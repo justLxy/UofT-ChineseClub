@@ -30,6 +30,7 @@ import {
   reviewProfile,
   getFullAvatarUrl
 } from '../utils/api';
+import LoadingAnimation from '../components/LoadingAnimation';
 
 const StyledStaffAdmin = styled.div`
   min-height: 100vh;
@@ -1139,8 +1140,8 @@ const StaffAdmin = () => {
 
         {isLoading ? (
           <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <div className="loading-spinner" />
-            <p>{t('common.loading')}</p>
+            <LoadingAnimation type="fade" />
+            <p style={{ marginTop: '1rem', color: 'var(--text-light)' }}>{t('common.loading')}</p>
           </div>
         ) : filteredData.length === 0 ? (
           <motion.div 

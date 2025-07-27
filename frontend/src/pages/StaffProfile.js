@@ -26,6 +26,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { getStaffProfile, saveStaffProfile, uploadStaffAvatar, getFullAvatarUrl } from '../utils/api';
 import StaffCard from '../components/StaffCard';
 import ChangePasswordModal from '../components/ChangePasswordModal';
+import LoadingAnimation from '../components/LoadingAnimation';
 
 const StyledStaffProfile = styled.div`
   min-height: 100vh;
@@ -416,9 +417,31 @@ const AvatarSection = styled.div`
         flex-shrink: 0;
       }
       
+      .saving-icon {
+        animation: pulse 1.5s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      
+      .success-icon {
+        animation: successPop 0.6s ease-out;
+        flex-shrink: 0;
+        color: #10b981;
+      }
+      
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(1.1); }
+      }
+      
+      @keyframes successPop {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.2); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
       }
     }
   }
@@ -679,6 +702,7 @@ const StaffProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
   const [message, setMessage] = useState('');
   const [avatarError, setAvatarError] = useState('');
   const [showPermissionMenu, setShowPermissionMenu] = useState(false);
@@ -812,9 +836,12 @@ const StaffProfile = () => {
     try {
       await saveStaffProfile(formData);
       setMessage(t('staff.profile.saved'));
+      setJustSaved(true);
       
       // Clear success message after 3 seconds
       setTimeout(() => setMessage(''), 3000);
+      // Clear success state after 2 seconds
+      setTimeout(() => setJustSaved(false), 2000);
       
       // Reload profile to get updated status
       const updatedProfile = await getStaffProfile();
@@ -826,6 +853,8 @@ const StaffProfile = () => {
       setTimeout(() => setMessage(''), 5000);
     } finally {
       setIsSaving(false);
+      // Reset justSaved if it was somehow still true
+      if (justSaved) setJustSaved(false);
     }
   };
 
@@ -867,8 +896,8 @@ const StaffProfile = () => {
       <StyledStaffProfile>
         <div className="container">
           <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <div className="loading-spinner" />
-            <p>{t('common.loading')}</p>
+            <LoadingAnimation type="wave" />
+            <p style={{ marginTop: '1rem', color: 'var(--text-light)' }}>{t('common.loading')}</p>
           </div>
         </div>
       </StyledStaffProfile>
@@ -1049,7 +1078,7 @@ const StaffProfile = () => {
                   disabled={isUploading}
                 >
                   {isUploading ? (
-                    <div className="loading-spinner" />
+                    <FiClock className="saving-icon" />
                   ) : (
                     <FiCamera />
                   )}
@@ -1374,8 +1403,13 @@ const StaffProfile = () => {
               >
                 {isSaving ? (
                   <>
-                    <div className="loading-spinner" />
+                    <FiClock className="saving-icon" />
                     {t('staff.profile.saving')}
+                  </>
+                ) : justSaved ? (
+                  <>
+                    <FiCheck className="success-icon" />
+                    {t('staff.profile.saved')}
                   </>
                 ) : (
                   <>

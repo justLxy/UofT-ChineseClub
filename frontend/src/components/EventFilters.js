@@ -24,7 +24,7 @@ const FilterButton = styled(motion.button)`
   font-weight: 600;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
   color: ${props => props.isActive ? '#fff' : '#606060'};
   z-index: 1;
   
@@ -37,11 +37,11 @@ const FilterButton = styled(motion.button)`
     height: 100%;
     background: ${props => props.isActive ? 'linear-gradient(135deg, #FF4B2B, #FF416C)' : '#f0f0f0'};
     z-index: -1;
-    transition: all 0.3s ease;
+    transition: box-shadow 0.3s ease;
+    will-change: transform;
   }
   
   &:hover {
-    transform: translateY(-2px);
     box-shadow: ${props => props.isActive ? '0 8px 20px rgba(255, 75, 43, 0.25)' : '0 8px 20px rgba(0, 0, 0, 0.1)'};
     
     &::before {
@@ -94,7 +94,11 @@ const EventFilters = ({ activeFilter, setActiveFilter, counts }) => {
           key={filter.id}
           isActive={activeFilter === filter.id}
           onClick={() => setActiveFilter(filter.id)}
-          whileHover={{ scale: 1.03 }}
+          whileHover={{ 
+            scale: 1.03,
+            y: -3,
+            transition: { duration: 0.2, ease: "easeOut" }
+          }}
           whileTap={{ scale: 0.98 }}
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
