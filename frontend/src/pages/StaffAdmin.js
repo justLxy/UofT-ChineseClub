@@ -1056,7 +1056,7 @@ const StaffAdmin = () => {
   // Reset image load errors when data changes
   useEffect(() => {
     setImageLoadErrors({});
-  }, [data]);
+  }, [filteredData]);
 
   if (!hasPermission('manageStaff') && !hasPermission('reviewProfiles')) {
     return null;

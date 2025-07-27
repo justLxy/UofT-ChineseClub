@@ -1,68 +1,67 @@
 
-# UTChinese Network: Connecting Culture and Community at UofT
+# UTChinese Network
 
-Welcome to the official repository for the UTChinese Network website, a dynamic and engaging platform for the University of Toronto's vibrant Chinese student community. Our mission is to bridge Chinese culture with the UofT campus, offering a central hub for cultural events, career development, and community engagement. This platform is meticulously crafted with a modern, interactive, and visually stunning interface, ensuring a seamless experience for all users.
+This repository contains the source code for the UTChinese Network website, a platform for the University of Toronto's Chinese student organization. The project is designed to serve as a central hub for cultural events, career services, and community engagement, reflecting the organization's mission and activities through a modern web interface.
 
-## 🌟 Key Features
+## Features
 
-Our platform is packed with features designed to serve our community, staff, and partners. Here's a glimpse of what UTChinese Network offers:
+The platform includes a range of features for community members, staff, and administrators.
 
-### For the Community
+### General Features
 
-- **Interactive Event Calendar**: Discover and engage with a wide range of cultural, social, and professional events. Our interactive calendar makes it easy to find details, register, and stay updated.
-- **Dynamic Content Sections**: Explore featured articles, news, and updates showcased through a sleek and modern card-based UI.
-- **Meet the Team**: Get to know the dedicated individuals behind UTChinese Network on our public-facing team page, featuring profiles of our staff members.
-- **Visually Rich Experience**: Enjoy a highly polished and animated user interface with high-quality visuals, from banners and thumbnails to icons and responsive layouts.
-- **Bilingual Support**: The entire website is available in both English and Chinese (Simplified), easily switchable to cater to our diverse audience.
+- **Event Calendar**: A system for browsing and registering for cultural, social, and professional events.
+- **Team Showcase**: A public-facing page displaying profiles of current staff members.
+- **Bilingual Support**: The interface is available in both English and Chinese (Simplified).
+- **Responsive Design**: The layout is optimized for a consistent experience across desktop and mobile devices.
 
-### For Our Staff
+### Staff Features
 
-- **Self-Service Profile Management**: Staff members can log in to update their personal information, job titles, and profile pictures.
-- **Personal Digital Business Card**: Each staff member gets a unique, shareable URL for their digital business card, perfect for networking.
-- **Seamless Onboarding and Offboarding**: New members are automatically added to the team page upon approval, and departing members' profiles can be archived with a single click.
+- **Profile Management**: Staff members can log in to a dedicated portal to update their personal information, job titles, and profile pictures.
+- **Digital Business Card**: A unique, shareable URL is generated for each staff member's profile.
 
-### For Administrators
+### Administrative Features
 
-- **Centralized Admin Dashboard**: A secure backend interface for managing all aspects of the website.
-- **Content Moderation**: All staff profile changes require administrator approval, ensuring the quality and accuracy of public-facing information.
-- **Event Management**: Easily create, update, and manage events through a dedicated admin panel.
+- **Admin Dashboard**: A secure backend interface for website management.
+- **Profile Approval System**: All changes to staff profiles are subject to administrator approval to ensure data integrity.
+- **Event Management**: A dedicated interface for creating, updating, and managing events.
 
-## 🚀 Technology Stack
+## Technology Stack
 
-The UTChinese Network platform is built with a modern, robust, and scalable technology stack.
+The platform is built using the following technologies:
 
 ### Frontend
 
 - **Framework**: React
 - **Language**: JavaScript
-- **Styling**: Styled-components for a polished and consistent look.
-- **Animations**: GSAP and Framer Motion for a fluid and engaging user experience.
-- **Internationalization**: React-i18next for seamless English/Chinese language switching.
-- **Responsive Design**: A mobile-first approach ensures a perfect experience on any device.
-- **Performance**: Optimized with lazy loading, code splitting, and other modern techniques.
-- **Accessibility**: Built with WCAG 2.1 compliance in mind to be accessible to everyone.
+- **Styling**: Styled-components
+- **Animations**: GSAP, Framer Motion
+- **Internationalization**: React-i18next
+- **Performance**: Utilizes lazy loading and code splitting.
+- **Accessibility**: Developed in accordance with WCAG 2.1 guidelines.
 
 ### Backend
 
-- **Framework**: Node.js with Express
+- **Framework**: Node.js, Express
 - **Language**: JavaScript
-- **Database**: PostgreSQL for production and SQLite for development, managed with Prisma ORM.
-- **Authentication**: Secure JWT-based authentication for staff and administrators.
+- **Database**: PostgreSQL (Production/Staging) and SQLite (Development) with Prisma as the ORM.
+- **Authentication**: Implements a JWT-based authentication system.
 
-### Deployment & Version Control
+### Deployment and Version Control
 
-- **Frontend**: Deployed on Vercel for high performance and reliability.
-- **Backend**: Hosted on Railway for easy scaling and management.
-- **Version Control**: Git and GitHub for collaborative development.
+- **Frontend**: Deployed on Vercel.
+- **Backend**: Deployed on Railway.
+- **Version Control**: Git and GitHub.
 
-## 🎨 Design Philosophy
+## Design Principles
 
-Our design philosophy is centered around creating a visually stunning, intuitive, and immersive user experience. We use a vibrant red color palette, inspired by our logo, combined with soft gradients and a clean, modern aesthetic. The layout is designed to be light and airy, with a clear visual hierarchy that guides the user's attention. Every interaction is enhanced with subtle, polished animations, creating a sense of quality and craftsmanship.
+The design aims for a clean, intuitive, and accessible user experience. It uses a consistent color palette derived from the organization's logo and maintains a clear visual hierarchy to guide user interaction. The interface is designed to be functional and professional, with subtle animations to enhance usability without being distracting.
 
-## 🤝 Contributing
+## Contributing
 
-We welcome contributions from the community! Whether you're a developer, designer, or just passionate about our mission, there are many ways to get involved. Please check our contribution guidelines (to be added) for more information.
+Contributions to the project are welcome. Please refer to the contribution guidelines (to be added) for more information on how to participate.
 
-## 📄 License
+## License
 
-This project is licensed under the AGPL-3.0 License. See the [LICENSE](LICENSE) file for details.
+Copyright (c) 2024 UTChinese Network. All Rights Reserved.
+
+This project is licensed under the GNU Affero General Public License, version 3. See the [LICENSE](LICENSE) file for details.
