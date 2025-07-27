@@ -22,7 +22,7 @@ const staticPath = process.env.UPLOADS_DIR || uploadsDir;
 app.use('/uploads', express.static(staticPath));
 
 // Serve static assets from src/assets
-const assetsPath = path.join(__dirname, 'src', 'assets');
+const assetsPath = path.join(__dirname, 'assets');
 app.use('/static', express.static(assetsPath));
 
 // Mount API routes
