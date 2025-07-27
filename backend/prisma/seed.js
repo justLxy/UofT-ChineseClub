@@ -48,7 +48,7 @@ async function main() {
         bio_en: 'I am currently pursuing a double major in Computer Science and Statistics at the University of Toronto, with a minor in Economics. My areas of interest include Human-Computer Interaction, Artificial Intelligence, and Machine Learning. I enjoy creating solutions that combine technical excellence with user-centered design. I am committed to academic exploration and technological innovation, hoping to make meaningful contributions to society through my work in computer science and data analysis.',
         bio_zh: '我目前在多伦多大学攻读计算机科学与统计学双专业，辅修经济学。我的兴趣领域包括人机交互、人工智能和机器学习。我喜欢创造结合技术卓越和以用户为中心设计的解决方案。我致力于学术探索和技术创新，希望通过我在计算机科学和数据分析方面的工作为社会做出有意义的贡献。',
         // 只在首次创建时设置头像，更新时保留现有头像
-        ...(existingProfile?.avatarUrl ? {} : { avatarUrl: 'xuanyilyu.jpg' }),
+        ...(existingProfile?.avatarUrl ? {} : { avatarUrl: '/uploads/staff/xuanyilyu.jpg' }),
         email: 'xuanyi.lyu@mail.utoronto.ca',
         github: 'https://github.com/justLxy',
         linkedin: 'https://linkedin.com/in/xuanyi-lyu',
@@ -67,7 +67,7 @@ async function main() {
         department: 'OPERATION GROUP',
         bio_en: 'I am currently pursuing a double major in Computer Science and Statistics at the University of Toronto, with a minor in Economics. My areas of interest include Human-Computer Interaction, Artificial Intelligence, and Machine Learning. I enjoy creating solutions that combine technical excellence with user-centered design. I am committed to academic exploration and technological innovation, hoping to make meaningful contributions to society through my work in computer science and data analysis.',
         bio_zh: '我目前在多伦多大学攻读计算机科学与统计学双专业，辅修经济学。我的兴趣领域包括人机交互、人工智能和机器学习。我喜欢创造结合技术卓越和以用户为中心设计的解决方案。我致力于学术探索和技术创新，希望通过我在计算机科学和数据分析方面的工作为社会做出有意义的贡献。',
-        avatarUrl: 'xuanyilyu.jpg',
+        avatarUrl: '/uploads/staff/xuanyilyu.jpg',
         email: 'xuanyi.lyu@mail.utoronto.ca',
         github: 'https://github.com/justLxy',
         linkedin: 'https://linkedin.com/in/xuanyi-lyu',

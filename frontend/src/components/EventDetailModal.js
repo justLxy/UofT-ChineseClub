@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { FiX, FiCalendar, FiMapPin, FiExternalLink, FiEdit } from 'react-icons/fi';
 import { formatEventDateTime } from '../utils/dateUtils';
-import { BASE_URL } from '../utils/api';
+import { getFullEventImageUrl } from '../utils/api';
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -241,9 +241,8 @@ const EventDetailModal = ({ event: initialEvent, onClose, isAdmin = false }) => 
   // Default placeholder image from an external source
   const defaultImage = "https://images.unsplash.com/photo-1531058020387-3be344556be6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80";
   
-  // Process image URL - add backend server prefix if it's a local path
-  const processedImageUrl = !imageUrl ? defaultImage : 
-                            imageUrl.startsWith('/') ? `${BASE_URL}${imageUrl}` : imageUrl;
+  // Process image URL using the same logic as EventCard
+  const processedImageUrl = !imageUrl ? defaultImage : getFullEventImageUrl(imageUrl);
 
   // Prevent body scrolling when modal is open
   useEffect(() => {
