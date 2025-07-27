@@ -631,6 +631,27 @@ const Team = () => {
   const headerRef = useRef(null);
   const cardsRef = useRef([]);
 
+  // Helper: translate department name based on current language
+  const getDepartmentLabel = (deptName) => {
+    if (i18n.language === 'zh') {
+      switch (deptName) {
+        case 'ARTS & CULTURE GROUP':
+          return i18n.t('groups.arts.title');
+        case 'CAREER & ACADEMIC GROUP':
+          return i18n.t('groups.career.title');
+        case 'OPERATION GROUP':
+          return i18n.t('groups.operation.title');
+        case 'SUPPORT GROUP':
+          return i18n.t('groups.support.title');
+        case 'ENGAGEMENT':
+          return i18n.t('groups.engagement.title');
+        default:
+          return deptName;
+      }
+    }
+    return deptName;
+  };
+
   useEffect(() => {
     fetchTeamData();
   }, []);
@@ -883,7 +904,7 @@ const Team = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {dept.name}
+                  {getDepartmentLabel(dept.name)}
                   <span className="count">{dept.count}</span>
                 </motion.button>
               ))}
@@ -907,7 +928,7 @@ const Team = () => {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="department-header">
-                      <h2>{departmentName}</h2>
+                      <h2>{getDepartmentLabel(departmentName)}</h2>
                       <p>
                         {members.length} {i18n.language === 'zh' ? '位成员' : 'members'}
                       </p>
@@ -965,7 +986,7 @@ const Team = () => {
                                 {i18n.language === 'zh' ? member.position_zh : member.position_en}
                               </div>
                               <div className="member-department">
-                                {member.department}
+                                {getDepartmentLabel(member.department)}
                               </div>
                               {(member.bio_en || member.bio_zh) && (
                                 <p className="member-bio">
@@ -1035,7 +1056,7 @@ const Team = () => {
                   transition={{ duration: 0.5 }}
                 >
                   <div className="department-header">
-                    <h2>{selectedDepartment}</h2>
+                    <h2>{getDepartmentLabel(selectedDepartment)}</h2>
                     <p>
                       {filteredMembers.length} {i18n.language === 'zh' ? '位成员' : 'members'}
                     </p>
@@ -1092,7 +1113,7 @@ const Team = () => {
                               {i18n.language === 'zh' ? member.position_zh : member.position_en}
                             </div>
                             <div className="member-department">
-                              {member.department}
+                              {getDepartmentLabel(member.department)}
                             </div>
                             {(member.bio_en || member.bio_zh) && (
                               <p className="member-bio">
@@ -1145,11 +1166,11 @@ const Team = () => {
                               )}
                             </div>
                           </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
+                        </div> {/* close member-content */}
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
               )}
             </AnimatePresence>
           </div>
