@@ -20,6 +20,8 @@ const SEO = ({
     {title && <title>{title}</title>}
     {description && <meta name="description" content={description} />}
     {keywords && <meta name="keywords" content={keywords} />}
+    {/* Robots */}
+    <meta name="robots" content="index,follow" />
     {/* Open Graph */}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
