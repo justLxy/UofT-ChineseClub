@@ -295,6 +295,19 @@ export const batchDeleteStaffAccounts = async (ids) => {
   }
 };
 
+export const batchToggleStaffAccounts = async (ids, isActive) => {
+  try {
+    const response = await api.patch('/admin/staff/batch-toggle', {
+      ids,
+      isActive
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error batch toggling staff accounts:', error);
+    throw error;
+  }
+};
+
 export const getAllProfiles = async (status = '') => {
   try {
     const params = status ? { status } : {};

@@ -230,7 +230,7 @@ class StaffService {
   }
 
   // Admin: Get all staff accounts
-  static async getAllStaff() {
+  static async getAllStaff(currentUserRole = 'staff') {
     const staffData = await prisma.staff.findMany({
       include: {
         profile: true
@@ -309,7 +309,40 @@ class StaffService {
   }
 
   // Admin: Update staff account
-  static async updateStaffAccount(id, updateData) {
+  static async updateStaffAccount(id, updateData, currentUserRole = 'staff', currentUserId = null) {
+    // 检查目标用户是否为admin
+    const targetStaff = await prisma.staff.findUnique({
+      where: { id: parseInt(id) }
+    });
+    
+    if (!targetStaff) {
+      throw new Error('Staff account not found');
+    }
+    
+    // 非admin用户不能修改admin账户
+    if (currentUserRole !== 'admin' && targetStaff.role === 'admin') {
+      throw new Error('Permission denied: Cannot modify admin accounts');
+    }
+    
+    // 检查是否在修改自己的账户
+    const isModifyingSelf = currentUserId && parseInt(id) === parseInt(currentUserId);
+    
+    // 非admin用户不能修改任何人的角色和核心权限（包括自己）
+    if (currentUserRole !== 'admin') {
+      if (updateData.role !== undefined) {
+        throw new Error('Permission denied: Only admins can modify user roles');
+      }
+      
+      // 如果是修改自己的账户，不能修改自己的管理权限
+      if (isModifyingSelf && updateData.permissions) {
+        if (updateData.permissions.canManageStaff !== undefined ||
+            updateData.permissions.canManageEvents !== undefined ||
+            updateData.permissions.canReviewProfiles !== undefined) {
+          throw new Error('Permission denied: Cannot modify your own permissions');
+        }
+      }
+    }
+    
     const { 
       username, 
       email, 
@@ -433,6 +466,41 @@ class StaffService {
     return { 
       message: `Successfully deleted ${deleteResult.count} staff account(s)`,
       deletedCount: deleteResult.count
+    };
+  }
+
+  // Admin: Batch toggle staff accounts active status
+  static async batchToggleStaffAccounts(ids, isActive, currentUserRole = 'staff') {
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      throw new Error('Invalid or empty IDs array');
+    }
+
+    const intIds = ids.map(id => parseInt(id));
+    
+    // 如果当前用户不是admin，检查是否试图操作admin账户
+    if (currentUserRole !== 'admin') {
+      const targetStaff = await prisma.staff.findMany({
+        where: { id: { in: intIds } },
+        select: { id: true, role: true }
+      });
+      
+      const adminTargets = targetStaff.filter(staff => staff.role === 'admin');
+      if (adminTargets.length > 0) {
+        throw new Error('Permission denied: Cannot modify admin accounts');
+      }
+    }
+    
+    // Update staff accounts active status
+    const updateResult = await prisma.staff.updateMany({
+      where: { id: { in: intIds } },
+      data: { isActive: isActive }
+    });
+    
+    const action = isActive ? 'activated' : 'deactivated';
+    
+    return { 
+      message: `Successfully ${action} ${updateResult.count} staff account(s)`,
+      updatedCount: updateResult.count 
     };
   }
 

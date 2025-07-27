@@ -87,6 +87,19 @@ const requirePermission = (permission) => {
   };
 };
 
+// 只允许管理员的中间件
+const requireAdminRole = async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ error: '需要认证' });
+  }
+  
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: '需要管理员权限' });
+  }
+  
+  next();
+};
+
 // 活动管理权限中间件
 const requireEventManagement = requirePermission('manageEvents');
 
@@ -101,5 +114,6 @@ module.exports = {
   requirePermission,
   requireEventManagement,
   requireProfileReview,
-  requireStaffManagement
+  requireStaffManagement,
+  requireAdminRole
 }; 

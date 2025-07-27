@@ -112,6 +112,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // 检查是否为管理员
+  const isAdmin = () => {
+    return user?.role === 'admin';
+  };
+
   const value = {
     // 主要状态
     isAuthenticated,
@@ -125,6 +130,7 @@ export const AuthProvider = ({ children }) => {
     
     // 权限检查
     hasPermission,
+    isAdmin,
     
     // 用户类型
     userType: user?.role || null

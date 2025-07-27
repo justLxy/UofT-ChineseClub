@@ -26,6 +26,7 @@ import {
   updateStaffAccount,
   deleteStaffAccount,
   batchDeleteStaffAccounts,
+  batchToggleStaffAccounts,
   getAllProfiles,
   reviewProfile,
   getFullAvatarUrl
@@ -670,9 +671,16 @@ const Modal = styled(motion.div)`
 const StaffAdmin = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { hasPermission, user } = useAuth();
+  const { hasPermission, user, isAdmin } = useAuth();
   
   const [activeTab, setActiveTab] = useState('accounts');
+  
+  // Helper function to translate status values
+  const translateStatus = (status) => {
+    if (!status) return t('admin.staff.labels.noProfile');
+    const statusKey = `admin.staff.labels.${status}`;
+    return t(statusKey);
+  };
   const [staffAccounts, setStaffAccounts] = useState([]);
   const [profiles, setProfiles] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -1038,6 +1046,33 @@ const StaffAdmin = () => {
     }
   };
 
+  const handleBatchToggle = async (isActive) => {
+    if (selectedItems.size === 0) {
+      alert(t('admin.staff.batchToggle.noSelection'));
+      return;
+    }
+
+    const confirmKey = isActive ? 'confirmActivate' : 'confirmDeactivate';
+    const confirmMessage = t(`admin.staff.batchToggle.${confirmKey}`, { count: selectedItems.size });
+    
+    if (window.confirm(confirmMessage)) {
+      try {
+        const idsArray = Array.from(selectedItems);
+        await batchToggleStaffAccounts(idsArray, isActive);
+        setSelectedItems(new Set());
+        setSelectAll(false);
+        loadData();
+        
+        const successKey = isActive ? 'successActivate' : 'successDeactivate';
+        alert(t(`admin.staff.batchToggle.${successKey}`, { count: idsArray.length }));
+      } catch (error) {
+        console.error(`Error batch toggling staff accounts:`, error);
+        const errorKey = isActive ? 'errorActivate' : 'errorDeactivate';
+        alert(t(`admin.staff.batchToggle.${errorKey}`));
+      }
+    }
+  };
+
   // Reset selection states when filtered data changes (but not when switching tabs)
   useEffect(() => {
     if (filteredData.length > 0) {
@@ -1131,20 +1166,54 @@ const StaffAdmin = () => {
               flexWrap: 'wrap'
             }}>
               {selectedItems.size > 0 && (
-                <button 
-                  className="action-button danger"
-                  onClick={handleBatchDelete}
-                  style={{ 
-                    background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
-                    color: 'white',
-                    minWidth: 'fit-content'
-                  }}
-                >
-                  <FiTrash2 />
-                  <span style={{ whiteSpace: 'nowrap' }}>
-                    {t('admin.staff.batchDelete.button')} ({selectedItems.size})
-                  </span>
-                </button>
+                <>
+                  {/* Batch Inactive/Active buttons - available to all with manageStaff permission */}
+                  <button 
+                    className="action-button warning"
+                    onClick={() => handleBatchToggle(false)}
+                    style={{ 
+                      background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                      color: 'white',
+                      minWidth: 'fit-content'
+                    }}
+                  >
+                    <FiToggleLeft />
+                    <span style={{ whiteSpace: 'nowrap' }}>
+                      {t('admin.staff.batchToggle.deactivate')} ({selectedItems.size})
+                    </span>
+                  </button>
+                  <button 
+                    className="action-button success"
+                    onClick={() => handleBatchToggle(true)}
+                    style={{ 
+                      background: 'linear-gradient(135deg, #059669, #047857)',
+                      color: 'white',
+                      minWidth: 'fit-content'
+                    }}
+                  >
+                    <FiToggleRight />
+                    <span style={{ whiteSpace: 'nowrap' }}>
+                      {t('admin.staff.batchToggle.activate')} ({selectedItems.size})
+                    </span>
+                  </button>
+                  {/* Batch Delete button - only for admin */}
+                  {isAdmin() && (
+                    <button 
+                      className="action-button danger"
+                      onClick={handleBatchDelete}
+                      style={{ 
+                        background: 'linear-gradient(135deg, #dc2626, #b91c1c)',
+                        color: 'white',
+                        minWidth: 'fit-content'
+                      }}
+                    >
+                      <FiTrash2 />
+                      <span style={{ whiteSpace: 'nowrap' }}>
+                        {t('admin.staff.batchDelete.button')} ({selectedItems.size})
+                      </span>
+                    </button>
+                  )}
+                </>
               )}
               <button className="action-button" onClick={handleCreateStaff}>
                 <FiUserPlus />
@@ -1319,19 +1388,23 @@ const StaffAdmin = () => {
               {filteredData.map((item, index) => (
                 <Card
                   key={item.id}
-                  className={activeTab === 'accounts' && hasPermission('manageStaff') ? 'selectable' : ''}
+                  className={activeTab === 'accounts' && hasPermission('manageStaff') && (isAdmin() || item.role !== 'admin') ? 'selectable' : ''}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ delay: index * 0.1 }}
                   style={{ 
                     border: selectedItems.has(item.id) ? '2px solid var(--primary)' : undefined,
-                    background: selectedItems.has(item.id) ? 'rgba(224, 43, 32, 0.05)' : undefined
+                    background: selectedItems.has(item.id) ? 'rgba(224, 43, 32, 0.05)' : undefined,
+                    opacity: (!isAdmin() && item.role === 'admin') ? 0.7 : 1,
+                    cursor: (!isAdmin() && item.role === 'admin') ? 'not-allowed' : 'pointer'
                   }}
                   onClick={(e) => {
                     // Ignore clicks on action buttons or inputs
                     if (e.target.closest('.action-btn') || e.target.tagName === 'INPUT') return;
                     if (activeTab === 'accounts' && hasPermission('manageStaff')) {
+                      // Non-admin users cannot select admin accounts
+                      if (!isAdmin() && item.role === 'admin') return;
                       handleSelectItem(item.id);
                     }
                   }}
@@ -1408,18 +1481,18 @@ const StaffAdmin = () => {
                             </div>
                             <div className="meta-item">
                               <FiKey />
-                              Last login: {item.lastLogin ? new Date(item.lastLogin).toLocaleDateString() : 'Never'}
+                              {t('admin.staff.labels.lastLogin')} {item.lastLogin ? new Date(item.lastLogin).toLocaleDateString() : t('admin.staff.labels.never')}
                             </div>
                             <div className={`status-badge ${item.isActive ? 'active' : 'inactive'}`}>
                               {item.isActive ? (
                                 <>
                                   <FiToggleRight />
-                                  Active
+                                  {t('admin.staff.labels.active')}
                                 </>
                               ) : (
                                 <>
                                   <FiToggleLeft />
-                                  Inactive
+                                  {t('admin.staff.labels.inactive')}
                                 </>
                               )}
                             </div>
@@ -1427,7 +1500,7 @@ const StaffAdmin = () => {
                           
                           {/* Permissions Summary */}
                           <div style={{ marginTop: '0.75rem', fontSize: '0.85rem' }}>
-                            <strong style={{ color: 'var(--text)' }}>Permissions:</strong>
+                            <strong style={{ color: 'var(--text)' }}>{t('admin.staff.labels.permissions')}</strong>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginTop: '0.25rem' }}>
                               {item.role === 'admin' ? (
                                 <span style={{ 
@@ -1497,8 +1570,8 @@ const StaffAdmin = () => {
                           
                           {/* Account Stats */}
                           <div style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: 'var(--text-light)', display: 'flex', gap: '1rem' }}>
-                            <span><strong>Created:</strong> {new Date(item.createdAt).toLocaleDateString()}</span>
-                            <span><strong>Profile Status:</strong> {item.profile?.status || 'No profile'}</span>
+                            <span><strong>{t('admin.staff.labels.created')}</strong> {new Date(item.createdAt).toLocaleDateString()}</span>
+                            <span><strong>{t('admin.staff.labels.profileStatus')}</strong> {translateStatus(item.profile?.status)}</span>
                           </div>
                         </>
                       ) : (
@@ -1622,34 +1695,44 @@ const StaffAdmin = () => {
                     <div className="actions">
                       {activeTab === 'accounts' ? (
                         <>
-                          <button 
-                            className="action-btn edit"
-                            onClick={() => handleEditStaff(item)}
-                            title="Edit Account & Permissions"
-                          >
-                            <FiEdit />
-                          </button>
-                          <button 
-                            className="action-btn secondary"
-                            onClick={() => handleResetPassword(item)}
-                            title="Reset Password"
-                          >
-                            <FiKey />
-                          </button>
-                          <button 
-                            className="action-btn toggle"
-                            onClick={() => handleToggleAccount(item)}
-                            title={item.isActive ? "Deactivate Account" : "Activate Account"}
-                          >
-                            {item.isActive ? <FiToggleLeft /> : <FiToggleRight />}
-                          </button>
-                          <button 
-                            className="action-btn delete"
-                            onClick={() => handleDeleteStaff(item.id)}
-                            title="Delete Staff"
-                          >
-                            <FiTrash2 />
-                          </button>
+                          {/* Hide edit button for admin accounts when user is not admin */}
+                          {(isAdmin() || item.role !== 'admin') && (
+                            <button 
+                              className="action-btn edit"
+                              onClick={() => handleEditStaff(item)}
+                              title="Edit Account & Permissions"
+                            >
+                              <FiEdit />
+                            </button>
+                          )}
+                          {/* Hide reset password and toggle buttons for admin accounts when user is not admin */}
+                          {(isAdmin() || item.role !== 'admin') && (
+                            <>
+                              <button 
+                                className="action-btn secondary"
+                                onClick={() => handleResetPassword(item)}
+                                title="Reset Password"
+                              >
+                                <FiKey />
+                              </button>
+                              <button 
+                                className="action-btn toggle"
+                                onClick={() => handleToggleAccount(item)}
+                                title={item.isActive ? "Deactivate Account" : "Activate Account"}
+                              >
+                                {item.isActive ? <FiToggleLeft /> : <FiToggleRight />}
+                              </button>
+                            </>
+                          )}
+                          {isAdmin() && (
+                            <button 
+                              className="action-btn delete"
+                              onClick={() => handleDeleteStaff(item.id)}
+                              title="Delete Staff"
+                            >
+                              <FiTrash2 />
+                            </button>
+                          )}
                         </>
                       ) : (
                         <>
@@ -1749,16 +1832,19 @@ const StaffAdmin = () => {
                         </div>
                       )}
                       
-                      <div className="form-group">
-                        <label>{t('admin.staff.form.role')}</label>
-                        <select
-                          value={formData.role}
-                          onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
-                        >
-                          <option value="staff">{t('admin.staff.form.roles.staff')}</option>
-                          <option value="admin">{t('admin.staff.form.roles.admin')}</option>
-                        </select>
-                      </div>
+                      {/* Hide role selection when editing own account as non-admin */}
+                      {!(modalType === 'edit' && selectedItem && selectedItem.id === user?.id && !isAdmin()) && (
+                        <div className="form-group">
+                          <label>{t('admin.staff.form.role')}</label>
+                          <select
+                            value={formData.role}
+                            onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                          >
+                            <option value="staff">{t('admin.staff.form.roles.staff')}</option>
+                            <option value="admin">{t('admin.staff.form.roles.admin')}</option>
+                          </select>
+                        </div>
+                      )}
                       
                       <div className="form-group checkbox-group">
                         <label>
@@ -1771,49 +1857,51 @@ const StaffAdmin = () => {
                         </label>
                       </div>
                       
-                      {/* Permissions Section */}
-                      <div className="permissions-section" style={{ 
-                        marginTop: '1.5rem', 
-                        padding: '1rem', 
-                        background: 'var(--background-alt)', 
-                        borderRadius: '10px',
-                        border: '1px solid var(--border)'
-                      }}>
-                        <h4 style={{ margin: '0 0 1rem 0', color: 'var(--primary)' }}>Permissions</h4>
-                        
-                        <div className="form-group checkbox-group">
-                          <label>
-                            <input
-                              type="checkbox"
-                              checked={formData.canManageEvents || false}
-                              onChange={(e) => setFormData(prev => ({ ...prev, canManageEvents: e.target.checked }))}
-                            />
-                            <strong>{t('staff.profile.permissions.manageEvents')}</strong> - {t('staff.profile.permissions.manageEventsDesc')}
-                          </label>
+                      {/* Permissions Section - Hide when editing own account as non-admin */}
+                      {!(modalType === 'edit' && selectedItem && selectedItem.id === user?.id && !isAdmin()) && (
+                        <div className="permissions-section" style={{ 
+                          marginTop: '1.5rem', 
+                          padding: '1rem', 
+                          background: 'var(--background-alt)', 
+                          borderRadius: '10px',
+                          border: '1px solid var(--border)'
+                        }}>
+                          <h4 style={{ margin: '0 0 1rem 0', color: 'var(--primary)' }}>{t('admin.staff.labels.permissions').replace('：', '').replace(':', '')}</h4>
+                          
+                          <div className="form-group checkbox-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={formData.canManageEvents || false}
+                                onChange={(e) => setFormData(prev => ({ ...prev, canManageEvents: e.target.checked }))}
+                              />
+                              <strong>{t('staff.profile.permissions.manageEvents')}</strong> - {t('staff.profile.permissions.manageEventsDesc')}
+                            </label>
+                          </div>
+                          
+                          <div className="form-group checkbox-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={formData.canReviewProfiles || false}
+                                onChange={(e) => setFormData(prev => ({ ...prev, canReviewProfiles: e.target.checked }))}
+                              />
+                              <strong>{t('staff.profile.permissions.reviewProfiles')}</strong> - {t('staff.profile.permissions.reviewProfilesDesc')}
+                            </label>
+                          </div>
+                          
+                          <div className="form-group checkbox-group">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={formData.canManageStaff || false}
+                                onChange={(e) => setFormData(prev => ({ ...prev, canManageStaff: e.target.checked }))}
+                              />
+                              <strong>{t('staff.profile.permissions.manageStaff')}</strong> - {t('staff.profile.permissions.manageStaffDesc')}
+                            </label>
+                          </div>
                         </div>
-                        
-                        <div className="form-group checkbox-group">
-                          <label>
-                            <input
-                              type="checkbox"
-                              checked={formData.canReviewProfiles || false}
-                              onChange={(e) => setFormData(prev => ({ ...prev, canReviewProfiles: e.target.checked }))}
-                            />
-                            <strong>{t('staff.profile.permissions.reviewProfiles')}</strong> - {t('staff.profile.permissions.reviewProfilesDesc')}
-                          </label>
-                        </div>
-                        
-                        <div className="form-group checkbox-group">
-                          <label>
-                            <input
-                              type="checkbox"
-                              checked={formData.canManageStaff || false}
-                              onChange={(e) => setFormData(prev => ({ ...prev, canManageStaff: e.target.checked }))}
-                            />
-                            <strong>{t('staff.profile.permissions.manageStaff')}</strong> - {t('staff.profile.permissions.manageStaffDesc')}
-                          </label>
-                        </div>
-                      </div>
+                      )}
                       
                       {/* Team Display Order - Only for admin */}
                       {modalType === 'edit' && (user?.role === 'admin' || hasPermission('manageStaff')) && (

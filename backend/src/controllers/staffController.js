@@ -60,11 +60,15 @@ class StaffController {
   static async updateStaffAccount(req, res) {
     try {
       const { id } = req.params;
-      const result = await StaffService.updateStaffAccount(id, req.body);
+      const result = await StaffService.updateStaffAccount(id, req.body, req.user.role, req.user.id);
       res.json(result);
     } catch (error) {
       console.error('Error updating staff account:', error);
-      res.status(500).json({ error: 'Failed to update staff account' });
+      if (error.message.includes('Permission denied')) {
+        res.status(403).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: 'Failed to update staff account' });
+      }
     }
   }
 
@@ -92,6 +96,28 @@ class StaffController {
     } catch (error) {
       console.error('Error batch deleting staff accounts:', error);
       res.status(500).json({ error: 'Failed to batch delete staff accounts' });
+    }
+  }
+
+  // Admin: Batch toggle staff accounts active status
+  static async batchToggleStaffAccounts(req, res) {
+    try {
+      const { ids, isActive } = req.body;
+      if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).json({ error: 'Invalid or empty IDs array' });
+      }
+      if (typeof isActive !== 'boolean') {
+        return res.status(400).json({ error: 'isActive must be a boolean value' });
+      }
+      const result = await StaffService.batchToggleStaffAccounts(ids, isActive, req.user.role);
+      res.json(result);
+    } catch (error) {
+      console.error('Error batch toggling staff accounts:', error);
+      if (error.message.includes('Permission denied')) {
+        res.status(403).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: 'Failed to batch toggle staff accounts' });
+      }
     }
   }
 

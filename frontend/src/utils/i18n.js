@@ -455,10 +455,34 @@ const enTranslations = {
         success: 'Successfully deleted {{count}} staff account(s).',
         error: 'Failed to delete selected accounts. Please try again.'
       },
+      batchToggle: {
+        activate: 'Batch Activate',
+        deactivate: 'Batch Deactivate',
+        noSelection: 'Please select staff accounts to update.',
+        confirmActivate: 'Are you sure you want to activate {{count}} staff account(s)?',
+        confirmDeactivate: 'Are you sure you want to deactivate {{count}} staff account(s)?',
+        successActivate: 'Successfully activated {{count}} staff account(s).',
+        successDeactivate: 'Successfully deactivated {{count}} staff account(s).',
+        errorActivate: 'Failed to activate staff accounts.',
+        errorDeactivate: 'Failed to deactivate staff accounts.'
+      },
       selectAll: {
         selectAll: 'Select All',
         deselectAll: 'Deselect All',
         selected: '{{count}} selected'
+      },
+      labels: {
+        permissions: 'Permissions:',
+        created: 'Created:',
+        profileStatus: 'Profile Status:',
+        lastLogin: 'Last login:',
+        never: 'Never',
+        noProfile: 'No profile',
+        active: 'Active',
+        inactive: 'Inactive',
+        pending: 'Pending',
+        approved: 'Approved',
+        rejected: 'Rejected'
       }
     }
   }
@@ -918,10 +942,34 @@ const zhTranslations = {
         success: '成功删除了 {{count}} 个成员账户',
         error: '删除选中账户失败，请重试'
       },
+      batchToggle: {
+        activate: '批量激活',
+        deactivate: '批量禁用',
+        noSelection: '请选择要更新的成员账户',
+        confirmActivate: '您确定要激活 {{count}} 个成员账户吗？',
+        confirmDeactivate: '您确定要禁用 {{count}} 个成员账户吗？',
+        successActivate: '成功激活了 {{count}} 个成员账户',
+        successDeactivate: '成功禁用了 {{count}} 个成员账户',
+        errorActivate: '激活成员账户失败',
+        errorDeactivate: '禁用成员账户失败'
+      },
       selectAll: {
         selectAll: '全选',
         deselectAll: '取消全选',
         selected: '已选择 {{count}} 个'
+      },
+      labels: {
+        permissions: '权限：',
+        created: '创建时间：',
+        profileStatus: '资料状态：',
+        lastLogin: '最后登录：',
+        never: '从未登录',
+        noProfile: '无资料',
+        active: '已激活',
+        inactive: '未激活',
+        pending: '待审核',
+        approved: '已通过',
+        rejected: '已拒绝'
       }
     }
   }

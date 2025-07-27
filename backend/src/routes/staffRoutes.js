@@ -5,7 +5,8 @@ const {
   authenticateUser, 
   requireEventManagement, 
   requireStaffManagement, 
-  requireProfileReview 
+  requireProfileReview,
+  requireAdminRole 
 } = require('../middleware/auth');
 const { staffUpload, eventUpload } = require('../middleware/upload');
 
@@ -23,8 +24,9 @@ router.post('/avatar', authenticateUser, staffUpload.single('avatar'), StaffCont
 router.get('/staff', authenticateUser, requireStaffManagement, StaffController.getAllStaff);
 router.post('/staff', authenticateUser, requireStaffManagement, StaffController.createStaffAccount);
 router.put('/staff/:id', authenticateUser, requireStaffManagement, StaffController.updateStaffAccount);
-router.delete('/staff/:id', authenticateUser, requireStaffManagement, StaffController.deleteStaffAccount);
-router.delete('/staff', authenticateUser, requireStaffManagement, StaffController.batchDeleteStaffAccounts);
+router.delete('/staff/:id', authenticateUser, requireAdminRole, StaffController.deleteStaffAccount);
+router.delete('/staff', authenticateUser, requireAdminRole, StaffController.batchDeleteStaffAccounts);
+router.patch('/staff/batch-toggle', authenticateUser, requireStaffManagement, StaffController.batchToggleStaffAccounts);
 
 // Admin profile review
 router.get('/profiles', authenticateUser, requireProfileReview, StaffController.getAllProfilesForReview);
