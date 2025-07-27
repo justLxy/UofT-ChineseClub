@@ -12,8 +12,7 @@ async function main() {
     const admin = await prisma.staff.upsert({
       where: { username: 'xuanyi.lyu' },
       update: {
-        // 只更新必要的字段，保留现有数据
-        email: 'xuanyi.lyu@mail.utoronto.ca',
+        // 更新时只更新必要的系统字段，保留用户的个人数据
         role: 'admin',
         canManageEvents: true,
         canReviewProfiles: true,
@@ -37,47 +36,41 @@ async function main() {
       where: { staffId: admin.id }
     });
 
-    await prisma.staffProfile.upsert({
-      where: { staffId: admin.id },
-      update: {
-        name_en: 'Xuanyi Lyu',
-        name_zh: '吕宣谊',
-        position_en: 'Information Solution Director',
-        position_zh: '信息解决方案部负责人',
-        department: 'OPERATION GROUP',
-        bio_en: 'I am currently pursuing a double major in Computer Science and Statistics at the University of Toronto, with a minor in Economics. My areas of interest include Human-Computer Interaction, Artificial Intelligence, and Machine Learning. I enjoy creating solutions that combine technical excellence with user-centered design. I am committed to academic exploration and technological innovation, hoping to make meaningful contributions to society through my work in computer science and data analysis.',
-        bio_zh: '我目前在多伦多大学攻读计算机科学与统计学双专业，辅修经济学。\\n我的兴趣领域包括人机交互、人工智能和机器学习。我喜欢创造结合技术卓越和以用户为中心设计的解决方案。我致力于学术探索和技术创新，希望通过我在计算机科学和数据分析方面的工作为社会做出有意义的贡献。',
-        // 只在首次创建时设置头像，更新时保留现有头像
-        ...(existingProfile?.avatarUrl ? {} : { avatarUrl: '/uploads/staff/xuanyilyu.jpg' }),
-        email: 'xuanyi.lyu@mail.utoronto.ca',
-        github: 'https://github.com/justLxy',
-        linkedin: 'https://linkedin.com/in/xuanyi-lyu',
-        wechat: 'yukiyah',
-        mbti: 'INFJ-T',
-        status: 'approved',
-        isVisible: true,
-        displayOrder: 1
-      },
-      create: {
-        staffId: admin.id,
-        name_en: 'Xuanyi Lyu',
-        name_zh: '吕宣谊',
-        position_en: 'Information Solution Director',
-        position_zh: '信息解决方案部负责人',
-        department: 'OPERATION GROUP',
-        bio_en: 'I am currently pursuing a double major in Computer Science and Statistics at the University of Toronto, with a minor in Economics. My areas of interest include Human-Computer Interaction, Artificial Intelligence, and Machine Learning. I enjoy creating solutions that combine technical excellence with user-centered design. I am committed to academic exploration and technological innovation, hoping to make meaningful contributions to society through my work in computer science and data analysis.',
-        bio_zh: '我目前在多伦多大学攻读计算机科学与统计学双专业，辅修经济学。\\n我的兴趣领域包括人机交互、人工智能和机器学习。我喜欢创造结合技术卓越和以用户为中心设计的解决方案。我致力于学术探索和技术创新，希望通过我在计算机科学和数据分析方面的工作为社会做出有意义的贡献。',
-        avatarUrl: '/uploads/staff/xuanyilyu.jpg',
-        email: 'xuanyi.lyu@mail.utoronto.ca',
-        github: 'https://github.com/justLxy',
-        linkedin: 'https://linkedin.com/in/xuanyi-lyu',
-        wechat: 'yukiyah',
-        mbti: 'INFJ-T',
-        status: 'approved',
-        isVisible: true,
-        displayOrder: 1
-      }
-    });
+    if (!existingProfile) {
+      // 只在不存在时创建新的个人资料
+      await prisma.staffProfile.create({
+        data: {
+          staffId: admin.id,
+          name_en: 'Xuanyi Lyu',
+          name_zh: '吕宣谊',
+          position_en: 'Information Solution Director',
+          position_zh: '信息解决方案部负责人',
+          department: 'OPERATION GROUP',
+          bio_en: 'I am currently pursuing a double major in Computer Science and Statistics at the University of Toronto, with a minor in Economics. My areas of interest include Human-Computer Interaction, Artificial Intelligence, and Machine Learning. I enjoy creating solutions that combine technical excellence with user-centered design. I am committed to academic exploration and technological innovation, hoping to make meaningful contributions to society through my work in computer science and data analysis.',
+          bio_zh: '我目前在多伦多大学攻读计算机科学与统计学双专业，辅修经济学。我的兴趣领域包括人机交互、人工智能和机器学习。我喜欢创造结合技术卓越和以用户为中心设计的解决方案。我致力于学术探索和技术创新，希望通过我在计算机科学和数据分析方面的工作为社会做出有意义的贡献。',
+          avatarUrl: '/uploads/staff/xuanyilyu.jpg',
+          email: 'xuanyi.lyu@mail.utoronto.ca',
+          github: 'https://github.com/justLxy',
+          linkedin: 'https://linkedin.com/in/xuanyi-lyu',
+          wechat: 'yukiyah',
+          mbti: 'INFJ-T',
+          status: 'approved',
+          isVisible: true,
+          displayOrder: 1
+        }
+      });
+      console.log('Admin profile created with initial data');
+    } else {
+      // 如果已存在，只更新必要的系统字段，完全保留用户数据
+      await prisma.staffProfile.update({
+        where: { staffId: admin.id },
+        data: {
+          status: 'approved',
+          isVisible: true
+        }
+      });
+      console.log('Admin profile exists, preserved user data and updated system fields only');
+    }
 
     console.log('Admin account created/updated successfully');
 
@@ -86,7 +79,7 @@ async function main() {
     const superuser = await prisma.staff.upsert({
       where: { username: 'karenjiujiu.shu' },
       update: {
-        email: 'karenjiujiu.shu@mail.utoronto.ca',
+        // 更新时只更新必要的系统字段，保留用户的个人数据
         role: 'admin',
         canManageEvents: true,
         canReviewProfiles: true,
