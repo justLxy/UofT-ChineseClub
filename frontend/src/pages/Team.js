@@ -807,71 +807,16 @@ const Team = () => {
   if (loading) {
     return (
       <StyledTeam>
-        <div className="container">
-          <div className="page-header">
-            <h1>Our Team</h1>
-          </div>
-          
-          {/* Skeleton loading for member cards */}
-          <section className="members-section">
-            <div className="container">
-              <div className="section-header">
-                <LoadingAnimation type="skeleton" width="200px" height="40px" />
-                <div style={{ marginTop: '0.5rem' }}>
-                  <LoadingAnimation type="skeleton" width="300px" height="20px" />
-                </div>
-              </div>
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-                gap: '2rem',
-                marginTop: '3rem'
-              }}>
-                {[...Array(6)].map((_, index) => (
-                  <div key={index} style={{ 
-                    background: 'var(--background)', 
-                    borderRadius: '20px', 
-                    padding: '2rem',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
-                  }}>
-                    {/* Avatar skeleton */}
-                    <div style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      marginBottom: '1.5rem',
-                      gap: '1rem'
-                    }}>
-                      <div style={{ 
-                        width: '100px', 
-                        height: '100px', 
-                        borderRadius: '50%',
-                        background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
-                        backgroundSize: '400% 100%',
-                        animation: 'shimmer 1.2s ease-in-out infinite'
-                      }} />
-                      <div style={{ flex: 1 }}>
-                        <LoadingAnimation type="skeleton" width="150px" height="24px" />
-                        <div style={{ marginTop: '0.5rem' }}>
-                          <LoadingAnimation type="skeleton" width="120px" height="18px" />
-                        </div>
-                        <div style={{ marginTop: '0.5rem' }}>
-                          <LoadingAnimation type="skeleton" width="100px" height="16px" />
-                        </div>
-                      </div>
-                    </div>
-                    {/* Bio skeleton */}
-                    <LoadingAnimation type="skeleton" width="100%" height="16px" />
-                    <div style={{ marginTop: '0.5rem' }}>
-                      <LoadingAnimation type="skeleton" width="80%" height="16px" />
-                    </div>
-                    <div style={{ marginTop: '0.5rem' }}>
-                      <LoadingAnimation type="skeleton" width="60%" height="16px" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          minHeight: '60vh',
+          flexDirection: 'column',
+          gap: '1rem'
+        }}>
+          <LoadingAnimation type="pulse" />
+          <p style={{ color: 'var(--text-light)' }}>Loading team members...</p>
         </div>
       </StyledTeam>
     );
