@@ -19,7 +19,13 @@ export const getFullAvatarUrl = (avatarUrl) => {
 // 工具函数：处理活动图片URL
 export const getFullEventImageUrl = (imageUrl) => {
   if (!imageUrl) return null;
-  if (imageUrl.startsWith('http')) return imageUrl; // 已经是完整 URL
+  if (imageUrl.startsWith('http')) {
+    // 若当前站点为 https 而图片为 http，自动升级为 https 避免混合内容被阻止
+    if (typeof window !== 'undefined' && window.location.protocol === 'https:' && imageUrl.startsWith('http://')) {
+      return imageUrl.replace('http://', 'https://');
+    }
+    return imageUrl; // 已经是完整 URL
+  }
   // 去掉可能存在的开头斜杠，防止重复 //
   const normalized = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
   return `${BASE_URL}${normalized}`;

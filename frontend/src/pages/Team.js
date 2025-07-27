@@ -533,6 +533,13 @@ const StyledTeam = styled.div`
           font-weight: normal;
           margin-left: 0.5rem;
         }
+
+        .name-en {
+          font-size: 1rem;
+          color: var(--text-light);
+          font-weight: normal;
+          margin-left: 0.5rem;
+        }
       }
       
       .member-position {
@@ -981,6 +988,9 @@ const Team = () => {
                                 {i18n.language === 'en' && member.name_zh && (
                                   <span className="name-zh">{member.name_zh}</span>
                                 )}
+                                {i18n.language === 'zh' && member.name_en && (
+                                  <span className="name-en">{member.name_en}</span>
+                                )}
                               </h3>
                               <div className="member-position">
                                 {i18n.language === 'zh' ? member.position_zh : member.position_en}
@@ -1107,6 +1117,9 @@ const Team = () => {
                               {i18n.language === 'zh' ? member.name_zh : member.name_en}
                               {i18n.language === 'en' && member.name_zh && (
                                 <span className="name-zh">{member.name_zh}</span>
+                              )}
+                              {i18n.language === 'zh' && member.name_en && (
+                                <span className="name-en">{member.name_en}</span>
                               )}
                             </h3>
                             <div className="member-position">
