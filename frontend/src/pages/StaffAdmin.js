@@ -852,13 +852,20 @@ const StaffAdmin = () => {
     
     try {
       if (modalType === 'create') {
+        // 如果用户名为空，从邮箱中自动生成
+        let finalFormData = { ...formData };
+        if (!finalFormData.username.trim() && finalFormData.email) {
+          const emailUsername = finalFormData.email.split('@')[0];
+          finalFormData.username = emailUsername;
+        }
+        
         // Structure permissions data for creation
         const createData = {
-          ...formData,
+          ...finalFormData,
           permissions: {
-            canManageEvents: formData.canManageEvents,
-            canManageStaff: formData.canManageStaff,
-            canReviewProfiles: formData.canReviewProfiles
+            canManageEvents: finalFormData.canManageEvents,
+            canManageStaff: finalFormData.canManageStaff,
+            canReviewProfiles: finalFormData.canReviewProfiles
           }
         };
         delete createData.canManageEvents;
@@ -1640,7 +1647,7 @@ const StaffAdmin = () => {
                           type="text"
                           value={formData.username}
                           onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                          required
+                          placeholder="留空则自动从邮箱生成"
                         />
                       </div>
                       

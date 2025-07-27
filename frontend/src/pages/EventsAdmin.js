@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiEdit2, FiTrash2, FiStar, FiUpload } from 'react-icons/fi';
-import { getEvents, createEvent, updateEvent, deleteEvent, getFullEventImageUrl } from '../utils/api';
+import { getEvents, createEvent, updateEvent, deleteEvent, getFullEventImageUrl, uploadEventImage } from '../utils/api';
 import { formatEventDateTime } from '../utils/dateUtils';
-import axios from 'axios';
 
 const AdminContainer = styled.div`
   max-width: 1200px;
@@ -564,31 +563,6 @@ const EventsAdmin = () => {
     }
   };
 
-  const uploadImage = async (file) => {
-    // Create a FormData object to send the file
-    const formDataWithFile = new FormData();
-    formDataWithFile.append('image', file);
-    
-    // If we're editing an existing event, include its ID
-    if (currentEvent) {
-      formDataWithFile.append('eventId', currentEvent.id);
-    }
-    
-    try {
-      const response = await axios.post(`${API_BASE_URL}/admin/upload/image`, formDataWithFile, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
-        }
-      });
-      
-      return response.data.imageUrl;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      throw error;
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -615,7 +589,8 @@ const EventsAdmin = () => {
       
       // If there's a new image file, upload it first
       if (imageFile) {
-        eventData.imageUrl = await uploadImage(imageFile);
+        const uploadedImage = await uploadEventImage(imageFile);
+        eventData.imageUrl = uploadedImage.imageUrl; // Correctly extract the URL
       }
       
       if (currentEvent) {

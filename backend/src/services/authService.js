@@ -177,10 +177,18 @@ class AuthService {
 
   // 创建新用户（管理员功能）
   static async createUser(userData) {
-    const { username, email, password, role = 'staff', permissions = {} } = userData;
+    let { username, email, password, role = 'staff', permissions = {} } = userData;
     
-    if (!username || !email || !password) {
-      throw new Error('用户名、邮箱和密码不能为空');
+    // 如果用户名为空，从邮箱中自动生成
+    if (!username || !username.trim()) {
+      if (!email) {
+        throw new Error('邮箱不能为空');
+      }
+      username = email.split('@')[0];
+    }
+    
+    if (!email || !password) {
+      throw new Error('邮箱和密码不能为空');
     }
     
     // 验证邮箱格式

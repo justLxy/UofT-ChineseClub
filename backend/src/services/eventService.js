@@ -178,7 +178,7 @@ class EventService {
     const protocol = req.protocol;
     const host = req.get('host');
     
-    // Generate the image URL
+    // Generate the image URL for the UPLOADED file, which is in the /uploads directory
     const imageUrl = `${protocol}://${host}/uploads/events/${req.file.filename}`;
     
     return { 
