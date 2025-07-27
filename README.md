@@ -1,5 +1,5 @@
 
-# UTChinese Network: Connecting Culture and Community at UofT
+# UTChinese Network
 
 Welcome to the official repository for the UTChinese Network website, a dynamic and engaging platform for the University of Toronto's vibrant Chinese student community. Our mission is to bridge Chinese culture with the UofT campus, offering a central hub for cultural events, career development, and community engagement. This platform is meticulously crafted with a modern, interactive, and visually stunning interface, ensuring a seamless experience for all users.
 
