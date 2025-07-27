@@ -5,7 +5,9 @@ const { v4: uuidv4 } = require('uuid');
 const { FILE_LIMITS } = require('../config/constants');
 
 // Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, '../../uploads');
+const uploadsDir = process.env.UPLOADS_DIR
+  ? process.env.UPLOADS_DIR
+  : path.join(__dirname, '../../uploads');
 const eventImagesDir = path.join(uploadsDir, 'events');
 const staffImagesDir = path.join(uploadsDir, 'staff');
 

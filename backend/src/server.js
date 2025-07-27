@@ -18,7 +18,10 @@ app.use(cors({
 app.use(express.json());
 
 // Serve static files
-app.use('/uploads', express.static(uploadsDir));
+app.use(
+  '/uploads',
+  express.static(process.env.UPLOADS_DIR || uploadsDir)
+);
 
 // Admin password is now managed through the unified user system
 
