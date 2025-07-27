@@ -679,6 +679,10 @@ class StaffService {
         isVisible: true,
         staff: {
           isActive: true
+        },
+        // Ensure department is not an empty string
+        NOT: {
+          department: ''
         }
       },
       _count: {
