@@ -8,6 +8,7 @@ import { getEvents, getFullEventImageUrl } from '../utils/api';
 import EventCard from '../components/EventCard';
 import EventDetailModal from '../components/EventDetailModal';
 import EventFilters from '../components/EventFilters';
+import LoadingAnimation from '../components/LoadingAnimation';
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -346,12 +347,58 @@ const Events = () => {
         />
 
         {loading ? (
-          <LoadingContainer>
-            <LoadingSpinner
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
-          </LoadingContainer>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+            gap: '2rem',
+            padding: '2rem 0'
+          }}>
+            {[...Array(6)].map((_, index) => (
+              <div key={index} style={{ 
+                background: 'var(--background)', 
+                borderRadius: '20px', 
+                padding: '0',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                overflow: 'hidden'
+              }}>
+                {/* Event image skeleton */}
+                <div style={{ 
+                  width: '100%', 
+                  height: '200px',
+                  background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                  backgroundSize: '400% 100%',
+                  animation: 'shimmer 1.2s ease-in-out infinite'
+                }} />
+                
+                {/* Content skeleton */}
+                <div style={{ padding: '1.5rem' }}>
+                  {/* Status badge skeleton */}
+                  <div style={{ marginBottom: '1rem' }}>
+                    <LoadingAnimation type="skeleton" width="80px" height="24px" />
+                  </div>
+                  
+                  {/* Title skeleton */}
+                  <LoadingAnimation type="skeleton" width="90%" height="28px" />
+                  
+                  {/* Date skeleton */}
+                  <div style={{ marginTop: '1rem' }}>
+                    <LoadingAnimation type="skeleton" width="150px" height="18px" />
+                  </div>
+                  
+                  {/* Description skeleton */}
+                  <div style={{ marginTop: '1rem' }}>
+                    <LoadingAnimation type="skeleton" width="100%" height="16px" />
+                    <div style={{ marginTop: '0.5rem' }}>
+                      <LoadingAnimation type="skeleton" width="80%" height="16px" />
+                    </div>
+                    <div style={{ marginTop: '0.5rem' }}>
+                      <LoadingAnimation type="skeleton" width="60%" height="16px" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : filteredEvents.length > 0 ? (
           <EventsGrid>
             {filteredEvents.map((event, index) => (

@@ -1139,9 +1139,67 @@ const StaffAdmin = () => {
         </div>
 
         {isLoading ? (
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <LoadingAnimation type="fade" />
-            <p style={{ marginTop: '1rem', color: 'var(--text-light)' }}>{t('common.loading')}</p>
+          <div className="data-list">
+            {[...Array(5)].map((_, index) => (
+              <div key={index} style={{ 
+                background: 'white',
+                borderRadius: '15px',
+                padding: '1.5rem',
+                marginBottom: '1rem',
+                boxShadow: '0 5px 15px rgba(0, 0, 0, 0.08)',
+                border: '1px solid rgba(224, 43, 32, 0.1)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+                  {/* Avatar skeleton */}
+                  <div style={{ 
+                    width: '50px', 
+                    height: '50px', 
+                    borderRadius: '50%',
+                    background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                    backgroundSize: '400% 100%',
+                    animation: 'shimmer 1.2s ease-in-out infinite',
+                    flexShrink: 0
+                  }} />
+                  
+                  {/* Name and info skeleton */}
+                  <div style={{ flex: 1 }}>
+                    <LoadingAnimation type="skeleton" width="200px" height="24px" />
+                    <div style={{ marginTop: '0.5rem' }}>
+                      <LoadingAnimation type="skeleton" width="300px" height="16px" />
+                    </div>
+                  </div>
+                  
+                  {/* Action buttons skeleton */}
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {[...Array(3)].map((_, btnIndex) => (
+                      <div key={btnIndex} style={{
+                        width: '35px',
+                        height: '35px',
+                        borderRadius: '8px',
+                        background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
+                        backgroundSize: '400% 100%',
+                        animation: 'shimmer 1.2s ease-in-out infinite'
+                      }} />
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Meta info skeleton */}
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  <LoadingAnimation type="skeleton" width="120px" height="14px" />
+                  <LoadingAnimation type="skeleton" width="150px" height="14px" />
+                  <LoadingAnimation type="skeleton" width="80px" height="20px" />
+                </div>
+                
+                {/* Additional content skeleton */}
+                <div style={{ marginTop: '1rem' }}>
+                  <LoadingAnimation type="skeleton" width="100%" height="16px" />
+                  <div style={{ marginTop: '0.5rem' }}>
+                    <LoadingAnimation type="skeleton" width="80%" height="16px" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : filteredData.length === 0 ? (
           <motion.div 
