@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from 'styled-components';
-import { FiUser, FiLogIn, FiLogOut, FiSettings, FiUsers } from 'react-icons/fi';
+import { FiUser, FiLogIn, FiLogOut, FiSettings, FiUsers, FiChevronDown } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
 import UnifiedLoginModal from './UnifiedLoginModal';
 import ThemeSwitch from './ThemeSwitch';
@@ -342,36 +342,67 @@ const StyledHeader = styled.header`
     position: relative;
     
     .user-button {
-      background: transparent;
+      background: rgba(224, 43, 32, 0.05);
       color: var(--text);
-      border: 1px solid rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(224, 43, 32, 0.15);
       padding: 0.35rem 0.75rem;
       border-radius: 50px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       gap: 0.5rem;
       font-weight: 500;
       font-size: 0.8rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      min-width: 90px;
+      box-shadow: 0 2px 8px rgba(224, 43, 32, 0.1);
+      min-width: 120px;
       height: 32px;
       justify-content: space-between;
+      position: relative;
       
       &:hover {
-        border-color: rgba(224, 43, 32, 0.2);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        border-color: rgba(224, 43, 32, 0.3);
+        background: rgba(224, 43, 32, 0.1);
+        box-shadow: 0 4px 16px rgba(224, 43, 32, 0.2);
         transform: translateY(-1px);
+      }
+      
+      &.active {
+        border-color: rgba(224, 43, 32, 0.4);
+        background: rgba(224, 43, 32, 0.12);
+        box-shadow: 0 4px 16px rgba(224, 43, 32, 0.25);
       }
 
       [data-theme="dark"] & {
-        border-color: rgba(255, 255, 255, 0.08);
+        border-color: rgba(224, 43, 32, 0.2);
+        background: rgba(224, 43, 32, 0.08);
         color: var(--text);
       }
 
       [data-theme="dark"] &:hover {
+        border-color: rgba(224, 43, 32, 0.4);
+        background: rgba(224, 43, 32, 0.15);
+      }
+      
+      [data-theme="dark"] &.active {
         border-color: rgba(224, 43, 32, 0.5);
+        background: rgba(224, 43, 32, 0.18);
+      }
+      
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      
+      .chevron {
+        transition: transform 0.3s ease;
+        color: var(--primary);
+        opacity: 0.7;
+        
+        &.rotated {
+          transform: rotate(180deg);
+        }
       }
     }
     
@@ -381,42 +412,72 @@ const StyledHeader = styled.header`
       right: 0;
       margin-top: 0.5rem;
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(224, 43, 32, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1);
       border: 1px solid rgba(224, 43, 32, 0.1);
-      min-width: 200px;
+      min-width: 220px;
       overflow: hidden;
       z-index: 1000;
+      backdrop-filter: blur(10px);
       
       [data-theme="dark"] & {
         background: var(--background-secondary);
-        border-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(224, 43, 32, 0.2);
+        box-shadow: 0 20px 40px rgba(224, 43, 32, 0.2), 0 8px 20px rgba(0, 0, 0, 0.3);
       }
       
       .dropdown-item {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        padding: 0.75rem 1rem;
+        padding: 0.9rem 1.2rem;
         color: var(--text);
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         border: none;
         background: none;
         width: 100%;
         text-align: left;
         font-size: 0.9rem;
+        font-weight: 500;
+        position: relative;
+        
+        &:not(:last-child) {
+          border-bottom: 1px solid rgba(224, 43, 32, 0.05);
+        }
         
         &:hover {
-          background: rgba(224, 43, 32, 0.05);
+          background: rgba(224, 43, 32, 0.08);
           color: var(--primary);
+          transform: translateX(2px);
+        }
+        
+        &:active {
+          transform: translateX(1px);
         }
         
         &.danger {
           color: #ef4444;
           
           &:hover {
-            background: rgba(239, 68, 68, 0.05);
+            background: rgba(239, 68, 68, 0.08);
+            color: #dc2626;
+          }
+        }
+        
+        svg {
+          width: 16px;
+          height: 16px;
+          opacity: 0.7;
+        }
+        
+        [data-theme="dark"] & {
+          &:not(:last-child) {
+            border-bottom-color: rgba(224, 43, 32, 0.1);
+          }
+          
+          &:hover {
+            background: rgba(224, 43, 32, 0.12);
           }
         }
       }
@@ -548,21 +609,29 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
             {isAuthenticated ? (
               <div className="user-menu">
                 <button 
-                  className="user-button"
+                  className={`user-button ${showUserMenu ? 'active' : ''}`}
                   onClick={() => setShowUserMenu(!showUserMenu)}
                 >
-                  <FiUser />
-                  {user?.username || 'User'}
+                  <div className="user-info">
+                    <FiUser />
+                    {user?.username || 'User'}
+                  </div>
+                  <FiChevronDown className={`chevron ${showUserMenu ? 'rotated' : ''}`} />
                 </button>
                 
                 <AnimatePresence>
                   {showUserMenu && (
                     <motion.div
                       className="dropdown"
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ 
+                        duration: 0.2,
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 30
+                      }}
                     >
                       {hasPermission('manageEvents') && (
                         <button 
