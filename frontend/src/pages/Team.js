@@ -635,6 +635,7 @@ const Team = () => {
   const [error, setError] = useState(null);
   const headerRef = useRef(null);
   const cardsRef = useRef([]);
+  const [imageLoadErrors, setImageLoadErrors] = useState({});
 
   // Helper: translate department name based on current language
   const getDepartmentLabel = (deptName) => {
@@ -803,6 +804,18 @@ const Team = () => {
     }
     return className;
   };
+
+  const handleImageError = (memberId) => {
+    setImageLoadErrors(prev => ({
+      ...prev,
+      [memberId]: true
+    }));
+  };
+
+  // Reset image load errors when staff data changes
+  useEffect(() => {
+    setImageLoadErrors({});
+  }, [staff]);
 
   if (loading) {
     return (
@@ -974,11 +987,12 @@ const Team = () => {
                         >
                           <div className="member-content">
                             <div className="member-avatar">
-                              {getFullAvatarUrl(member.avatarUrl) ? (
+                              {getFullAvatarUrl(member.avatarUrl) && !imageLoadErrors[member.id] ? (
                                 <img 
                                   src={getFullAvatarUrl(member.avatarUrl)} 
                                   alt={(i18n.language === 'zh' ? member.name_zh : member.name_en) || t('staff.profile.permissions.noName')}
                                   loading="lazy"
+                                  onError={() => handleImageError(member.id)}
                                 />
                               ) : (
                                 <div style={{ 
@@ -1112,11 +1126,12 @@ const Team = () => {
                       >
                         <div className="member-content">
                           <div className="member-avatar">
-                            {getFullAvatarUrl(member.avatarUrl) ? (
+                            {getFullAvatarUrl(member.avatarUrl) && !imageLoadErrors[member.id] ? (
                               <img 
                                 src={getFullAvatarUrl(member.avatarUrl)} 
                                 alt={(i18n.language === 'zh' ? member.name_zh : member.name_en) || t('staff.profile.permissions.noName')}
                                 loading="lazy"
+                                onError={() => handleImageError(member.id)}
                               />
                             ) : (
                               <div style={{ 

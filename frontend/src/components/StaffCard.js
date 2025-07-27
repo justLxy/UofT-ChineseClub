@@ -7,6 +7,7 @@ import { MdVerified } from 'react-icons/md';
 import { FaWeixin } from 'react-icons/fa';
 import { getFullAvatarUrl } from '../utils/api';
 import QRCode from 'react-qr-code';
+import { useState, useEffect } from 'react';
 
 const DigitalBusinessCard = styled(motion.div)`
   border-radius: 24px;
@@ -280,6 +281,7 @@ const CardFooter = styled.div`
 
 const StaffCard = ({ staff }) => {
   const { t, i18n } = useTranslation();
+  const [imageLoadError, setImageLoadError] = useState(false);
   
   const { 
     name_en,
@@ -313,6 +315,15 @@ const StaffCard = ({ staff }) => {
     ? `${window.location.origin}/team/${username}?lang=${i18n.language}` 
     : window.location.href;
 
+  const handleImageError = () => {
+    setImageLoadError(true);
+  };
+
+  // Reset image load error when avatar URL changes
+  useEffect(() => {
+    setImageLoadError(false);
+  }, [processedAvatarUrl]);
+
   return (
     <DigitalBusinessCard
       initial={{ opacity: 0, scale: 0.95 }}
@@ -323,8 +334,13 @@ const StaffCard = ({ staff }) => {
       <CardContent>
         <CardHeader>
           <div className="avatar-section">
-            {processedAvatarUrl ? (
-              <img src={processedAvatarUrl} alt="Avatar" className="avatar" />
+            {processedAvatarUrl && !imageLoadError ? (
+              <img 
+                src={processedAvatarUrl} 
+                alt="Avatar" 
+                className="avatar" 
+                onError={handleImageError}
+              />
             ) : (
               <div className="placeholder">
                 {(displayName || t('staff.profile.permissions.noName'))?.charAt(0).toUpperCase()}

@@ -705,6 +705,7 @@ const StaffProfile = () => {
   const [justSaved, setJustSaved] = useState(false);
   const [message, setMessage] = useState('');
   const [avatarError, setAvatarError] = useState('');
+  const [imageLoadError, setImageLoadError] = useState(false);
   const [showPermissionMenu, setShowPermissionMenu] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
@@ -778,8 +779,9 @@ const StaffProfile = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Clear previous avatar error
+    // Clear previous avatar error and image load error
     setAvatarError('');
+    setImageLoadError(false);
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
@@ -857,6 +859,15 @@ const StaffProfile = () => {
       if (justSaved) setJustSaved(false);
     }
   };
+
+  const handleImageError = () => {
+    setImageLoadError(true);
+  };
+
+  // Reset image load error when avatar URL changes
+  useEffect(() => {
+    setImageLoadError(false);
+  }, [formData.avatarUrl]);
 
   const getStatusInfo = (status) => {
     switch (status) {
@@ -1060,11 +1071,12 @@ const StaffProfile = () => {
           <form onSubmit={handleSubmit}>
             <AvatarSection>
               <div className="avatar-container">
-                {formData.avatarUrl ? (
+                {formData.avatarUrl && !imageLoadError ? (
                   <img 
                     src={getFullAvatarUrl(formData.avatarUrl)} 
                     alt="Avatar" 
                     className="avatar"
+                    onError={handleImageError}
                   />
                 ) : (
                   <div className="avatar-placeholder">

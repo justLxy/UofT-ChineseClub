@@ -691,6 +691,10 @@ const StaffAdmin = () => {
     isActive: true,
     role: 'staff'
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState('created_at');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [imageLoadErrors, setImageLoadErrors] = useState({});
 
   // Redirect if no staff management permissions
   useEffect(() => {
@@ -1042,6 +1046,18 @@ const StaffAdmin = () => {
     }
   }, [filteredData]);
 
+  const handleImageError = (itemId) => {
+    setImageLoadErrors(prev => ({
+      ...prev,
+      [itemId]: true
+    }));
+  };
+
+  // Reset image load errors when data changes
+  useEffect(() => {
+    setImageLoadErrors({});
+  }, [data]);
+
   if (!hasPermission('manageStaff') && !hasPermission('reviewProfiles')) {
     return null;
   }
@@ -1327,7 +1343,7 @@ const StaffAdmin = () => {
                           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
                             {/* User Avatar or Initial */}
                             <div style={{ flexShrink: 0 }}>
-                              {item.profile?.avatarUrl ? (
+                              {item.profile?.avatarUrl && !imageLoadErrors[item.id] ? (
                                 <img 
                                   src={getFullAvatarUrl(item.profile.avatarUrl)} 
                                   alt={`${item.username || 'User'} avatar`}
@@ -1338,6 +1354,7 @@ const StaffAdmin = () => {
                                     objectFit: 'cover',
                                     border: '2px solid var(--primary)'
                                   }}
+                                  onError={() => handleImageError(item.id)}
                                 />
                               ) : (
                                 <div style={{ 
@@ -1489,7 +1506,7 @@ const StaffAdmin = () => {
                           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
                             {/* Avatar */}
                             <div style={{ flexShrink: 0 }}>
-                              {item.avatarUrl ? (
+                              {item.avatarUrl && !imageLoadErrors[item.id] ? (
                                 <img 
                                   src={getFullAvatarUrl(item.avatarUrl)} 
                                   alt={`${item.name_en || t('staff.profile.permissions.noName')} avatar`}
@@ -1501,6 +1518,7 @@ const StaffAdmin = () => {
                                     border: '2px solid var(--primary)',
                                     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
                                   }}
+                                  onError={() => handleImageError(item.id)}
                                 />
                               ) : (
                                 <div style={{ 
@@ -1913,7 +1931,7 @@ const StaffAdmin = () => {
                           {i18n.language === 'zh' ? '资料预览' : 'Profile Information'}
                         </h4>
                         {/* Avatar */}
-                        {selectedItem.avatarUrl && (
+                        {selectedItem.avatarUrl && !imageLoadErrors[selectedItem.id] && (
                           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                             <img
                               src={getFullAvatarUrl(selectedItem.avatarUrl)}
@@ -1925,6 +1943,7 @@ const StaffAdmin = () => {
                                 objectFit: 'cover',
                                 border: '3px solid var(--primary)'
                               }}
+                              onError={() => handleImageError(selectedItem.id)}
                             />
                           </div>
                         )}
