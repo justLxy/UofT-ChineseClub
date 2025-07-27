@@ -55,10 +55,6 @@ The UTChinese Network platform is built with a modern, robust, and scalable tech
 - **Backend**: Hosted on Railway for easy scaling and management.
 - **Version Control**: Git and GitHub for collaborative development.
 
-## 🎨 Design Philosophy
-
-Our design philosophy is centered around creating a visually stunning, intuitive, and immersive user experience. We use a vibrant red color palette, inspired by our logo, combined with soft gradients and a clean, modern aesthetic. The layout is designed to be light and airy, with a clear visual hierarchy that guides the user's attention. Every interaction is enhanced with subtle, polished animations, creating a sense of quality and craftsmanship.
-
 ## 🤝 Contributing
 
 We welcome contributions from the community! Whether you're a developer, designer, or just passionate about our mission, there are many ways to get involved. Please check our contribution guidelines (to be added) for more information.
