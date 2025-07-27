@@ -1346,31 +1346,7 @@ const StaffAdmin = () => {
                           <div style={{ marginTop: '0.75rem', fontSize: '0.85rem' }}>
                             <strong style={{ color: 'var(--text)' }}>Permissions:</strong>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem', marginTop: '0.25rem' }}>
-                              {item.canManageEvents && (
-                                <span style={{ 
-                                  background: 'rgba(59, 130, 246, 0.1)', 
-                                  color: 'rgb(59, 130, 246)', 
-                                  padding: '0.125rem 0.5rem', 
-                                  borderRadius: '8px', 
-                                  fontSize: '0.75rem',
-                                  border: '1px solid rgba(59, 130, 246, 0.2)'
-                                }}>
-                                  {t('staff.profile.permissions.manageEvents')}
-                                </span>
-                              )}
-                              {item.canReviewProfiles && (
-                                <span style={{ 
-                                  background: 'rgba(16, 185, 129, 0.1)', 
-                                  color: 'rgb(16, 185, 129)', 
-                                  padding: '0.125rem 0.5rem', 
-                                  borderRadius: '8px', 
-                                  fontSize: '0.75rem',
-                                  border: '1px solid rgba(16, 185, 129, 0.2)'
-                                }}>
-                                  {t('staff.profile.permissions.reviewProfiles')}
-                                </span>
-                              )}
-                              {item.canManageStaff && (
+                              {item.role === 'admin' ? (
                                 <span style={{ 
                                   background: 'rgba(245, 158, 11, 0.1)', 
                                   color: 'rgb(245, 158, 11)', 
@@ -1379,20 +1355,59 @@ const StaffAdmin = () => {
                                   fontSize: '0.75rem',
                                   border: '1px solid rgba(245, 158, 11, 0.2)'
                                 }}>
-                                  {t('staff.profile.permissions.manageStaff')}
+                                  管理员 (拥有所有权限)
                                 </span>
-                              )}
-                              {!item.canManageEvents && !item.canManageStaff && !item.canReviewProfiles && (
-                                <span style={{ 
-                                  background: 'var(--background-alt)', 
-                                  color: 'var(--text-light)', 
-                                  padding: '0.125rem 0.5rem', 
-                                  borderRadius: '8px', 
-                                  fontSize: '0.75rem',
-                                  border: '1px solid var(--border)'
-                                }}>
-                                  {t('admin.staff.noPermissions')}
-                                </span>
+                              ) : (
+                                <>
+                                  {item.canManageEvents && (
+                                    <span style={{ 
+                                      background: 'rgba(59, 130, 246, 0.1)', 
+                                      color: 'rgb(59, 130, 246)', 
+                                      padding: '0.125rem 0.5rem', 
+                                      borderRadius: '8px', 
+                                      fontSize: '0.75rem',
+                                      border: '1px solid rgba(59, 130, 246, 0.2)'
+                                    }}>
+                                      {t('staff.profile.permissions.manageEvents')}
+                                    </span>
+                                  )}
+                                  {item.canReviewProfiles && (
+                                    <span style={{ 
+                                      background: 'rgba(16, 185, 129, 0.1)', 
+                                      color: 'rgb(16, 185, 129)', 
+                                      padding: '0.125rem 0.5rem', 
+                                      borderRadius: '8px', 
+                                      fontSize: '0.75rem',
+                                      border: '1px solid rgba(16, 185, 129, 0.2)'
+                                    }}>
+                                      {t('staff.profile.permissions.reviewProfiles')}
+                                    </span>
+                                  )}
+                                  {item.canManageStaff && (
+                                    <span style={{ 
+                                      background: 'rgba(245, 158, 11, 0.1)', 
+                                      color: 'rgb(245, 158, 11)', 
+                                      padding: '0.125rem 0.5rem', 
+                                      borderRadius: '8px', 
+                                      fontSize: '0.75rem',
+                                      border: '1px solid rgba(245, 158, 11, 0.2)'
+                                    }}>
+                                      {t('staff.profile.permissions.manageStaff')}
+                                    </span>
+                                  )}
+                                  {!item.canManageEvents && !item.canManageStaff && !item.canReviewProfiles && (
+                                    <span style={{ 
+                                      background: 'var(--background-alt)', 
+                                      color: 'var(--text-light)', 
+                                      padding: '0.125rem 0.5rem', 
+                                      borderRadius: '8px', 
+                                      fontSize: '0.75rem',
+                                      border: '1px solid var(--border)'
+                                    }}>
+                                      {t('admin.staff.noPermissions')}
+                                    </span>
+                                  )}
+                                </>
                               )}
                             </div>
                           </div>
