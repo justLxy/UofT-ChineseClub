@@ -603,10 +603,16 @@ class StaffService {
       isVisible: true,
       staff: {
         isActive: true
-      }
+      },
+      AND: [
+        { department: { not: null } },
+        { department: { not: '' } }
+      ]
     };
     
     if (department) {
+      // If specific department is requested, override the AND condition
+      delete whereCondition.AND;
       whereCondition.department = department;
     }
     
