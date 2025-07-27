@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiEdit2, FiTrash2, FiStar, FiUpload } from 'react-icons/fi';
-import { getEvents, createEvent, updateEvent, deleteEvent, BASE_URL, API_BASE_URL } from '../utils/api';
+import { getEvents, createEvent, updateEvent, deleteEvent, getFullEventImageUrl } from '../utils/api';
 import { formatEventDateTime } from '../utils/dateUtils';
 import axios from 'axios';
 
@@ -513,12 +513,9 @@ const EventsAdmin = () => {
         featured: event.featured
       });
       
-      // 处理图片URL预览 - 如果是相对路径，添加BASE_URL前缀
-      let imagePreviewUrl = event.imageUrl || '';
-      if (imagePreviewUrl && imagePreviewUrl.startsWith('/')) {
-        imagePreviewUrl = `${BASE_URL}${imagePreviewUrl}`;
-      }
-      setPreviewUrl(imagePreviewUrl);
+      // 使用 getFullEventImageUrl 辅助函数来获取正确的预览 URL
+      const imagePreviewUrl = getFullEventImageUrl(event.imageUrl);
+      setPreviewUrl(imagePreviewUrl || '');
     } else {
       // Create mode
       setCurrentEvent(null);
