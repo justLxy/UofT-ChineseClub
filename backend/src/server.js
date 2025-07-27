@@ -20,7 +20,12 @@ app.use(express.json());
 // Serve static files
 const staticPath = process.env.UPLOADS_DIR || uploadsDir;
 console.log(`📁 Static files served from: ${staticPath}`);
-console.log(`🔗 Uploads URL: ${process.env.BACKEND_URL || 'http://localhost:8000'}/uploads`);
+
+// Determine the correct backend URL for logging
+const backendUrl = process.env.RAILWAY_STATIC_URL 
+  ? `https://${process.env.RAILWAY_STATIC_URL}` 
+  : process.env.BACKEND_URL || `http://localhost:${PORT}`;
+console.log(`🔗 Uploads URL: ${backendUrl}/uploads`);
 
 app.use('/uploads', express.static(staticPath));
 

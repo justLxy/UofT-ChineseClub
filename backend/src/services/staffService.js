@@ -200,8 +200,11 @@ class StaffService {
       const urlParts = avatarUrl.split('/');
       const filename = urlParts[urlParts.length - 1];
       
-      // Construct file path
-      const filePath = path.join(__dirname, '../../uploads/staff', filename);
+      // Use the same upload directory configuration as upload middleware
+      const uploadsDir = process.env.UPLOADS_DIR
+        ? process.env.UPLOADS_DIR
+        : path.join(__dirname, '../../uploads');
+      const filePath = path.join(uploadsDir, 'staff', filename);
       
       // Check if file exists and delete it
       try {

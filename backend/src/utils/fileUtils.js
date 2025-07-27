@@ -12,7 +12,12 @@ const getImageFilenameFromUrl = (imageUrl) => {
 const deleteImageFile = (filename, directory = 'events') => {
   if (!filename) return;
   
-  const imagePath = path.join(__dirname, `../../uploads/${directory}`, filename);
+  // Use the same upload directory configuration as upload middleware
+  const uploadsDir = process.env.UPLOADS_DIR
+    ? process.env.UPLOADS_DIR
+    : path.join(__dirname, '../../uploads');
+  const imagePath = path.join(uploadsDir, directory, filename);
+  
   if (fs.existsSync(imagePath)) {
     try {
       fs.unlinkSync(imagePath);
