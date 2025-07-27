@@ -798,7 +798,7 @@ const StaffAdmin = () => {
     setFormData({
       username: '',
       email: '',
-      password: '',
+      password: '123',
       isActive: true,
       role: 'staff',
       canManageEvents: false,
@@ -1433,7 +1433,7 @@ const StaffAdmin = () => {
                               {item.avatarUrl ? (
                                 <img 
                                   src={getFullAvatarUrl(item.avatarUrl)} 
-                                  alt={`${item.name_en || 'User'} avatar`}
+                                  alt={`${item.name_en || t('staff.profile.permissions.noName')} avatar`}
                                   style={{ 
                                     width: '50px', 
                                     height: '50px', 
@@ -1456,7 +1456,7 @@ const StaffAdmin = () => {
                                   fontWeight: 'bold',
                                   fontSize: '1.2rem'
                                 }}>
-                                  {((item.name_en || item.staff?.username || 'U') + '').charAt(0).toUpperCase()}
+                                  {((item.name_en || item.staff?.username || t('staff.profile.permissions.noName')) + '').charAt(0).toUpperCase()}
                                 </div>
                               )}
                             </div>
@@ -1464,8 +1464,8 @@ const StaffAdmin = () => {
                             <div style={{ flex: 1 }}>
                               <h3 style={{ margin: '0 0 0.25rem 0' }}>
                                 {i18n.language === 'zh' 
-                                  ? `${item.name_zh || '无姓名'} / ${item.name_en || 'No Name'}`
-                                  : `${item.name_en || 'No Name'} / ${item.name_zh || '无姓名'}`
+                                  ? `${item.name_zh || t('staff.profile.permissions.noName')} / ${item.name_en || t('staff.profile.permissions.noAltName')}`
+                                  : `${item.name_en || t('staff.profile.permissions.noName')} / ${item.name_zh || t('staff.profile.permissions.noAltName')}`
                                 }
                               </h3>
                             </div>
@@ -1514,8 +1514,8 @@ const StaffAdmin = () => {
                                           ? `${item.bio_zh} / ${item.bio_en}`
                                           : `${item.bio_en} / ${item.bio_zh}`)
                                       : (i18n.language === 'zh' 
-                                          ? (item.bio_zh || item.bio_en || '无个人简介')
-                                          : (item.bio_en || item.bio_zh || 'No bio available'));
+                                          ? (item.bio_zh || item.bio_en || t('staff.profile.permissions.noBio'))
+                                          : (item.bio_en || item.bio_zh || t('staff.profile.permissions.noBio')));
                                     // 显示逻辑：超过1000字符才省略
                                     if (bioText.length > 1000) {
                                       return bioText.substring(0, 1000) + '...'; // 超长bio截断到1000字符+省略号
@@ -1652,7 +1652,7 @@ const StaffAdmin = () => {
                       </div>
                       
                       <div className="form-group">
-                        <label>{t('admin.staff.form.email')}</label>
+                        <label>{t('admin.staff.form.email')}<span style={{ color: 'var(--primary)' }}>*</span></label>
                         <input
                           type="email"
                           value={formData.email}
@@ -1668,7 +1668,6 @@ const StaffAdmin = () => {
                             type="password"
                             value={formData.password}
                             onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                            required
                           />
                         </div>
                       )}
@@ -1876,31 +1875,31 @@ const StaffAdmin = () => {
                           <div className="info-item">
                             <strong>{i18n.language === 'zh' ? '英文姓名：' : 'English Name:'}</strong>
                             <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
-                              {selectedItem.name_en || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.name_en || t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item">
                             <strong>{i18n.language === 'zh' ? '中文姓名：' : 'Chinese Name:'}</strong>
                             <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
-                              {selectedItem.name_zh || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.name_zh || t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item">
                             <strong>{i18n.language === 'zh' ? '英文职位：' : 'English Position:'}</strong>
                             <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
-                              {selectedItem.position_en || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.position_en || t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item">
                             <strong>{i18n.language === 'zh' ? '中文职位：' : 'Chinese Position:'}</strong>
                             <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
-                              {selectedItem.position_zh || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.position_zh || t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item">
                             <strong>{i18n.language === 'zh' ? '部门：' : 'Department:'}</strong>
                             <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
-                              {selectedItem.department || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.department || t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item">
@@ -1916,13 +1915,13 @@ const StaffAdmin = () => {
                           <div className="info-item">
                             <strong>Email:</strong>
                             <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
-                              {selectedItem.email || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.email || t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item">
                             <strong>{i18n.language === 'zh' ? '电话：' : 'Phone:'}</strong>
                             <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
-                              {selectedItem.phone || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.phone || t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item" style={{ gridColumn: '1 / -1' }}>
@@ -1932,7 +1931,7 @@ const StaffAdmin = () => {
                                 <a href={selectedItem.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>
                                   {selectedItem.linkedin}
                                 </a>
-                              ) : (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              ) : t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item">
@@ -1942,13 +1941,13 @@ const StaffAdmin = () => {
                                 <a href={selectedItem.github} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)' }}>
                                   {selectedItem.github}
                                 </a>
-                              ) : (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              ) : t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                           <div className="info-item">
                             <strong>{i18n.language === 'zh' ? '微信：' : 'WeChat:'}</strong>
                             <div style={{ padding: '0.5rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem' }}>
-                              {selectedItem.wechat || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.wechat || t('staff.profile.permissions.notProvided')}
                             </div>
                           </div>
                         </div>
@@ -1958,13 +1957,13 @@ const StaffAdmin = () => {
                           <div className="info-item" style={{ marginBottom: '1rem' }}>
                             <strong>{i18n.language === 'zh' ? '英文简介：' : 'English Bio:'}</strong>
                             <div style={{ padding: '0.75rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem', minHeight: '60px', whiteSpace: 'pre-wrap' }}>
-                              {selectedItem.bio_en || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.bio_en || t('staff.profile.permissions.noBio')}
                             </div>
                           </div>
                           <div className="info-item">
                             <strong>{i18n.language === 'zh' ? '中文简介：' : 'Chinese Bio:'}</strong>
                             <div style={{ padding: '0.75rem', background: 'var(--background-alt)', borderRadius: '5px', marginTop: '0.25rem', minHeight: '60px', whiteSpace: 'pre-wrap' }}>
-                              {selectedItem.bio_zh || (i18n.language === 'zh' ? '未填写' : 'Not provided')}
+                              {selectedItem.bio_zh || t('staff.profile.permissions.noBio')}
                             </div>
                           </div>
                         </div>

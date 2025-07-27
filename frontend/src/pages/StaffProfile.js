@@ -1003,8 +1003,8 @@ const StaffProfile = () => {
         >
           <StaffCard 
             staff={{
-              name_en: profile?.name_en || user?.username,
-              name_zh: profile?.name_zh || user?.username,
+              name_en: profile?.name_en || '',
+              name_zh: profile?.name_zh || '',
               position_en: profile?.position_en || t('staff.profile.permissions.defaultPosition'),
               position_zh: profile?.position_zh || t('staff.profile.permissions.defaultPosition'),
               department: profile?.department,

@@ -625,7 +625,7 @@ const StyledTeam = styled.div`
 `;
 
 const Team = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const { member: memberParam } = useParams();
   const navigate = useNavigate();
@@ -962,7 +962,7 @@ const Team = () => {
                               {getFullAvatarUrl(member.avatarUrl) ? (
                                 <img 
                                   src={getFullAvatarUrl(member.avatarUrl)} 
-                                  alt={i18n.language === 'zh' ? member.name_zh : member.name_en}
+                                  alt={(i18n.language === 'zh' ? member.name_zh : member.name_en) || t('staff.profile.permissions.noName')}
                                   loading="lazy"
                                 />
                               ) : (
@@ -978,18 +978,18 @@ const Team = () => {
                                   fontWeight: 'bold',
                                   fontSize: '2.5rem'
                                 }}>
-                                  {(i18n.language === 'zh' ? member.name_zh : member.name_en)?.charAt(0).toUpperCase()}
+                                  {((i18n.language === 'zh' ? member.name_zh : member.name_en) || t('staff.profile.permissions.noName'))?.charAt(0).toUpperCase()}
                                 </div>
                               )}
                             </div>
                             <div className="member-info">
                               <h3 className="member-name">
-                                {i18n.language === 'zh' ? member.name_zh : member.name_en}
-                                {i18n.language === 'en' && member.name_zh && (
-                                  <span className="name-zh">{member.name_zh}</span>
+                                {(i18n.language === 'zh' ? member.name_zh : member.name_en) || t('staff.profile.permissions.noName')}
+                                {i18n.language === 'en' && (
+                                  <span className="name-zh">{member.name_zh || t('staff.profile.permissions.noAltName')}</span>
                                 )}
-                                {i18n.language === 'zh' && member.name_en && (
-                                  <span className="name-en">{member.name_en}</span>
+                                {i18n.language === 'zh' && (
+                                  <span className="name-en">{member.name_en || t('staff.profile.permissions.noAltName')}</span>
                                 )}
                               </h3>
                               <div className="member-position">
@@ -1000,7 +1000,12 @@ const Team = () => {
                               </div>
                               {(member.bio_en || member.bio_zh) && (
                                 <p className="member-bio">
-                                  {i18n.language === 'zh' ? member.bio_zh : member.bio_en}
+                                  {(() => {
+                                    const bioText = i18n.language === 'zh' ? member.bio_zh : member.bio_en;
+                                    return bioText && bioText.length > 120 
+                                      ? bioText.substring(0, 120) + '...' 
+                                      : bioText;
+                                  })()}
                                 </p>
                               )}
                               <div className="member-links">
@@ -1092,7 +1097,7 @@ const Team = () => {
                             {getFullAvatarUrl(member.avatarUrl) ? (
                               <img 
                                 src={getFullAvatarUrl(member.avatarUrl)} 
-                                alt={i18n.language === 'zh' ? member.name_zh : member.name_en}
+                                alt={(i18n.language === 'zh' ? member.name_zh : member.name_en) || t('staff.profile.permissions.noName')}
                                 loading="lazy"
                               />
                             ) : (
@@ -1108,18 +1113,18 @@ const Team = () => {
                                 fontWeight: 'bold',
                                 fontSize: '2.5rem'
                               }}>
-                                {(i18n.language === 'zh' ? member.name_zh : member.name_en)?.charAt(0).toUpperCase()}
+                                {((i18n.language === 'zh' ? member.name_zh : member.name_en) || t('staff.profile.permissions.noName'))?.charAt(0).toUpperCase()}
                               </div>
                             )}
                           </div>
                           <div className="member-info">
                             <h3 className="member-name">
-                              {i18n.language === 'zh' ? member.name_zh : member.name_en}
-                              {i18n.language === 'en' && member.name_zh && (
-                                <span className="name-zh">{member.name_zh}</span>
+                              {(i18n.language === 'zh' ? member.name_zh : member.name_en) || t('staff.profile.permissions.noName')}
+                              {i18n.language === 'en' && (
+                                <span className="name-zh">{member.name_zh || t('staff.profile.permissions.noAltName')}</span>
                               )}
-                              {i18n.language === 'zh' && member.name_en && (
-                                <span className="name-en">{member.name_en}</span>
+                              {i18n.language === 'zh' && (
+                                <span className="name-en">{member.name_en || t('staff.profile.permissions.noAltName')}</span>
                               )}
                             </h3>
                             <div className="member-position">
@@ -1130,7 +1135,12 @@ const Team = () => {
                             </div>
                             {(member.bio_en || member.bio_zh) && (
                               <p className="member-bio">
-                                {i18n.language === 'zh' ? member.bio_zh : member.bio_en}
+                                {(() => {
+                                  const bioText = i18n.language === 'zh' ? member.bio_zh : member.bio_en;
+                                  return bioText && bioText.length > 120 
+                                    ? bioText.substring(0, 120) + '...' 
+                                    : bioText;
+                                })()}
                               </p>
                             )}
                             <div className="member-links">

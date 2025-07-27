@@ -187,8 +187,13 @@ class AuthService {
       username = email.split('@')[0];
     }
     
-    if (!email || !password) {
-      throw new Error('邮箱和密码不能为空');
+    if (!email) {
+      throw new Error('邮箱不能为空');
+    }
+    
+    // 如果密码为空，设置默认密码
+    if (!password) {
+      password = '123';
     }
     
     // 验证邮箱格式

@@ -32,7 +32,7 @@ class StaffService {
   }
 
   // Create or update staff profile
-  static async saveStaffProfile(staffId, profileData, username) {
+  static async saveStaffProfile(staffId, profileData, username, userRole = 'staff') {
     const {
       name_en,
       name_zh,
@@ -59,6 +59,13 @@ class StaffService {
       where: { staffId: staffId }
     });
     
+    // Determine status and visibility based on user role
+    const isAdmin = userRole === 'admin';
+    
+    // Admin profiles auto-approve, all others require review
+    const newStatus = isAdmin ? 'approved' : 'pending';
+    const newVisibility = isAdmin ? true : false;
+    
     const profileSaveData = {
       name_en,
       name_zh,
@@ -73,8 +80,8 @@ class StaffService {
       github,
       wechat,
       phone,
-      status: 'pending', // Reset to pending when updated
-      isVisible: false // Hide until approved
+      status: newStatus,
+      isVisible: newVisibility
     };
     
     let profile;

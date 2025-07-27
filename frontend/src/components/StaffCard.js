@@ -327,7 +327,7 @@ const StaffCard = ({ staff }) => {
               <img src={processedAvatarUrl} alt="Avatar" className="avatar" />
             ) : (
               <div className="placeholder">
-                {displayName?.charAt(0).toUpperCase()}
+                {(displayName || t('staff.profile.permissions.noName'))?.charAt(0).toUpperCase()}
               </div>
             )}
             {/* QR Code below avatar */}
@@ -340,14 +340,16 @@ const StaffCard = ({ staff }) => {
           <div className="identity">
             <div className="name-section">
               <h2>
-                {displayName}
+                {displayName || t('staff.profile.permissions.noName')}
                 <MdVerified 
                   className={`verification-icon ${status === 'approved' ? 'verified' : 'unverified'}`}
                   title={status === 'approved' ? t('staff.profile.verified') : t('staff.profile.unverified')}
                 />
               </h2>
-              {alternativeName && alternativeName !== displayName && (
+              {alternativeName && alternativeName !== displayName ? (
                 <span className="alt-name">{alternativeName}</span>
+              ) : (
+                <span className="alt-name">{t('staff.profile.permissions.noAltName')}</span>
               )}
             </div>
             
@@ -364,9 +366,11 @@ const StaffCard = ({ staff }) => {
             
             <PersonalInfo>
               {displayBio ? (
-                <p className="bio">{displayBio}</p>
+                <p className="bio">
+                  {displayBio.length > 200 ? displayBio.substring(0, 200) + '...' : displayBio}
+                </p>
               ) : (
-                <p className="bio no-bio">No bio available</p>
+                <p className="bio no-bio">{t('staff.profile.permissions.noBio')}</p>
               )}
             </PersonalInfo>
           </div>

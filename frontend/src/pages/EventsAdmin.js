@@ -316,6 +316,14 @@ const LanguageLabel = styled.div`
 const Label = styled.label`
   font-weight: 600;
   color: #505050;
+
+  ${props => props.required && `
+    &::after {
+      content: ' *';
+      color: var(--primary);
+      margin-left: 4px;
+    }
+  `}
 `;
 
 const Input = styled.input`
@@ -698,14 +706,14 @@ const EventsAdmin = () => {
             <div>操作</div>
           </TableHeader>
           
-          {events.map((event) => (
+          {events.map((event, index) => (
             <EventRow 
               key={event.id}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <EventId>{event.id}</EventId>
+              <EventId>{index + 1}</EventId>
               <EventTitle>{event.title}</EventTitle>
               <EventDate>
                 {formatEventDateTime(event.startDate, event.endDate)}
@@ -764,7 +772,7 @@ const EventsAdmin = () => {
               <FormRow>
                 <FormGroup>
                   <LanguageLabel>
-                    <Label htmlFor="title_en">标题</Label>
+                    <Label htmlFor="title_en" required>标题</Label>
                     <span>英文</span>
                   </LanguageLabel>
                   <Input 
@@ -780,7 +788,7 @@ const EventsAdmin = () => {
                 
                 <FormGroup>
                   <LanguageLabel>
-                    <Label htmlFor="title_zh">标题</Label>
+                    <Label htmlFor="title_zh" required>标题</Label>
                     <span>中文</span>
                   </LanguageLabel>
                   <Input 
@@ -798,7 +806,7 @@ const EventsAdmin = () => {
               <FormRow>
                 <FormGroup>
                   <LanguageLabel>
-                    <Label htmlFor="description_en">描述</Label>
+                    <Label htmlFor="description_en" required>描述</Label>
                     <span>英文</span>
                   </LanguageLabel>
                   <Textarea 
@@ -813,7 +821,7 @@ const EventsAdmin = () => {
                 
                 <FormGroup>
                   <LanguageLabel>
-                    <Label htmlFor="description_zh">描述</Label>
+                    <Label htmlFor="description_zh" required>描述</Label>
                     <span>中文</span>
                   </LanguageLabel>
                   <Textarea 
@@ -853,7 +861,7 @@ const EventsAdmin = () => {
               
               <FormRow>
                 <FormGroup>
-                  <Label htmlFor="startDate">开始日期</Label>
+                  <Label htmlFor="startDate" required>开始日期</Label>
                   <Input 
                     type="date" 
                     id="startDate" 

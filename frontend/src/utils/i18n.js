@@ -319,7 +319,10 @@ const enTranslations = {
         manageStaffDesc: 'Can create and manage staff accounts',
         adminNote: 'As an admin, you have all permissions automatically',
         defaultPosition: 'Staff Member',
-        noBio: 'No bio available'
+        noBio: 'This person is quite mysterious and hasn\'t shared anything yet',
+        noName: 'Anonymous',
+        noAltName: '无名氏',
+        notProvided: 'Not provided'
       },
       verified: 'Profile Verified',
       unverified: 'Profile Pending Verification'
@@ -779,7 +782,10 @@ const zhTranslations = {
         manageStaffDesc: '可以创建和管理成员账户',
         adminNote: '作为管理员，您自动拥有所有权限',
         defaultPosition: '团队成员',
-        noBio: '暂无个人简介'
+        noBio: '这个人很懒，什么都没有留下',
+        noName: '无名氏',
+        noAltName: 'Anonymous',
+        notProvided: '未填写'
       },
       verified: '资料已认证',
       unverified: '资料待认证'

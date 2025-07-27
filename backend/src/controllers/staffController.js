@@ -15,7 +15,7 @@ class StaffController {
   // Create or update staff profile
   static async saveStaffProfile(req, res) {
     try {
-      const result = await StaffService.saveStaffProfile(req.userId, req.body, req.user.username);
+      const result = await StaffService.saveStaffProfile(req.userId, req.body, req.user.username, req.user.role);
       res.json(result);
     } catch (error) {
       console.error('Error saving staff profile:', error);
