@@ -602,20 +602,17 @@ class StaffService {
       status: 'approved',
       isVisible: true,
       staff: {
-        isActive: true
+        isActive: true,
       },
-      AND: [
-        { department: { not: null } },
-        { department: { not: '' } }
-      ]
     };
-    
+
     if (department) {
-      // If specific department is requested, override the AND condition
-      delete whereCondition.AND;
       whereCondition.department = department;
+    } else {
+      // The `department` field is non-nullable in the schema, so we only need to check for empty strings.
+      whereCondition.department = { not: '' };
     }
-    
+
     const teamMembers = await prisma.staffProfile.findMany({
       where: whereCondition,
       include: {
