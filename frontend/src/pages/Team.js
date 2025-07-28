@@ -15,6 +15,76 @@ import SEO from '../components/SEO';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Skeleton Components for Team Page
+const SkeletonBox = styled.div`
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  animation-delay: ${props => props.delay || '0s'};
+  border-radius: ${props => props.borderRadius || '4px'};
+  width: ${props => props.width || '100px'};
+  height: ${props => props.height || '20px'};
+  
+  [data-theme="dark"] & {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 400% 100%;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+`;
+
+const SkeletonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: ${props => props.gap || '0px'};
+  flex-direction: ${props => props.direction || 'row'};
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+    padding: 0 8px;
+  }
+`;
+
+const SkeletonMemberCard = styled.div`
+  background: var(--background);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(224, 43, 32, 0.1);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+  }
+`;
+
 const StyledTeam = styled.div`
   overflow-x: hidden;
   width: 100%;
@@ -819,19 +889,221 @@ const Team = () => {
 
   if (loading) {
     return (
-      <StyledTeam>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          minHeight: '60vh',
-          flexDirection: 'column',
-          gap: '1rem'
-        }}>
-          <LoadingAnimation type="pulse" />
-          <p style={{ color: 'var(--text-light)' }}>Loading team members...</p>
-        </div>
-      </StyledTeam>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <StyledTeam>
+          <SEO
+            title="团队 | UTChinese Network 多大中文"
+            description="认识多大中文 (UTChinese Network) 的管理层与志愿者团队成员。"
+            url="https://www.utchinese.org/team"
+          />
+          
+          {/* Page Header Skeleton */}
+          <section className="page-header">
+            <div className="header-bg"></div>
+            <div className="header-content">
+              {/* Title Skeleton */}
+              <SkeletonContainer direction="column" gap="2rem">
+                <SkeletonBox 
+                  width="min(600px, 80%)" 
+                  height="clamp(3.5rem, 8vw, 6rem)" 
+                  borderRadius="8px" 
+                />
+                
+                {/* Description Skeleton */}
+                <SkeletonBox 
+                  width="min(800px, 90%)" 
+                  height="clamp(1.3rem, 3vw, 1.8rem)" 
+                  borderRadius="4px" 
+                  delay="0.1s"
+                />
+                
+                {/* Stats Grid Skeleton */}
+                <div className="stats-grid" style={{ marginTop: '2rem' }}>
+                  {[...Array(3)].map((_, index) => (
+                    <div key={index} className="stat-item">
+                      <SkeletonBox 
+                        width="60px" 
+                        height="2.5rem" 
+                        borderRadius="4px" 
+                        delay={`${0.2 + index * 0.1}s`}
+                        style={{ margin: '0 auto 0.5rem' }}
+                      />
+                      <SkeletonBox 
+                        width="80px" 
+                        height="0.9rem" 
+                        borderRadius="4px" 
+                        delay={`${0.3 + index * 0.1}s`}
+                        style={{ margin: '0 auto' }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </SkeletonContainer>
+            </div>
+          </section>
+
+          {/* Filter Section Skeleton */}
+          <section className="filter-section">
+            <div className="container">
+              <div className="filter-controls">
+                {[
+                  { label: '全部', width: '100px' },
+                  { label: '文化艺术部门', width: '160px' },
+                  { label: '职业学术部门', width: '160px' },
+                  { label: '运营部门', width: '140px' },
+                  { label: '支持部门', width: '140px' }
+                ].map((filter, index) => (
+                  <SkeletonBox
+                    key={index}
+                    width={filter.width}
+                    height="45px"
+                    borderRadius="25px"
+                    delay={`${0.6 + index * 0.05}s`}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Team Grid Skeleton */}
+          <section className="team-grid">
+            <div className="container">
+              {/* Generate 4 department sections with varying member counts */}
+              {[
+                { memberCount: 6, deptName: '文化艺术部门' },
+                { memberCount: 4, deptName: '职业学术部门' },
+                { memberCount: 5, deptName: '运营部门' },
+                { memberCount: 3, deptName: '支持部门' }
+              ].map(({ memberCount, deptName }, deptIndex) => (
+                <div key={deptIndex} className="department-section">
+                  {/* Department Header Skeleton */}
+                  <div className="department-header">
+                    <SkeletonBox 
+                      width={`${180 + deptName.length * 8}px`} 
+                      height="clamp(2.5rem, 5vw, 3.5rem)" 
+                      borderRadius="8px" 
+                      delay={`${1.0 + deptIndex * 0.2}s`}
+                      style={{ margin: '0 auto 1rem' }}
+                    />
+                    <SkeletonBox 
+                      width={`${80 + memberCount * 8}px`} 
+                      height="1.2rem" 
+                      borderRadius="4px" 
+                      delay={`${1.1 + deptIndex * 0.2}s`}
+                      style={{ margin: '0 auto' }}
+                    />
+                  </div>
+
+                  {/* Members Grid Skeleton */}
+                  <div className={`members-grid ${memberCount <= 3 ? `${memberCount === 1 ? 'single-member' : memberCount === 2 ? 'two-members' : 'three-members'}` : ''}`}>
+                    {[...Array(memberCount)].map((_, memberIndex) => {
+                      // Generate consistent but varied widths for each member
+                      const baseIndex = deptIndex * 10 + memberIndex;
+                      const nameWidth = 120 + (baseIndex * 7) % 80;
+                      const positionWidth = 100 + (baseIndex * 11) % 60;
+                      const deptWidth = 90 + (baseIndex * 13) % 50;
+                      const linkCount = 2 + (baseIndex % 4);
+                      
+                      return (
+                        <SkeletonMemberCard key={memberIndex}>
+                          <div className="member-content">
+                            {/* Avatar Skeleton */}
+                            <SkeletonContainer style={{ marginBottom: '1.5rem' }}>
+                              <SkeletonBox 
+                                width="100px" 
+                                height="100px" 
+                                borderRadius="50%" 
+                                delay={`${1.3 + deptIndex * 0.2 + memberIndex * 0.05}s`}
+                              />
+                            </SkeletonContainer>
+
+                            {/* Member Info Skeleton */}
+                            <div className="member-info" style={{ textAlign: 'center' }}>
+                              {/* Name Skeleton */}
+                              <SkeletonContainer style={{ marginBottom: '0.5rem' }}>
+                                <SkeletonBox 
+                                  width={`${nameWidth}px`} 
+                                  height="1.4rem" 
+                                  borderRadius="4px" 
+                                  delay={`${1.4 + deptIndex * 0.2 + memberIndex * 0.05}s`}
+                                />
+                              </SkeletonContainer>
+
+                              {/* Position Skeleton */}
+                              <SkeletonContainer style={{ marginBottom: '1rem' }}>
+                                <SkeletonBox 
+                                  width={`${positionWidth}px`} 
+                                  height="1.1rem" 
+                                  borderRadius="4px" 
+                                  delay={`${1.5 + deptIndex * 0.2 + memberIndex * 0.05}s`}
+                                />
+                              </SkeletonContainer>
+
+                              {/* Department Badge Skeleton */}
+                              <SkeletonContainer style={{ marginBottom: '1rem' }}>
+                                <SkeletonBox 
+                                  width={`${deptWidth}px`} 
+                                  height="28px" 
+                                  borderRadius="15px" 
+                                  delay={`${1.6 + deptIndex * 0.2 + memberIndex * 0.05}s`}
+                                />
+                              </SkeletonContainer>
+
+                              {/* Bio Skeleton - Show for some members only */}
+                              {baseIndex % 3 !== 0 && (
+                                <SkeletonContainer direction="column" gap="0.3rem" style={{ marginBottom: '1.5rem' }}>
+                                  <SkeletonBox 
+                                    width="100%" 
+                                    height="0.95rem" 
+                                    borderRadius="4px" 
+                                    delay={`${1.7 + deptIndex * 0.2 + memberIndex * 0.05}s`}
+                                  />
+                                  <SkeletonBox 
+                                    width="85%" 
+                                    height="0.95rem" 
+                                    borderRadius="4px" 
+                                    delay={`${1.75 + deptIndex * 0.2 + memberIndex * 0.05}s`}
+                                    style={{ margin: '0 auto' }}
+                                  />
+                                  <SkeletonBox 
+                                    width="70%" 
+                                    height="0.95rem" 
+                                    borderRadius="4px" 
+                                    delay={`${1.8 + deptIndex * 0.2 + memberIndex * 0.05}s`}
+                                    style={{ margin: '0 auto' }}
+                                  />
+                                </SkeletonContainer>
+                              )}
+
+                              {/* Social Links Skeleton */}
+                              <SkeletonContainer gap="1rem">
+                                {[...Array(linkCount)].map((_, linkIndex) => (
+                                  <SkeletonBox
+                                    key={linkIndex}
+                                    width="40px"
+                                    height="40px"
+                                    borderRadius="50%"
+                                    delay={`${1.9 + deptIndex * 0.2 + memberIndex * 0.05 + linkIndex * 0.02}s`}
+                                  />
+                                ))}
+                              </SkeletonContainer>
+                            </div>
+                          </div>
+                        </SkeletonMemberCard>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </StyledTeam>
+      </motion.div>
     );
   }
 
