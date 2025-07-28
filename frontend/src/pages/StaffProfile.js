@@ -28,6 +28,51 @@ import StaffCard from '../components/StaffCard';
 import ChangePasswordModal from '../components/ChangePasswordModal';
 import LoadingAnimation from '../components/LoadingAnimation';
 
+// Skeleton Components for StaffProfile
+const SkeletonBox = styled.div`
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  animation-delay: ${props => props.delay || '0s'};
+  border-radius: ${props => props.borderRadius || '4px'};
+  width: ${props => props.width || '100px'};
+  height: ${props => props.height || '20px'};
+  
+  [data-theme="dark"] & {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 400% 100%;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+`;
+
+const SkeletonFormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+`;
+
+const SkeletonGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+`;
+
 const StyledStaffProfile = styled.div`
   min-height: 100vh;
   background: linear-gradient(135deg, rgba(224, 43, 32, 0.03) 0%, rgba(252, 185, 0, 0.05) 100%);
@@ -911,10 +956,117 @@ const StaffProfile = () => {
     return (
       <StyledStaffProfile>
         <div className="container">
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <LoadingAnimation type="wave" />
-            <p style={{ marginTop: '1rem', color: 'var(--text-light)' }}>{t('common.loading')}</p>
+          {/* Page Header Skeleton */}
+          <div className="page-header">
+            <SkeletonBox width="200px" height="3.5rem" borderRadius="8px" style={{ margin: '0 auto' }} />
+            <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
+              <SkeletonBox width="min(400px, 90%)" height="1.1rem" borderRadius="4px" delay="0.1s" />
+            </div>
           </div>
+
+          {/* Profile Header Skeleton */}
+          <div className="profile-header">
+            <div className="user-info">
+              {/* Avatar Skeleton */}
+              <SkeletonBox width="60px" height="60px" borderRadius="50%" delay="0.2s" />
+              <div className="details">
+                <SkeletonBox width="120px" height="1.5rem" borderRadius="4px" delay="0.3s" />
+                <div style={{ marginTop: '0.5rem' }}>
+                  <SkeletonBox width="180px" height="1rem" borderRadius="4px" delay="0.4s" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="actions" style={{ 
+              display: 'flex', 
+              gap: '1rem',
+              flexWrap: 'wrap',
+              justifyContent: 'center'
+            }}>
+              <SkeletonBox width="120px" height="40px" borderRadius="10px" delay="0.5s" />
+              <SkeletonBox width="100px" height="40px" borderRadius="10px" delay="0.6s" />
+              <SkeletonBox width="80px" height="40px" borderRadius="10px" delay="0.7s" />
+            </div>
+          </div>
+
+          {/* Status Banner Skeleton */}
+          <SkeletonBox width="100%" height="80px" borderRadius="12px" style={{ marginBottom: '2rem' }} delay="0.8s" />
+
+          {/* Digital Card Skeleton */}
+          <div style={{ 
+            background: 'white', 
+            borderRadius: '20px', 
+            padding: '2rem', 
+            marginBottom: '2rem',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(224, 43, 32, 0.1)'
+          }}>
+            {/* Card Header */}
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              <SkeletonBox width="120px" height="120px" borderRadius="50%" style={{ margin: '0 auto 1rem' }} delay="0.9s" />
+              <SkeletonBox width="200px" height="1.5rem" borderRadius="4px" style={{ margin: '0 auto 0.5rem' }} delay="1.0s" />
+              <SkeletonBox width="150px" height="1rem" borderRadius="4px" style={{ margin: '0 auto' }} delay="1.1s" />
+            </div>
+            
+            {/* Card Info Grid */}
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+              gap: '1rem' 
+            }}>
+              {[...Array(6)].map((_, i) => (
+                <div key={i} style={{ textAlign: 'center' }}>
+                  <SkeletonBox width="100%" height="1rem" borderRadius="4px" style={{ marginBottom: '0.5rem' }} delay={`${1.2 + i * 0.1}s`} />
+                  <SkeletonBox width="80%" height="0.875rem" borderRadius="4px" style={{ margin: '0 auto' }} delay={`${1.3 + i * 0.1}s`} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Profile Form Skeleton */}
+          <ProfileCard
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            {/* Avatar Section Skeleton */}
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              <SkeletonBox width="150px" height="150px" borderRadius="50%" style={{ margin: '0 auto 1rem' }} delay="1.8s" />
+            </div>
+
+            {/* Form Grid Skeleton */}
+            <SkeletonGrid>
+              {[...Array(12)].map((_, index) => (
+                <SkeletonFormGroup key={index}>
+                  <SkeletonBox width="100px" height="16px" borderRadius="4px" delay={`${1.9 + index * 0.05}s`} />
+                  <SkeletonBox width="100%" height="52px" borderRadius="12px" delay={`${2.0 + index * 0.05}s`} />
+                </SkeletonFormGroup>
+              ))}
+              
+              {/* Bio fields - full width */}
+              <div style={{ gridColumn: '1 / -1' }}>
+                <SkeletonFormGroup>
+                  <SkeletonBox width="120px" height="16px" borderRadius="4px" delay="2.5s" />
+                  <SkeletonBox width="100%" height="120px" borderRadius="12px" delay="2.6s" />
+                </SkeletonFormGroup>
+              </div>
+              
+              <div style={{ gridColumn: '1 / -1' }}>
+                <SkeletonFormGroup>
+                  <SkeletonBox width="120px" height="16px" borderRadius="4px" delay="2.7s" />
+                  <SkeletonBox width="100%" height="120px" borderRadius="12px" delay="2.8s" />
+                </SkeletonFormGroup>
+              </div>
+            </SkeletonGrid>
+
+            {/* Submit Section Skeleton */}
+            <div style={{ 
+              textAlign: 'center', 
+              paddingTop: '1rem', 
+              borderTop: '1px solid #e5e7eb' 
+            }}>
+              <SkeletonBox width="200px" height="56px" borderRadius="12px" style={{ margin: '0 auto' }} delay="2.9s" />
+            </div>
+          </ProfileCard>
         </div>
       </StyledStaffProfile>
     );
