@@ -462,6 +462,71 @@ const Toast = styled(motion.div)`
   z-index: 1000;
 `;
 
+// Skeleton Components
+const SkeletonBox = styled.div`
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  border-radius: ${props => props.borderRadius || '4px'};
+  width: ${props => props.width || '100px'};
+  height: ${props => props.height || '20px'};
+  
+  [data-theme="dark"] & {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 400% 100%;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+`;
+
+const SkeletonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: ${props => props.gap || '0px'};
+  
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    padding: 0 8px;
+  }
+`;
+
+// Mobile Skeleton Row for responsive design
+const MobileSkeletonRow = styled.div`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    
+    [data-theme="dark"] & {
+      border-bottom-color: #2a2a2a;
+    }
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+`;
+
+const DesktopSkeletonRow = styled(EventRow)`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const EventsAdmin = () => {
   const { isAuthenticated, hasPermission, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -700,7 +765,85 @@ const EventsAdmin = () => {
   };
 
   if (authLoading || loading) {
-    return <LoadingAnimation />;
+    return (
+      <AdminContainer>
+        {/* Header Skeleton */}
+        <Header>
+          <SkeletonBox width="200px" height="40px" borderRadius="8px" />
+          <SkeletonBox width="140px" height="40px" borderRadius="8px" />
+        </Header>
+
+        {/* Table Skeleton */}
+        <EventsTable>
+          <TableHeader>
+            <div>ID</div>
+            <div>标题</div>
+            <div>日期</div>
+            <div>状态</div>
+            <div>精选</div>
+            <div>操作</div>
+          </TableHeader>
+          
+          {/* Generate 5 skeleton rows */}
+          {[...Array(5)].map((_, index) => (
+            <React.Fragment key={index}>
+              {/* Desktop Skeleton Row */}
+              <DesktopSkeletonRow>
+                {/* ID Skeleton */}
+                <SkeletonContainer>
+                  <SkeletonBox width="20px" height="20px" />
+                </SkeletonContainer>
+                
+                {/* Title Skeleton */}
+                <SkeletonContainer>
+                  <SkeletonBox width="180px" height="20px" />
+                </SkeletonContainer>
+                
+                {/* Date Skeleton */}
+                <SkeletonContainer>
+                  <SkeletonBox width="120px" height="20px" />
+                </SkeletonContainer>
+                
+                {/* Status Skeleton */}
+                <SkeletonContainer>
+                  <SkeletonBox width="80px" height="24px" borderRadius="12px" />
+                </SkeletonContainer>
+                
+                {/* Featured Star Skeleton */}
+                <SkeletonContainer>
+                  <SkeletonBox width="24px" height="24px" borderRadius="50%" />
+                </SkeletonContainer>
+                
+                {/* Actions Skeleton */}
+                <SkeletonContainer gap="8px">
+                  <SkeletonBox width="60px" height="32px" borderRadius="6px" />
+                  <SkeletonBox width="60px" height="32px" borderRadius="6px" />
+                </SkeletonContainer>
+              </DesktopSkeletonRow>
+
+              {/* Mobile Skeleton Row */}
+              <MobileSkeletonRow>
+                {/* Mobile Event Info */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', width: '100%' }}>
+                  <SkeletonBox width="80%" height="18px" />
+                  <SkeletonBox width="60%" height="14px" />
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginTop: '8px' }}>
+                    <SkeletonBox width="70px" height="22px" borderRadius="11px" />
+                    <SkeletonBox width="20px" height="20px" borderRadius="50%" />
+                  </div>
+                </div>
+                
+                {/* Mobile Actions */}
+                <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                  <SkeletonBox width="55px" height="30px" borderRadius="6px" />
+                  <SkeletonBox width="55px" height="30px" borderRadius="6px" />
+                </div>
+              </MobileSkeletonRow>
+            </React.Fragment>
+          ))}
+        </EventsTable>
+      </AdminContainer>
+    );
   }
 
   return (
@@ -716,9 +859,7 @@ const EventsAdmin = () => {
         </AddButton>
       </Header>
 
-      {loading ? (
-        <NoEventsMessage>加载中...</NoEventsMessage>
-      ) : events.length > 0 ? (
+      {events.length > 0 ? (
         <EventsTable>
           <TableHeader>
             <div>ID</div>
