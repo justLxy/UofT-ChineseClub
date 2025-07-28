@@ -1620,7 +1620,7 @@ const StaffAdmin = () => {
                                   fontWeight: 'bold',
                                   fontSize: '1.2rem'
                                 }}>
-                                  {((item.name_en || item.staff?.username || t('staff.profile.permissions.noName')) + '').charAt(0).toUpperCase()}
+                                  {((item.name_en || item.staff?.username || 'U') + '').charAt(0).toUpperCase()}
                                 </div>
                               )}
                             </div>
@@ -1637,7 +1637,7 @@ const StaffAdmin = () => {
                           <div className="meta">
                             <div className="meta-item">
                               <FiUsers />
-                              {item.staff?.username}
+                              {item.staff?.username || t('admin.staff.labels.unknownUser')}
                             </div>
                             <div className="meta-item">
                               <FiMail />

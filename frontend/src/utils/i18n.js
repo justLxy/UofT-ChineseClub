@@ -504,7 +504,8 @@ const enTranslations = {
         inactive: 'Inactive',
         pending: 'Pending',
         approved: 'Approved',
-        rejected: 'Rejected'
+        rejected: 'Rejected',
+        unknownUser: 'Unknown User'
       }
     }
   }
@@ -1013,7 +1014,8 @@ const zhTranslations = {
         inactive: '未激活',
         pending: '待审核',
         approved: '已通过',
-        rejected: '已拒绝'
+        rejected: '已拒绝',
+        unknownUser: '未知用户'
       }
     }
   }
