@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, startTransition } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -701,6 +701,7 @@ const Team = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState('all');
   const [selectedStaff, setSelectedStaff] = useState(null);
+  const [isSelectingStaff, setIsSelectingStaff] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const headerRef = useRef(null);
@@ -839,27 +840,37 @@ const Team = () => {
   const handleStaffClick = (staffUsername) => {
     const staff = teamMembers.find(member => member.username === staffUsername);
     if (staff) {
-      // Set selected staff immediately for faster UI response
+      // Provide immediate visual feedback
+      setIsSelectingStaff(true);
+      
+      // Set selected staff immediately for instant UI response
       setSelectedStaff(staff);
       
-      // Update URL asynchronously using path param and lang query
-      setTimeout(() => {
+      // Reset selecting state after modal starts opening
+      setTimeout(() => setIsSelectingStaff(false), 50);
+      
+      // Update URL in a non-blocking transition for seamless experience
+      startTransition(() => {
         const langParam = i18n.language;
         navigate(`/team/${staffUsername}?lang=${langParam}`, { replace: true });
-      }, 0);
+      });
     }
   };
 
   // Handle modal close
   const handleCloseModal = () => {
+    // Close modal immediately for instant UI response
     setSelectedStaff(null);
-    // Remove member parameter from URL
-    const newSearchParams = new URLSearchParams(location.search);
-    newSearchParams.delete('member');
-    const newUrl = newSearchParams.toString() 
-      ? `${location.pathname}?${newSearchParams.toString()}`
-      : location.pathname;
-    navigate(newUrl, { replace: true });
+    
+    // Update URL in a non-blocking transition
+    startTransition(() => {
+      const newSearchParams = new URLSearchParams(location.search);
+      newSearchParams.delete('member');
+      const newUrl = newSearchParams.toString() 
+        ? `${location.pathname}?${newSearchParams.toString()}`
+        : location.pathname;
+      navigate(newUrl, { replace: true });
+    });
   };
 
   // Get appropriate grid class name based on member count
@@ -1515,6 +1526,7 @@ const Team = () => {
         <StaffDetailModal
           staff={selectedStaff}
           onClose={handleCloseModal}
+          isQuickOpening={isSelectingStaff}
         />
       )}
     </motion.div>

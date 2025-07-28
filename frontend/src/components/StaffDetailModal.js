@@ -148,7 +148,8 @@ const overlayVariants = {
   visible: { 
     opacity: 1,
     transition: { 
-      duration: 0.2
+      duration: 0.2,
+      ease: "easeOut"
     }
   },
   exit: { 
@@ -161,19 +162,17 @@ const overlayVariants = {
 
 const modalVariants = {
   hidden: { 
-    y: 30,
+    y: 50,
     opacity: 0,
-    scale: 0.98
+    scale: 0.95
   },
   visible: { 
     y: 0,
     opacity: 1,
     scale: 1,
     transition: { 
-      type: "spring",
-      stiffness: 400,
-      damping: 25,
-      mass: 0.8
+      duration: 0.25,
+      ease: "easeOut"
     }
   },
   exit: { 
@@ -186,7 +185,50 @@ const modalVariants = {
   }
 };
 
-const StaffDetailModal = ({ staff: initialStaff, onClose }) => {
+// Quick opening variants for instant response
+const quickOverlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { 
+      duration: 0.1,
+      ease: "easeOut"
+    }
+  },
+  exit: { 
+    opacity: 0,
+    transition: { 
+      duration: 0.1
+    }
+  }
+};
+
+const quickModalVariants = {
+  hidden: { 
+    y: 20,
+    opacity: 0,
+    scale: 0.98
+  },
+  visible: { 
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { 
+      duration: 0.15,
+      ease: "easeOut"
+    }
+  },
+  exit: { 
+    y: 20,
+    opacity: 0,
+    scale: 0.98,
+    transition: { 
+      duration: 0.1
+    }
+  }
+};
+
+const StaffDetailModal = ({ staff: initialStaff, onClose, isQuickOpening = false }) => {
   const { i18n } = useTranslation();
   const [staff, setStaff] = useState(initialStaff);
   
@@ -208,14 +250,14 @@ const StaffDetailModal = ({ staff: initialStaff, onClose }) => {
   return (
     <AnimatePresence>
       <Overlay
-        variants={overlayVariants}
+        variants={isQuickOpening ? quickOverlayVariants : overlayVariants}
         initial="hidden"
         animate="visible"
         exit="exit"
         onClick={onClose}
       >
         <ModalContainer
-          variants={modalVariants}
+          variants={isQuickOpening ? quickModalVariants : modalVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
