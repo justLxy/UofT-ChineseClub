@@ -679,7 +679,7 @@ const PermissionsSection = styled.div`
 const StaffProfile = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, loading: authLoading } = useAuth();
   const fileInputRef = useRef(null);
   
   const [profile, setProfile] = useState(null);
@@ -711,10 +711,10 @@ const StaffProfile = () => {
 
   // Redirect if not authenticated
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       navigate('/');
     }
-  }, [isAuthenticated, navigate]);
+  }, [authLoading, isAuthenticated, navigate]);
 
   // Close permission menu when clicking outside
   useEffect(() => {
@@ -907,11 +907,7 @@ const StaffProfile = () => {
     }
   };
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return (
       <StyledStaffProfile>
         <div className="container">
@@ -923,6 +919,13 @@ const StaffProfile = () => {
       </StyledStaffProfile>
     );
   }
+
+  if (!isAuthenticated) {
+    // This case should theoretically be handled by the useEffect redirect,
+    // but it's good practice as a fallback.
+    return null;
+  }
+
 
   const hasAnyPermission = user?.role === 'admin' || user?.permissions?.canManageEvents || user?.permissions?.canReviewProfiles || user?.permissions?.canManageStaff;
 
