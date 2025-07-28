@@ -671,7 +671,7 @@ const Modal = styled(motion.div)`
 const StaffAdmin = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { hasPermission, user, isAdmin } = useAuth();
+  const { hasPermission, user, isAdmin, isAuthenticated, loading: authLoading } = useAuth();
   
   const [activeTab, setActiveTab] = useState('accounts');
   
@@ -706,10 +706,14 @@ const StaffAdmin = () => {
 
   // Redirect if no staff management permissions
   useEffect(() => {
-    if (!hasPermission('manageStaff') && !hasPermission('reviewProfiles')) {
+    if (!authLoading && !isAuthenticated) {
+      navigate('/');
+      return;
+    }
+    if (!authLoading && !hasPermission('manageStaff') && !hasPermission('reviewProfiles')) {
       navigate('/');
     }
-  }, [hasPermission, navigate]);
+  }, [authLoading, isAuthenticated, hasPermission, navigate]);
 
   // Set default tab based on permissions
   useEffect(() => {
@@ -1098,6 +1102,10 @@ const StaffAdmin = () => {
   useEffect(() => {
     setImageLoadErrors({});
   }, [filteredData]);
+
+  if (authLoading) {
+    return <LoadingAnimation />;
+  }
 
   if (!hasPermission('manageStaff') && !hasPermission('reviewProfiles')) {
     return null;

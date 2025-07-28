@@ -4,6 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiPlus, FiEdit2, FiTrash2, FiStar, FiUpload } from 'react-icons/fi';
 import { getEvents, createEvent, updateEvent, deleteEvent, getFullEventImageUrl, uploadEventImage } from '../utils/api';
 import { formatEventDateTime } from '../utils/dateUtils';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import LoadingAnimation from '../components/LoadingAnimation';
 
 const AdminContainer = styled.div`
   max-width: 1200px;
@@ -460,6 +463,9 @@ const Toast = styled(motion.div)`
 `;
 
 const EventsAdmin = () => {
+  const { isAuthenticated, hasPermission, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -485,8 +491,21 @@ const EventsAdmin = () => {
   const [toast, setToast] = useState({ visible: false, message: '' });
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    // 权限检查
+    if (!authLoading) {
+      if (!isAuthenticated || !hasPermission('manageEvents')) {
+        navigate('/');
+      }
+    }
+  }, [authLoading, isAuthenticated, hasPermission, navigate]);
+
+  useEffect(() => {
+    // 只有在通过权限检查后才获取数据
+    if (!authLoading && isAuthenticated && hasPermission('manageEvents')) {
+      fetchEvents();
+    }
+  }, [authLoading, isAuthenticated, hasPermission]);
+
 
   const fetchEvents = async () => {
     try {
@@ -679,6 +698,10 @@ const EventsAdmin = () => {
     ongoing: '进行中',
     upcoming: '即将开始'
   };
+
+  if (authLoading || loading) {
+    return <LoadingAnimation />;
+  }
 
   return (
     <AdminContainer>
