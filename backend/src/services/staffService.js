@@ -381,7 +381,13 @@ class StaffService {
 
       if (existingProfile) {
         // 保留原有状态字段，除非调用方显式提供新状态
-        const { status: _status, reviewedAt: _ra, reviewedBy: _rb, createdAt: _ca, updatedAt: _ua, id: _pid, staffId: _sid, ...updatableFields } = profileUpdate;
+        const { reviewedAt: _ra, reviewedBy: _rb, createdAt: _ca, updatedAt: _ua, id: _pid, staffId: _sid, ...updatableFields } = profileUpdate;
+
+        // 如果没有显式提供状态，默认为 approved
+        if (updatableFields.status === undefined) {
+          updatableFields.status = 'approved';
+          updatableFields.isVisible = true;
+        }
 
         await prisma.staffProfile.update({
           where: { staffId: parseInt(id) },
