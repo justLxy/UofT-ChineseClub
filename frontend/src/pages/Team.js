@@ -91,7 +91,7 @@ const StyledTeam = styled.div`
   
   .page-header {
     height: 80vh;
-    background: linear-gradient(135deg, rgba(224, 43, 32, 0.05) 0%, rgba(252, 185, 0, 0.1) 100%);
+    background: var(--background);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,7 +128,7 @@ const StyledTeam = styled.div`
         height: 400px;
         border-radius: 50%;
         background: var(--primary);
-        opacity: 0.08;
+        opacity: 0.03;
         top: 15%;
         right: -150px;
         filter: blur(80px);
@@ -141,8 +141,8 @@ const StyledTeam = styled.div`
         width: 500px;
         height: 500px;
         border-radius: 50%;
-        background: var(--accent);
-        opacity: 0.06;
+        background: var(--primary);
+        opacity: 0.02;
         bottom: -200px;
         left: -200px;
         filter: blur(100px);
