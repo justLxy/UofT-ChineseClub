@@ -91,7 +91,7 @@ const StyledTeam = styled.div`
   
   .page-header {
     height: 80vh;
-    background: var(--background);
+    background: linear-gradient(135deg, rgba(224, 43, 32, 0.05) 0%, rgba(252, 185, 0, 0.1) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,7 +128,7 @@ const StyledTeam = styled.div`
         height: 400px;
         border-radius: 50%;
         background: var(--primary);
-        opacity: 0.03;
+        opacity: 0.08;
         top: 15%;
         right: -150px;
         filter: blur(80px);
@@ -141,8 +141,8 @@ const StyledTeam = styled.div`
         width: 500px;
         height: 500px;
         border-radius: 50%;
-        background: var(--primary);
-        opacity: 0.02;
+        background: var(--accent);
+        opacity: 0.06;
         bottom: -200px;
         left: -200px;
         filter: blur(100px);
@@ -925,7 +925,13 @@ const Team = () => {
                 {/* Stats Grid Skeleton */}
                 <div className="stats-grid" style={{ marginTop: '2rem' }}>
                   {[...Array(3)].map((_, index) => (
-                    <div key={index} className="stat-item">
+                    <div key={index} style={{ 
+                      textAlign: 'center',
+                      padding: '1.5rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center'
+                    }}>
                       <SkeletonBox 
                         width="60px" 
                         height="2.5rem" 
