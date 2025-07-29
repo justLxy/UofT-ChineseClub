@@ -3,12 +3,13 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SocialSidebar from './components/SocialSidebar';
+import AccountStatusBanner from './components/AccountStatusBanner';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -28,11 +29,14 @@ const LoadingSpinner = () => (
   </div>
 );
 
-function App() {
+// Main app content component that uses auth context
+const AppContent = () => {
   const { i18n } = useTranslation();
   const location = useLocation();
+  const { user } = useAuth();
   const appRef = useRef(null);
   const [theme, setTheme] = useState('light');
+  const [showAccountBanner, setShowAccountBanner] = useState(true);
 
   // Handle language change
   const changeLanguage = (lng) => {
@@ -51,31 +55,34 @@ function App() {
     }
   };
 
+  // Apply saved theme and language on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+    
+    if (savedLanguage) {
+      i18n.changeLanguage(savedLanguage);
+      document.documentElement.lang = savedLanguage;
+    }
+    
+    // Apply theme variables on mount
+    document.documentElement.setAttribute('data-theme', savedTheme || 'light');
+  }, [i18n]);
+
+  // Update theme variables when theme changes
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
   // Scroll to top on route change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [location.pathname]);
-
-  useEffect(() => {
-    // Apply theme to document element
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // Sync language with ?lang= parameter in URL on every navigation
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const langParam = urlParams.get('lang');
-    if (langParam && ['en', 'zh'].includes(langParam) && langParam !== i18n.language) {
-      i18n.changeLanguage(langParam);
-      document.documentElement.lang = langParam;
-      localStorage.setItem('preferredLanguage', langParam);
-    }
-  }, [location.search, i18n]);
-
-  // Ensure html lang attribute stays in sync with i18n language
-  useEffect(() => {
-    document.documentElement.lang = i18n.language;
-  }, [i18n.language]);
 
   // Toggle theme between light and dark
   const toggleTheme = () => {
@@ -93,35 +100,49 @@ function App() {
     }
   };
 
+  const handleDismissBanner = () => {
+    setShowAccountBanner(false);
+  };
+
+  return (
+    <div className="app" ref={appRef}>
+      <Header changeLanguage={changeLanguage} theme={theme} toggleTheme={toggleTheme} />
+      <div className="language-change-flash"></div>
+      <div className="theme-change-flash"></div>
+      
+      {/* Account status banner for unactivated users */}
+      {showAccountBanner && <AccountStatusBanner user={user} onDismiss={handleDismissBanner} />}
+      
+      <SocialSidebar />
+      
+      <main>
+        <AnimatePresence mode="wait">
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/join" element={<Join />} />
+              <Route path="/team" element={<Team />} />
+              <Route path="/team/:member" element={<Team />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/admin/events" element={<EventsAdmin />} />
+              <Route path="/admin/staff" element={<StaffAdmin />} />
+              <Route path="/staff/profile" element={<StaffProfile />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </AnimatePresence>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+};
+
+function App() {
   return (
     <AuthProvider>
-      <div className="app" ref={appRef}>
-        <Header changeLanguage={changeLanguage} theme={theme} toggleTheme={toggleTheme} />
-        <div className="language-change-flash"></div>
-        <div className="theme-change-flash"></div>
-        <SocialSidebar />
-        
-        <main>
-          <AnimatePresence mode="wait">
-            <Suspense fallback={<LoadingSpinner />}>
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/join" element={<Join />} />
-                <Route path="/team" element={<Team />} />
-                <Route path="/team/:member" element={<Team />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/admin/events" element={<EventsAdmin />} />
-                <Route path="/admin/staff" element={<StaffAdmin />} />
-                <Route path="/staff/profile" element={<StaffProfile />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </AnimatePresence>
-        </main>
-        
-        <Footer />
-      </div>
+      <AppContent />
     </AuthProvider>
   );
 }

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from 'styled-components';
-import { FiUser, FiLogIn, FiLogOut, FiSettings, FiUsers, FiChevronDown } from 'react-icons/fi';
+import { FiUser, FiLogIn, FiLogOut, FiSettings, FiUsers, FiChevronDown, FiLock } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
 import UnifiedLoginModal from './UnifiedLoginModal';
 import ThemeSwitch from './ThemeSwitch';
@@ -465,6 +465,22 @@ const StyledHeader = styled.header`
           }
         }
         
+        &.disabled {
+          color: var(--text-secondary);
+          opacity: 0.5;
+          cursor: not-allowed;
+          
+          &:hover {
+            background: none;
+            color: var(--text-secondary);
+            transform: none;
+          }
+          
+          svg {
+            opacity: 0.5;
+          }
+        }
+        
         svg {
           width: 16px;
           height: 16px;
@@ -660,13 +676,16 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
                       )}
                       
                       <button 
-                        className="dropdown-item"
+                        className={`dropdown-item ${!user?.isActive ? 'disabled' : ''}`}
                         onClick={() => {
-                          navigate('/staff/profile');
-                          setShowUserMenu(false);
+                          if (user?.isActive) {
+                            navigate('/staff/profile');
+                            setShowUserMenu(false);
+                          }
                         }}
+                        title={!user?.isActive ? t('accountStatus.notActivated.description') : ''}
                       >
-                        <FiUser />
+                        {user?.isActive ? <FiUser /> : <FiLock />}
                         {t('header.myProfile')}
                       </button>
                       
@@ -860,21 +879,28 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
                   </Link>
                 )}
                 
-                <Link 
-                  to="/staff/profile"
-                  onClick={() => setMobileMenuOpen(false)}
+                <div
+                  onClick={() => {
+                    if (user?.isActive) {
+                      navigate('/staff/profile');
+                      setMobileMenuOpen(false);
+                    }
+                  }}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
                     fontSize: '1rem',
-                    color: 'var(--text)',
-                    textDecoration: 'none'
+                    color: user?.isActive ? 'var(--text)' : 'var(--text-secondary)',
+                    textDecoration: 'none',
+                    opacity: user?.isActive ? 1 : 0.5,
+                    cursor: user?.isActive ? 'pointer' : 'not-allowed'
                   }}
+                  title={!user?.isActive ? t('accountStatus.notActivated.description') : ''}
                 >
-                  <FiUser />
+                  {user?.isActive ? <FiUser /> : <FiLock />}
                   {t('header.myProfile')}
-                </Link>
+                </div>
                 
                 <button
                   onClick={() => {

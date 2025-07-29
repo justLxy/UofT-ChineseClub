@@ -1,5 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { login as apiLogin, getCurrentUser } from '../utils/api';
+import { 
+  login as apiLogin, 
+  loginWithEmail as apiLoginWithEmail,
+  register as apiRegister,
+  sendVerificationCode as apiSendVerificationCode,
+  getCurrentUser 
+} from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -57,19 +63,53 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('auth-logout', handleAuthLogout);
   }, []);
 
-  // 统一登录函数
+  // 处理登录成功后的通用逻辑
+  const handleLoginSuccess = (response) => {
+    // 存储token和用户信息
+    localStorage.setItem('userToken', response.token);
+    localStorage.setItem('userAuthenticated', 'true');
+    localStorage.setItem('currentUser', JSON.stringify(response.user));
+    
+    setIsAuthenticated(true);
+    setUser(response.user);
+    
+    return response;
+  };
+
+  // 统一登录函数（用户名/邮箱 + 密码）
   const login = async (identifier, password) => {
     try {
       const response = await apiLogin(identifier, password);
-      
-      // 存储token和用户信息
-      localStorage.setItem('userToken', response.token);
-      localStorage.setItem('userAuthenticated', 'true');
-      localStorage.setItem('currentUser', JSON.stringify(response.user));
-      
-      setIsAuthenticated(true);
-      setUser(response.user);
-      
+      return handleLoginSuccess(response);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // 邮箱验证码登录
+  const loginWithEmail = async (email, verificationCode) => {
+    try {
+      const response = await apiLoginWithEmail(email, verificationCode);
+      return handleLoginSuccess(response);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // 注册新用户
+  const register = async (email, username, password, verificationCode) => {
+    try {
+      const response = await apiRegister(email, username, password, verificationCode);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // 发送验证码
+  const sendVerificationCode = async (email, purpose = 'login') => {
+    try {
+      const response = await apiSendVerificationCode(email, purpose);
       return response;
     } catch (error) {
       throw error;
@@ -125,6 +165,9 @@ export const AuthProvider = ({ children }) => {
     
     // 认证函数
     login,
+    loginWithEmail,
+    register,
+    sendVerificationCode,
     logout,
     updateUser,
     

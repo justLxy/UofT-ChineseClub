@@ -1,8 +1,12 @@
 const bcrypt = require('bcryptjs');
 const fs = require('fs').promises;
 const path = require('path');
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 const prisma = require('../config/database');
 const { transformTeamMemberByLanguage } = require('../utils/fileUtils');
+const { uploadsDir } = require('../middleware/upload');
+const EmailService = require('./emailService');
 
 class StaffService {
   // Get staff profile (own profile)
@@ -121,9 +125,32 @@ class StaffService {
       });
     }
     
+    // 如果不是管理员且为新提交或更新状态变为pending，发送审核通知给管理员
+    if (!isAdmin && newStatus === 'pending') {
+      try {
+        // 获取用户信息用于邮件通知
+        const userInfo = await prisma.staff.findUnique({
+          where: { id: staffId },
+          select: { email: true, username: true }
+        });
+
+        if (userInfo) {
+          await EmailService.sendProfileReviewNotification(
+            profileSaveData,
+            userInfo.email,
+            userInfo.username
+          );
+          console.log(`审核通知已发送给管理员 - 用户: ${userInfo.username}`);
+        }
+      } catch (emailError) {
+        console.error('发送审核通知邮件失败:', emailError);
+        // 不阻止个人资料保存，只记录错误
+      }
+    }
+
     return { 
       profile, 
-      message: 'Profile submitted for review' 
+      message: isAdmin ? 'Profile saved successfully' : 'Profile submitted for review' 
     };
   }
 
@@ -483,13 +510,14 @@ class StaffService {
 
     const intIds = ids.map(id => parseInt(id));
     
+    // 获取目标用户信息（用于邮件通知）
+    const targetStaff = await prisma.staff.findMany({
+      where: { id: { in: intIds } },
+      select: { id: true, role: true, username: true, email: true }
+    });
+    
     // 如果当前用户不是admin，检查是否试图操作admin账户
     if (currentUserRole !== 'admin') {
-      const targetStaff = await prisma.staff.findMany({
-        where: { id: { in: intIds } },
-        select: { id: true, role: true }
-      });
-      
       const adminTargets = targetStaff.filter(staff => staff.role === 'admin');
       if (adminTargets.length > 0) {
         throw new Error('Permission denied: Cannot modify admin accounts');
@@ -501,6 +529,24 @@ class StaffService {
       where: { id: { in: intIds } },
       data: { isActive: isActive }
     });
+    
+    // 发送邮件通知给每个被操作的用户
+    const emailPromises = targetStaff.map(async (staff) => {
+      try {
+        await EmailService.sendAccountActivationNotification(
+          staff.email,
+          staff.username,
+          isActive,
+          '管理员'
+        );
+      } catch (emailError) {
+        console.error(`发送激活通知邮件失败 - ${staff.username}:`, emailError);
+        // 不阻止批量操作，只记录错误
+      }
+    });
+
+    // 并行发送所有邮件
+    await Promise.allSettled(emailPromises);
     
     const action = isActive ? 'activated' : 'deactivated';
     
@@ -596,6 +642,22 @@ class StaffService {
       }
     });
     
+    // 发送审核结果通知给用户（如果状态不是pending）
+    if (status !== 'pending') {
+      try {
+        await EmailService.sendProfileReviewResult(
+          updatedProfile.staff.email,
+          updatedProfile.staff.username,
+          status,
+          reviewNote
+        );
+        console.log(`审核结果通知已发送给用户 - ${updatedProfile.staff.username}: ${status}`);
+      } catch (emailError) {
+        console.error('发送审核结果邮件失败:', emailError);
+        // 不阻止审核操作，只记录错误
+      }
+    }
+
     return { 
       profile: updatedProfile, 
       message: `Profile ${status} successfully` 

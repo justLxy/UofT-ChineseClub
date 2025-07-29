@@ -74,13 +74,85 @@ api.interceptors.response.use(
 // 认证 API
 // ===============================
 
-// 统一登录API
+// 统一登录API（用户名/邮箱 + 密码）
 export const login = async (identifier, password) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/auth/login`, { identifier, password });
     return response.data;
   } catch (error) {
     console.error('登录错误:', error);
+    throw error;
+  }
+};
+
+// 邮箱验证码登录
+export const loginWithEmail = async (email, verificationCode) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/login-email`, { 
+      email, 
+      verificationCode 
+    });
+    return response.data;
+  } catch (error) {
+    console.error('邮箱验证码登录错误:', error);
+    throw error;
+  }
+};
+
+// 注册新用户
+export const register = async (email, username, password, verificationCode) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, { 
+      email, 
+      username, 
+      password, 
+      verificationCode 
+    });
+    return response.data;
+  } catch (error) {
+    console.error('注册错误:', error);
+    throw error;
+  }
+};
+
+// 发送验证码
+export const sendVerificationCode = async (email, purpose = 'login') => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/send-verification-code`, { 
+      email, 
+      purpose 
+    });
+    return response.data;
+  } catch (error) {
+    console.error('发送验证码错误:', error);
+    throw error;
+  }
+};
+
+// 验证验证码（不登录，只验证）
+export const verifyCode = async (email, verificationCode) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/auth/verify-code`, { 
+      email, 
+      verificationCode 
+    });
+    return response.data;
+  } catch (error) {
+    console.error('验证验证码错误:', error);
+    throw error;
+  }
+};
+
+// 绑定邮箱（需要登录）
+export const bindEmail = async (newEmail, verificationCode) => {
+  try {
+    const response = await api.post('/auth/bind-email', { 
+      newEmail, 
+      verificationCode 
+    });
+    return response.data;
+  } catch (error) {
+    console.error('绑定邮箱错误:', error);
     throw error;
   }
 };

@@ -23,8 +23,8 @@ const authenticateUser = async (req, res, next) => {
       }
     });
     
-    if (!user || !user.isActive) {
-      return res.status(401).json({ error: '用户不存在或账户已被禁用' });
+    if (!user) {
+      return res.status(401).json({ error: '用户不存在' });
     }
     
     // 将用户信息添加到请求对象
@@ -34,6 +34,7 @@ const authenticateUser = async (req, res, next) => {
       username: user.username,
       email: user.email,
       role: user.role,
+      isActive: user.isActive,
       permissions: {
         canManageEvents: user.canManageEvents,
         canReviewProfiles: user.canReviewProfiles,
@@ -57,6 +58,12 @@ const requirePermission = (permission) => {
     }
     
     const { user } = req;
+    
+    // 检查用户是否激活（对于需要权限的操作）
+    if (!user.isActive) {
+      return res.status(403).json({ error: '账号未激活，无法执行此操作' });
+    }
+    
     let hasPermission = false;
     
     // 超级管理员拥有所有权限
@@ -91,6 +98,11 @@ const requirePermission = (permission) => {
 const requireAdminRole = async (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ error: '需要认证' });
+  }
+  
+  // 检查用户是否激活
+  if (!req.user.isActive) {
+    return res.status(403).json({ error: '账号未激活，无法执行此操作' });
   }
   
   if (req.user.role !== 'admin') {
