@@ -283,6 +283,7 @@ class StaffService {
       email, 
       password, 
       role = 'staff',
+      isActive = false,
       permissions = {}
     } = staffData;
     
@@ -322,7 +323,7 @@ class StaffService {
         canManageEvents: permissions.canManageEvents || false,
         canManageStaff: permissions.canManageStaff || false,
         canReviewProfiles: permissions.canReviewProfiles || false,
-        isActive: true
+        isActive
       }
     });
     

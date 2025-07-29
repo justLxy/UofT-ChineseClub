@@ -696,7 +696,7 @@ const StaffAdmin = () => {
     username: '',
     email: '',
     password: '',
-    isActive: true,
+    isActive: false,
     role: 'staff'
   });
   const [currentPage, setCurrentPage] = useState(1);
@@ -816,7 +816,7 @@ const StaffAdmin = () => {
       username: '',
       email: '',
       password: '123',
-      isActive: true,
+      isActive: false,
       role: 'staff',
       canManageEvents: false,
       canManageStaff: false,
