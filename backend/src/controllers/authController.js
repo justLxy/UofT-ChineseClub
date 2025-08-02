@@ -10,7 +10,7 @@ class AuthController {
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 1 day
       });
 
@@ -29,7 +29,7 @@ class AuthController {
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 1 day
       });
 
@@ -44,7 +44,7 @@ class AuthController {
     res.cookie('token', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       expires: new Date(0)
     });
     res.status(200).json({ message: '注销成功' });
