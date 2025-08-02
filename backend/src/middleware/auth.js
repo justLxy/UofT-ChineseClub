@@ -25,6 +25,14 @@ const authenticateUser = async (req, res, next) => {
       return res.status(401).json({ error: '用户不存在' });
     }
 
+    // 刷新 Cookie 过期时间（滑动过期）
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 30 * 24 * 60 * 60 * 1000 // 30 天
+    });
+
     // 将用户信息添加到请求对象
     req.userId = decoded.id;
     req.user = {
