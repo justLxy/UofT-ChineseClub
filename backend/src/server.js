@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const { PORT, FRONTEND_URL } = require('./config/constants');
 // const AuthService = require('./services/authService');
@@ -13,9 +14,11 @@ const app = express();
 app.use(cors({
   origin: [FRONTEND_URL, 'http://localhost:3000', 'https://www.utchinese.org'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Serve static files
 const staticPath = process.env.UPLOADS_DIR || uploadsDir;
@@ -32,4 +35,4 @@ app.use('/api', routes);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`CORS enabled for: ${FRONTEND_URL}`);
-}); 
+});

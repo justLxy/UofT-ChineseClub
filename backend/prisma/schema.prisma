@@ -36,10 +36,10 @@ model Staff {
   role         String  @default("staff") // 角色：staff, admin
 
   // 邮箱验证相关字段
-  isEmailVerified Boolean @default(false) // 邮箱是否已验证
-  verificationCode String? // 当前验证码
-  verificationCodeExpiry DateTime? // 验证码过期时间
-  verificationCodeAttempts Int @default(0) // 验证尝试次数（防止暴力破解）
+  isEmailVerified          Boolean   @default(false) // 邮箱是否已验证
+  verificationCode         String? // 当前验证码
+  verificationCodeExpiry   DateTime? // 验证码过期时间
+  verificationCodeAttempts Int       @default(0) // 验证尝试次数（防止暴力破解）
   lastVerificationCodeSent DateTime? // 最后一次发送验证码的时间
 
   // 管理员权限控制

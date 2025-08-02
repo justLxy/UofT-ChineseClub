@@ -2,28 +2,52 @@ const AuthService = require('../services/authService');
 const EmailService = require('../services/emailService');
 
 class AuthController {
-  // 统一登录
   static async login(req, res) {
     try {
       const { identifier, password } = req.body;
-      const result = await AuthService.login(identifier, password);
-      res.json(result);
+      const { token, user } = await AuthService.login(identifier, password);
+
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+      });
+
+      res.json({ user });
     } catch (error) {
       console.error('登录错误:', error);
       res.status(401).json({ error: error.message });
     }
   }
 
-  // 通过邮箱验证码登录
   static async loginWithEmail(req, res) {
     try {
       const { email, verificationCode } = req.body;
-      const result = await AuthService.loginWithEmail(email, verificationCode);
-      res.json(result);
+      const { token, user } = await AuthService.loginWithEmail(email, verificationCode);
+
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+      });
+
+      res.json({ user });
     } catch (error) {
       console.error('邮箱登录错误:', error);
       res.status(401).json({ error: error.message });
     }
+  }
+
+  static async logout(req, res) {
+    res.cookie('token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      expires: new Date(0)
+    });
+    res.status(200).json({ message: '注销成功' });
   }
 
   // 验证邮箱域名是否为允许的域名
@@ -197,4 +221,4 @@ class AuthController {
   }
 }
 
-module.exports = AuthController; 
+module.exports = AuthController;

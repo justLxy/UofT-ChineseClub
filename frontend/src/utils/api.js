@@ -28,12 +28,13 @@ export const getFullEventImageUrl = (imageUrl) => {
 // 创建axios实例
 const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true, // 允许跨域请求携带Cookie
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// 请求拦截器 - 添加认证token和语言
+// 请求拦截器 - 添加语言
 api.interceptors.request.use(config => {
   // 添加当前语言到请求中
   const currentLanguage = i18n.language || 'en';
@@ -41,12 +42,6 @@ api.interceptors.request.use(config => {
     ...config.params,
     language: currentLanguage 
   };
-  
-  // 统一使用userToken
-  const userToken = localStorage.getItem('userToken');
-  if (userToken) {
-    config.headers['Authorization'] = `Bearer ${userToken}`;
-  }
   
   return config;
 }, error => {
@@ -58,11 +53,7 @@ api.interceptors.response.use(
   response => response,
   error => {
     if (error.response && error.response.status === 401) {
-      // Token无效或过期 - 清除存储的凭据
-      localStorage.removeItem('userToken');
-      localStorage.removeItem('userAuthenticated');
-      localStorage.removeItem('currentUser');
-      
+      // Token无效或过期
       // 通知应用用户已注销
       window.dispatchEvent(new Event('auth-logout'));
     }
@@ -77,7 +68,7 @@ api.interceptors.response.use(
 // 统一登录API（用户名/邮箱 + 密码）
 export const login = async (identifier, password) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/login`, { identifier, password });
+    const response = await api.post('/auth/login', { identifier, password });
     return response.data;
   } catch (error) {
     console.error('登录错误:', error);
@@ -88,7 +79,7 @@ export const login = async (identifier, password) => {
 // 邮箱验证码登录
 export const loginWithEmail = async (email, verificationCode) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/login-email`, { 
+    const response = await api.post('/auth/login-email', { 
       email, 
       verificationCode 
     });
@@ -99,10 +90,21 @@ export const loginWithEmail = async (email, verificationCode) => {
   }
 };
 
+// 注销
+export const logout = async () => {
+  try {
+    const response = await api.post('/auth/logout');
+    return response.data;
+  } catch (error) {
+    console.error('注销错误:', error);
+    throw error;
+  }
+};
+
 // 注册新用户
 export const register = async (email, username, password, verificationCode) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/register`, { 
+    const response = await api.post('/auth/register', { 
       email, 
       username, 
       password, 
@@ -118,7 +120,7 @@ export const register = async (email, username, password, verificationCode) => {
 // 发送验证码
 export const sendVerificationCode = async (email, purpose = 'login') => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/send-verification-code`, { 
+    const response = await api.post('/auth/send-verification-code', { 
       email, 
       purpose 
     });
@@ -132,7 +134,7 @@ export const sendVerificationCode = async (email, purpose = 'login') => {
 // 验证验证码（不登录，只验证）
 export const verifyCode = async (email, verificationCode) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/verify-code`, { 
+    const response = await api.post('/auth/verify-code', { 
       email, 
       verificationCode 
     });
@@ -464,5 +466,3 @@ export const uploadEventImage = async (imageFile) => {
     throw error;
   }
 };
-
- 

@@ -13,6 +13,9 @@ router.post('/login-email', AuthController.loginWithEmail);
 // 注册新用户
 router.post('/register', AuthController.register);
 
+// 注销
+router.post('/logout', AuthController.logout);
+
 // 发送验证码
 router.post('/send-verification-code', AuthController.sendVerificationCode);
 
@@ -35,4 +38,4 @@ router.get('/check-permission/:permission', authenticateUser, AuthController.che
 router.post('/users', authenticateUser, requireStaffManagement, AuthController.createUser);
 router.put('/users/:userId/permissions', authenticateUser, requireStaffManagement, AuthController.updateUserPermissions);
 
-module.exports = router; 
+module.exports = router;
