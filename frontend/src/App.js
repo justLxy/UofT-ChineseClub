@@ -131,6 +131,8 @@ const AppContent = () => {
               <Route path="/admin/events" element={<EventsAdmin />} />
               <Route path="/admin/staff" element={<StaffAdmin />} />
               <Route path="/staff/profile" element={<StaffProfile />} />
+              <Route path="/qin-society" element={<QinSociety />} />
+              <Route path="/ny-concert" element={<NYConcert />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
