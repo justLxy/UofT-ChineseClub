@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-
-
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -147,39 +145,7 @@ const AppContent = () => {
 function App() {
   return (
     <AuthProvider>
-<<<<<<< HEAD
       <AppContent />
-=======
-      <div className="app" ref={appRef}>
-        <Header changeLanguage={changeLanguage} theme={theme} toggleTheme={toggleTheme} />
-        <div className="language-change-flash"></div>
-        <div className="theme-change-flash"></div>
-        <SocialSidebar />
-        
-        <main>
-          <AnimatePresence mode="wait">
-            <Suspense fallback={<LoadingSpinner />}>
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/join" element={<Join />} />
-                <Route path="/team" element={<Team />} />
-                <Route path="/team/:member" element={<Team />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/admin/events" element={<EventsAdmin />} />
-                <Route path="/qin-society" element={<QinSociety />} />
-                <Route path="/ny-concert" element={<NYConcert />} />  
-                <Route path="/admin/staff" element={<StaffAdmin />} />
-                <Route path="/staff/profile" element={<StaffProfile />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </AnimatePresence>
-        </main>
-        
-        <Footer />
-      </div>
->>>>>>> 17f7fd86935945829a1e1c34b50c5dcf125a3220
     </AuthProvider>
   );
 }
