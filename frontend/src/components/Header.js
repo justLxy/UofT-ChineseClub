@@ -521,11 +521,11 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   // Close mobile menu when changing routes
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -550,7 +550,7 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
     { path: '/events', label: t('header.events') },
     { path: '/join', label: t('header.join') }
   ];
-  
+
   const menuVariants = {
     closed: {
       opacity: 0,
@@ -567,7 +567,7 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
       }
     }
   };
-  
+
   const linkVariants = {
     closed: { y: 50, opacity: 0 },
     open: i => ({
@@ -606,7 +606,7 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
             UTChinese Network
           </h1>
         </Link>
-        
+
         <nav>
           <div className="nav-links">
             {navLinks.map(({ path, label }) => (
@@ -717,8 +717,8 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
               <ThemeSwitch theme={theme} toggleTheme={toggleTheme} />
             </div>
           </div>
-          
-          <div 
+
+          <div
             className={`mobile-menu-btn ${mobileMenuOpen ? 'open' : ''}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -728,10 +728,10 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
           </div>
         </nav>
       </div>
-      
+
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div 
+          <motion.div
             className="mobile-menu"
             initial="closed"
             animate="open"
@@ -951,4 +951,4 @@ const Header = ({ changeLanguage, theme, toggleTheme }) => {
   );
 };
 
-export default Header; 
+export default Header;

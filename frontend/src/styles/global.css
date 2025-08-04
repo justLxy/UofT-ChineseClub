@@ -338,3 +338,10 @@ section {
   pointer-events: none;
   z-index: 9999;
 } 
+
+.qin-section,
+.qin-section section,
+.qin-sponsor-block,
+.qin-sponsor-block section {
+  padding-bottom: 0;
+}

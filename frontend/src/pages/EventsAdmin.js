@@ -8,6 +8,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LoadingAnimation from '../components/LoadingAnimation';
 
+
 const AdminContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;

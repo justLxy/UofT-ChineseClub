@@ -12,7 +12,7 @@ setup:
 
 seed:
 	npx prisma generate
-	npx prisma migrate deploy
+	npx prisma db push
 	npx prisma db seed
 
 clean:
