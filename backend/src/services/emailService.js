@@ -2,7 +2,7 @@ const { Resend } = require('resend');
 const prisma = require('../config/database');
 const crypto = require('crypto');
 
-// 初始化 Resend 客户端
+// 初始化 Resend 客户端npp
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 class EmailService {

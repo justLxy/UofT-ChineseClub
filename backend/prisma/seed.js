@@ -163,7 +163,7 @@ async function main() {
         location_en: 'Isabel Bader Theatre',
         location_zh: '伊莎贝尔·巴德剧院',
         featured: true,
-        link: 'https://www.youtube.com/watch?v=RX_vrxenzBM'
+        link: '/ny-concert'
       },
       {
         title_en: 'Ace Firm Visit',
@@ -188,7 +188,7 @@ async function main() {
         location_en: 'Hart House',
         location_zh: '哈特之家',
         featured: true,
-        link: 'https://www.youtube.com/watch?v=8HbfgZVLNHM&t=3s'
+        link: '/qin-society'
       },
       {
         title_en: 'Qin Society Summer Outdoor Gathering',

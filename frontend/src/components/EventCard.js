@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { FiCalendar, FiMapPin, FiExternalLink } from 'react-icons/fi';
 import { formatEventDateTime } from '../utils/dateUtils';
 import { getFullEventImageUrl } from '../utils/api';
+import { Link } from 'react-router-dom';
 
 const Card = styled(motion.div)`
   position: relative;
@@ -289,9 +290,15 @@ const EventCard = ({ event, index, onClick }) => {
           </InfoItem>
         )}
         {link && (
-          <LinkButton href={link} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
-            {t('events.learnMore')} <FiExternalLink />
-          </LinkButton>
+          (title === "UTChinese Network Qin Society Open Ceremony" || title === "New Year Concert") ? (
+            <LinkButton as={Link} to={link} onClick={(e) => e.stopPropagation()}>
+              {t('events.learnMore')} <FiExternalLink />
+            </LinkButton>
+          ) : (
+            <LinkButton href={link} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+              {t('events.learnMore')} <FiExternalLink />
+            </LinkButton>
+          )
         )}
       </Content>
     </Card>

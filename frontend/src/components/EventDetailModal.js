@@ -297,9 +297,15 @@ const EventDetailModal = ({ event: initialEvent, onClose, isAdmin = false }) => 
             </Description>
             
             {link && (
-              <LinkButton href={link} target="_blank" rel="noopener noreferrer">
-                {t('events.learnMore')} <FiExternalLink />
-              </LinkButton>
+              (title === "UTChinese Network Qin Society Open Ceremony" || title === "New Year Concert") ? (
+                <LinkButton as={Link} to={link} onClick={(e) => e.stopPropagation()}>
+                  {t('events.learnMore')} <FiExternalLink />
+                </LinkButton>
+              ) : (
+                <LinkButton href={link} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                  {t('events.learnMore')} <FiExternalLink />
+                </LinkButton>
+              )
             )}
           </ContentSection>
         </ModalContainer>
@@ -308,4 +314,4 @@ const EventDetailModal = ({ event: initialEvent, onClose, isAdmin = false }) => 
   );
 };
 
-export default memo(EventDetailModal); 
+export default memo(EventDetailModal);
