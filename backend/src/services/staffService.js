@@ -707,7 +707,11 @@ class StaffService {
           }
         }
       },
-      orderBy: { displayOrder: 'asc' }
+      orderBy: [
+        { staff: { role: 'desc' } }, // admin a-z desc -> admin first
+        { displayOrder: 'asc' },
+        { staff: { createdAt: 'asc' } } // older users first
+      ]
     });
     
     // Process avatar URLs for all team members
