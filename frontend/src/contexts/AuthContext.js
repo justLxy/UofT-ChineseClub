@@ -40,6 +40,13 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   }, []);
+  
+  // 新增一个刷新用户状态的函数
+  const refreshUser = useCallback(async () => {
+    setLoading(true);
+    await verifyAuth();
+  }, [verifyAuth]);
+
 
   useEffect(() => {
     verifyAuth();
@@ -126,6 +133,7 @@ export const AuthProvider = ({ children }) => {
     hasPermission,
     isAdmin,
     userType: user?.role || null,
+    refreshUser, // 暴露 refreshUser 函数
   };
 
   return (
