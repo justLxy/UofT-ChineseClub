@@ -81,9 +81,17 @@ const StatusBadge = styled.div`
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 280px;
   overflow: hidden;
   transition: transform 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  [data-theme="dark"] & {
+    background: #2a2a2a;
+  }
   
   ${Card}:hover & {
     transform: scale(1.05);
@@ -109,6 +117,7 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
   
   ${Card}:hover & {
@@ -121,7 +130,7 @@ const Content = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 260px; /* 设置固定高度确保所有卡片内容区域一致 */
+  height: 220px; /* 调整高度以适应更高的图片容器 */
 `;
 
 const Title = styled.h3`
