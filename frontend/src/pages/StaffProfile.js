@@ -724,7 +724,7 @@ const PermissionsSection = styled.div`
 const StaffProfile = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const { isAuthenticated, user, logout, loading: authLoading, refreshUser } = useAuth();
+  const { isAuthenticated, user, logout, loading: authLoading } = useAuth();
   const fileInputRef = useRef(null);
   
   const [profile, setProfile] = useState(null);
@@ -775,47 +775,48 @@ const StaffProfile = () => {
     };
   }, [showPermissionMenu]);
 
-  // Load profile data and refresh user status
+  // Load profile data
   useEffect(() => {
-    const loadData = async () => {
-      if (isAuthenticated) {
-        await refreshUser(); // 强制刷新用户状态
-        try {
-          const profileData = await getStaffProfile();
-          setProfile(profileData);
-          if (profileData) {
-            setFormData({
-              name_en: profileData.name_en || '',
-              name_zh: profileData.name_zh || '',
-              position_en: profileData.position_en || '',
-              position_zh: profileData.position_zh || '',
-              department: profileData.department || '',
-              bio_en: profileData.bio_en || '',
-              bio_zh: profileData.bio_zh || '',
-              avatarUrl: profileData.avatarUrl || '',
-              email: profileData.email || user?.email || '', // Fallback to user context email
-              linkedin: profileData.linkedin || '',
-              github: profileData.github || '',
-              wechat: profileData.wechat || '',
-              phone: profileData.phone || '',
-              mbti: profileData.mbti || ''
-            });
-          } else if (user) {
-            setFormData(prev => ({
-              ...prev,
-              email: user.email || ''
-            }));
-          }
-        } catch (error) {
-          console.error('Error loading profile:', error);
-        } finally {
-          setIsLoading(false);
+    const loadProfile = async () => {
+      try {
+        const profileData = await getStaffProfile();
+        setProfile(profileData);
+        
+        if (profileData) {
+          setFormData({
+            name_en: profileData.name_en || '',
+            name_zh: profileData.name_zh || '',
+            position_en: profileData.position_en || '',
+            position_zh: profileData.position_zh || '',
+            department: profileData.department || '',
+            bio_en: profileData.bio_en || '',
+            bio_zh: profileData.bio_zh || '',
+            avatarUrl: profileData.avatarUrl || '',
+            email: profileData.email || '',
+            linkedin: profileData.linkedin || '',
+            github: profileData.github || '',
+            wechat: profileData.wechat || '',
+            phone: profileData.phone || '',
+            mbti: profileData.mbti || ''
+          });
+        } else if (user) {
+          // 如果是新用户（没有个人资料），预先填充他们的注册邮箱
+          setFormData(prev => ({
+            ...prev,
+            email: user.email || ''
+          }));
         }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    loadData();
-  }, [isAuthenticated, refreshUser, user]);
+    if (isAuthenticated) {
+      loadProfile();
+    }
+  }, [isAuthenticated]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
