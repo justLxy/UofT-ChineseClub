@@ -2,7 +2,8 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FiCalendar, FiMapPin, FiExternalLink } from 'react-icons/fi';
+import { FiCalendar, FiMapPin, FiArrowRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { formatEventDateTime } from '../utils/dateUtils';
 import { getFullEventImageUrl } from '../utils/api';
 
@@ -252,6 +253,18 @@ const EventCard = ({ event, index, onClick }) => {
     featured 
   } = event;
 
+    // Mapping of events that have dedicated internal pages
+  // Detect if this event has a bespoke internal page (supports EN & ZH)
+  const internalMappings = [
+    { slug: 'qin-society', keywords: ['qin society', '琴社'] },
+    { slug: 'new-year-concert', keywords: ['new year concert', '新年音乐会'] },
+  ];
+  const lowerTitle = title.toLowerCase();
+  const matched = internalMappings.find(({ keywords }) =>
+    keywords.some((kw) => lowerTitle.includes(kw))
+  );
+  const slug = matched ? matched.slug : null;
+
   const dateDisplay = formatEventDateTime(startDate, endDate);
 
   // Default placeholder image from an external source
@@ -297,11 +310,24 @@ const EventCard = ({ event, index, onClick }) => {
             <FiMapPin /> {location}
           </InfoItem>
         )}
-        {link && (
-          <LinkButton href={link} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
-            {t('events.learnMore')} <FiExternalLink />
+        {slug ? (
+          <LinkButton
+            as={Link}
+            to={`/events/${slug}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t('events.learnMore')} <FiArrowRight />
           </LinkButton>
-        )}
+        ) : link ? (
+          <LinkButton
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t('events.learnMore')} <FiArrowRight />
+          </LinkButton>
+        ) : null}
       </Content>
     </Card>
   );
