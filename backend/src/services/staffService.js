@@ -708,7 +708,7 @@ class StaffService {
         }
       },
       orderBy: [
-        { staff: { role: 'desc' } }, // admin a-z desc -> admin first
+        { staff: { role: 'asc' } }, // 'admin' comes before 'staff' alphabetically
         { displayOrder: 'asc' },
         { staff: { createdAt: 'asc' } } // older users first
       ]
