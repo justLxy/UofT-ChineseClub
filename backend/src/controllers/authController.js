@@ -66,11 +66,11 @@ class AuthController {
       }
 
       // 对于注册目的，检查邮箱域名限制
-      if (purpose === 'register' && !AuthController.validateEmailDomain(email)) {
-        return res.status(400).json({ 
-          error: '注册仅限多伦多大学邮箱 (@mail.utoronto.ca)，其他邮箱请联系管理员手动创建账户' 
-        });
-      }
+      // if (purpose === 'register' && !AuthController.validateEmailDomain(email)) {
+      //   return res.status(400).json({ 
+      //     error: '注册仅限多伦多大学邮箱 (@mail.utoronto.ca)，其他邮箱请联系管理员手动创建账户' 
+      //   });
+      // }
 
       const result = await EmailService.sendVerificationCode(email, purpose);
       res.json(result);
@@ -109,17 +109,7 @@ class AuthController {
     }
   }
 
-  // 绑定邮箱
-  static async bindEmail(req, res) {
-    try {
-      const { newEmail, verificationCode } = req.body;
-      const result = await AuthService.bindEmail(req.userId, newEmail, verificationCode);
-      res.json(result);
-    } catch (error) {
-      console.error('Bind email error:', error);
-      res.status(400).json({ error: error.message });
-    }
-  }
+
 
   // 管理员：激活/停用用户账号
   static async toggleUserActivation(req, res) {

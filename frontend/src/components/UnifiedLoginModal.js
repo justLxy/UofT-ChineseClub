@@ -528,17 +528,6 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
         [name]: value
       };
       
-      // 如果是邮箱前缀变化且在注册模式下，生成完整邮箱和用户名
-      if (name === 'emailPrefix' && activeTab === 'register') {
-        // 过滤非法字符：只允许字母、数字、点、下划线、连字符
-        const filteredValue = value.replace(/[^a-zA-Z0-9._-]/g, '');
-        const fullEmail = filteredValue ? `${filteredValue}@mail.utoronto.ca` : '';
-        newData.emailPrefix = filteredValue;
-        newData.email = fullEmail;
-        newData.username = filteredValue;
-      }
-      
-      // 如果是普通邮箱变化且在注册模式下，自动提取用户名（用于非注册页面）
       if (name === 'email' && activeTab === 'register' && value) {
         const emailParts = value.split('@');
         if (emailParts.length > 0 && emailParts[0]) {
@@ -554,10 +543,10 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
   }, [error, success, activeTab]);
 
   // 验证邮箱域名
-  const validateEmailDomain = (email) => {
-    const allowedDomain = '@mail.utoronto.ca';
-    return email.toLowerCase().endsWith(allowedDomain);
-  };
+  // const validateEmailDomain = (email) => {
+  //   const allowedDomain = '@mail.utoronto.ca';
+  //   return email.toLowerCase().endsWith(allowedDomain);
+  // };
 
   // 发送验证码
   const handleSendCode = useCallback(async () => {
@@ -568,10 +557,10 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
     }
 
     // 对于注册，检查邮箱域名限制
-    if (activeTab === 'register' && !validateEmailDomain(email)) {
-      setError(t('email.error.domainNotAllowed'));
-      return;
-    }
+    // if (activeTab === 'register' && !validateEmailDomain(email)) {
+    //   setError(t('email.error.domainNotAllowed'));
+    //   return;
+    // }
 
     setIsSendingCode(true);
     setError('');
@@ -940,30 +929,27 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
                 {activeTab === 'register' && (
                   <>
                     <div className="form-group">
-                      <label htmlFor="emailPrefix">
+                      <label htmlFor="email">
                         {t('email.label')}
                         <span className="required">*</span>
                       </label>
-                      <div className="composite-email-input">
-                        <div className="email-prefix-wrapper">
-                          <FiMail className="input-icon" />
-                          <input
-                            type="text"
-                            id="emailPrefix"
-                            name="emailPrefix"
-                            value={formData.emailPrefix}
-                            onChange={handleInputChange}
-                            placeholder={t('email.prefixPlaceholder')}
-                            disabled={isLoading}
-                            className="email-prefix-input"
-                          />
-                          <span className="email-suffix">@mail.utoronto.ca</span>
-                        </div>
+                      <div className="input-wrapper">
+                        <FiMail className="input-icon" />
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder={t('email.placeholder')}
+                          disabled={isLoading}
+                          className="has-button"
+                        />
                         <button
                           type="button"
                           className="verification-code-btn"
                           onClick={handleSendCode}
-                          disabled={isSendingCode || countdown > 0 || !formData.emailPrefix}
+                          disabled={isSendingCode || countdown > 0 || !formData.email}
                         >
                           {countdown > 0 ? `${countdown}s` : 
                            isSendingCode ? t('email.sending') : 

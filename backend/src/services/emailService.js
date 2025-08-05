@@ -11,93 +11,276 @@ class EmailService {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
+  /**
+   * 生成一个现代化的邮件基础模板
+   * @param {object} options - 模板选项
+   * @param {string} options.title - 邮件标题
+   * @param {string} options.preheader - 邮件预览文本
+   * @param {string} options.bodyContent - 邮件正文HTML内容
+   * @returns {string} - 完整的HTML邮件
+   */
+  static generateBaseEmailTemplate({ title, preheader, bodyContent }) {
+    const brandColor = '#c8102e'; // UTChinese Red
+    const textColor = '#1f2937'; // Dark Gray
+    const lightTextColor = '#6b7280'; // Medium Gray
+    const backgroundColor = '#f3f4f6'; // Light Gray
+    const contentBackgroundColor = '#ffffff';
+    const fontFamily = `"Inter", "Noto Sans SC", "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+    const headerFontFamily = `"Playfair Display", "Noto Serif SC", serif`; // Same as home page hero title
+    const officialSiteUrl = 'https://www.utchinese.org';
+    const logoUrl = 'https://www.utchinese.org/logo.png'; // Assuming this is a white/transparent logo suitable for dark backgrounds
+
+    return `
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Playfair+Display:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!--[if gte mso 9]>
+  <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+  </xml>
+  <![endif]-->
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: ${backgroundColor}; font-family: ${fontFamily}; color: ${textColor}; }
+    a { color: ${brandColor}; text-decoration: none; }
+    h1 { font-size: 24px; font-weight: 700; margin: 0 0 16px; }
+    h2 { font-size: 20px; font-weight: 700; margin: 0 0 16px; }
+    h3 { font-size: 16px; font-weight: 700; margin: 0 0 8px; }
+    p { margin: 0 0 16px; }
+    .button-link {
+      display: inline-block; padding: 12px 24px; font-size: 16px; font-weight: 700; color: #ffffff !important; background-color: ${brandColor}; border-radius: 8px; text-decoration: none; -webkit-border-radius: 8px; -moz-border-radius: 8px;
+    }
+    .main-container {
+      max-width: 600px; background-color: ${contentBackgroundColor}; border-radius: 12px; -webkit-border-radius: 12px; -moz-border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden;
+    }
+    .content-cell {
+      padding: 40px; font-size: 16px; line-height: 1.6;
+    }
+    .footer-cell {
+      padding: 32px 40px; font-size: 12px; color: ${lightTextColor}; line-height: 1.5; background-color: #f9fafb;
+    }
+    .light-text { color: ${lightTextColor}; }
+    @media (prefers-color-scheme: dark) {
+      body { background-color: #111827 !important; color: #f9fafb !important; }
+      .main-container { background-color: #1f2937 !important; border-color: #374151 !important; }
+      h1, h2, h3, p { color: #f9fafb !important; }
+      .content-cell, .footer-cell { color: #d1d5db !important; }
+      .footer-cell { background-color: #111827 !important; }
+      .light-text { color: #9ca3af !important; }
+      .button-link { background-color: #e11d48 !important; }
+      .card { background-color: #374151 !important; border-color: #4b5563 !important; }
+      .status-approved { border-color: #34d399 !important; background-color: #064e3b !important; }
+      .status-rejected { border-color: #f87171 !important; background-color: #991b1b !important; }
+      .status-text-approved { color: #d1fae5 !important; }
+      .status-text-rejected { color: #fee2e2 !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0 !important; padding: 0 !important; background-color: ${backgroundColor};">
+  <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+    ${preheader}
+  </div>
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td align="center" style="padding: 20px;">
+        <!--[if (gte mso 9)|(IE)]>
+        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+        <tr>
+        <td align="center" valign="top" width="600">
+        <![endif]-->
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="main-container" style="max-width: 600px;">
+          <tr>
+            <td align="center" style="padding: 24px; background-color: ${brandColor};">
+              <a href="${officialSiteUrl}" target="_blank" style="text-decoration: none; color: #ffffff; display: inline-block;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" align="center">
+                  <tr>
+                    <td style="padding-right: 16px; vertical-align: middle;">
+                      <img src="${logoUrl}" alt="UTChinese Network Logo" width="60" height="60" style="display: block;">
+                    </td>
+                    <td style="font-family: ${headerFontFamily}; font-size: 28px; font-weight: 700; color: #ffffff; vertical-align: middle;">
+                      UTChinese Network
+                    </td>
+                  </tr>
+                </table>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class="content-cell" style="padding: 40px; font-size: 16px; line-height: 1.6; color: ${textColor};">
+              ${bodyContent}
+            </td>
+          </tr>
+          <tr>
+            <td class="footer-cell" align="center" style="padding: 32px 40px; background-color: #f9fafb; font-size: 12px; line-height: 1.5; color: ${lightTextColor};">
+              <p style="margin: 0 0 12px;">&copy; ${new Date().getFullYear()} UTChinese Network. All rights reserved.</p>
+              <p style="margin: 0;">此邮件为系统自动发送，请勿直接回复。</p>
+            </td>
+          </tr>
+        </table>
+        <!--[if (gte mso 9)|(IE)]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `;
+  }
+
   // 发送验证码邮件
   static async sendVerificationCode(email, purpose = 'verification') {
     try {
-      // 检查是否是有效的邮箱格式
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         throw new Error('请输入有效的邮箱格式');
       }
 
-      // 查找用户
-      let staff = await prisma.staff.findUnique({
-        where: { email }
-      });
-
-      // 根据用途进行不同的检查
+      // 注册流程的特殊处理
       if (purpose === 'register') {
-        if (staff && (staff.isEmailVerified || staff.isActive)) {
+        const existingStaff = await prisma.staff.findUnique({ where: { email } });
+
+        if (existingStaff && (existingStaff.isEmailVerified || existingStaff.isActive)) {
           throw new Error('该邮箱已被注册，请使用其他邮箱或直接登录');
         }
-        // 如果邮箱不存在，创建一个临时用户记录用于发送验证码
-        if (!staff) {
-          staff = await prisma.staff.create({
-            data: {
-              username: email.split('@')[0], // 临时用户名
-              email,
-              passwordHash: 'temp', // 临时密码，注册时会被覆盖
-              isEmailVerified: false,
-              isActive: false
-            }
-          });
+
+        if (existingStaff) {
+          const now = new Date();
+          const oneMinuteAgo = new Date(now.getTime() - 60 * 1000);
+          if (existingStaff.lastVerificationCodeSent && existingStaff.lastVerificationCodeSent > oneMinuteAgo) {
+            throw new Error('验证码发送过于频繁，请1分钟后再试');
+          }
         }
-      } else {
-        // 登录/绑定场景：邮箱必须存在
-        if (!staff) {
-          throw new Error('邮箱不存在');
+        
+        const verificationCode = this.generateVerificationCode();
+        const now = new Date();
+        const expiryTime = new Date(now.getTime() + 10 * 60 * 1000);
+
+        try {
+          const staff = await prisma.staff.upsert({
+            where: { email },
+            update: {
+              verificationCode,
+              verificationCodeExpiry: expiryTime,
+              verificationCodeAttempts: 0,
+              lastVerificationCodeSent: now,
+            },
+            create: {
+              email,
+              username: email.split('@')[0],
+              passwordHash: 'temp',
+              isEmailVerified: false,
+              isActive: false,
+              verificationCode,
+              verificationCodeExpiry: expiryTime,
+              verificationCodeAttempts: 0,
+              lastVerificationCodeSent: now,
+            },
+          });
+
+          const subject = 'UTChinese Network - 欢迎注册！请验证您的邮箱';
+          const html = this.generateRegisterEmailTemplate(verificationCode, staff.username);
+          const { data, error } = await resend.emails.send({
+            from: 'UTChinese Network <support@uoft.pairxy.com>',
+            to: email,
+            subject,
+            html,
+            text: this.generatePlainTextVersion(subject, verificationCode, staff.username, purpose),
+          });
+
+          if (error) {
+            // 将Resend的错误抛出，以便在catch块中处理
+            throw error;
+          }
+
+          console.log('注册验证码邮件发送成功:', data);
+          return {
+            success: true,
+            message: '验证码已发送，请查看您的邮箱',
+            expiryTime: expiryTime.toISOString(),
+          };
+
+        } catch (err) {
+          // 如果邮件发送失败，且用户是新创建的，则回滚（删除）该用户
+          if (!existingStaff) {
+            console.log(`邮件发送失败，回滚新创建的用户: ${email}`);
+            await prisma.staff.delete({ where: { email } }).catch(deleteError => {
+              console.error(`回滚删除用户失败 (${email}):`, deleteError);
+            });
+          }
+          throw new Error('发送验证码失败，请稍后重试');
         }
       }
 
-      // 检查上次发送验证码的时间（防止频繁发送）
+      // 登录、绑定邮箱等其他流程
+      const staff = await prisma.staff.findUnique({ where: { email } });
+
+      if (!staff) {
+        throw new Error('邮箱不存在');
+      }
+      
+      // 对于非登录目的，才检查账户是否激活
+      if (purpose !== 'login' && !staff.isActive) {
+        throw new Error('账号已被停用，无法执行此操作');
+      }
+
+
       const now = new Date();
       const oneMinuteAgo = new Date(now.getTime() - 60 * 1000);
-      
       if (staff.lastVerificationCodeSent && staff.lastVerificationCodeSent > oneMinuteAgo) {
         throw new Error('验证码发送过于频繁，请1分钟后再试');
       }
-
-      // 生成验证码
+      
       const verificationCode = this.generateVerificationCode();
-      const expiryTime = new Date(now.getTime() + 10 * 60 * 1000); // 10分钟有效期
+      const expiryTime = new Date(now.getTime() + 10 * 60 * 1000);
 
-      // 更新数据库中的验证码信息
       await prisma.staff.update({
         where: { email },
         data: {
           verificationCode,
           verificationCodeExpiry: expiryTime,
           verificationCodeAttempts: 0,
-          lastVerificationCodeSent: now
-        }
+          lastVerificationCodeSent: now,
+        },
       });
 
-      // 根据用途选择邮件模板
       let subject, html;
+      const username = staff.username || email.split('@')[0];
+
       switch (purpose) {
         case 'login':
           subject = 'UTChinese Network - 登录验证码';
-          html = this.generateLoginEmailTemplate(verificationCode, staff.username);
+          html = this.generateLoginEmailTemplate(verificationCode, username);
           break;
-        case 'register':
-          subject = 'UTChinese Network - 注册验证码';
-          html = this.generateRegisterEmailTemplate(verificationCode, staff.username);
-          break;
-        case 'bind':
-          subject = 'UTChinese Network - 邮箱绑定验证码';
-          html = this.generateBindEmailTemplate(verificationCode, staff.username);
-          break;
+        
         default:
-          subject = 'UTChinese Network - 验证码';
-          html = this.generateVerificationEmailTemplate(verificationCode, staff.username);
+          subject = 'UTChinese Network - 您的验证码';
+          html = this.generateVerificationEmailTemplate(verificationCode, username);
       }
 
-      // 发送邮件
       const { data, error } = await resend.emails.send({
-        from: 'UTChinese Network <no-reply@utchinese.ca>',
+        from: 'UTChinese Network <support@uoft.pairxy.com>',
         to: email,
         subject,
-        html
+        html,
+        text: this.generatePlainTextVersion(subject, verificationCode, username, purpose),
       });
 
       if (error) {
@@ -109,9 +292,8 @@ class EmailService {
       return {
         success: true,
         message: '验证码已发送，请查看您的邮箱',
-        expiryTime: expiryTime.toISOString()
+        expiryTime: expiryTime.toISOString(),
       };
-
     } catch (error) {
       console.error('发送验证码错误:', error);
       throw error;
@@ -200,104 +382,37 @@ class EmailService {
     }
   }
 
-  // 登录邮件模板
   static generateLoginEmailTemplate(code, username) {
-    return `
-      <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
-        <div style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
-            <img src="${process.env.FRONTEND_URL || 'http://localhost:3000'}/logo.png" alt="多大中文 Logo" style="height: 40px; width: auto;" onerror="this.style.display='none'">
-            <h1 style="margin: 0; font-size: 28px;">UTChinese Network</h1>
-          </div>
-          <p style="margin: 10px 0 0; opacity: 0.9;">多大中文</p>
-        </div>
-        
-        <div style="background: white; padding: 40px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-          <h2 style="color: #333; margin-bottom: 20px;">您好，${username}！</h2>
-          <p style="color: #666; margin-bottom: 30px;">您正在尝试登录 UTChinese Network 账户，请使用以下验证码完成登录：</p>
-          
-          <div style="background: #f8f9fa; border: 2px dashed #dc2626; border-radius: 10px; padding: 25px; text-align: center; margin: 30px 0;">
-            <span style="font-size: 32px; font-weight: bold; color: #dc2626; letter-spacing: 8px;">${code}</span>
-          </div>
-          
-          <p style="color: #666; margin-bottom: 20px;">验证码有效期为 <strong>10分钟</strong>，请尽快使用。</p>
-          <p style="color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px;">
-            如果您没有尝试登录，请忽略此邮件。为了账户安全，请不要将验证码告知他人。
-          </p>
-          
-          <div style="text-align: center; margin-top: 30px;">
-            <p style="color: #999; font-size: 12px;">© 2024 UTChinese Network. All rights reserved.</p>
-          </div>
-        </div>
+    const title = '登录验证';
+    const preheader = `您的登录验证码是 ${code}。`;
+    const bodyContent = `
+      <h1>您好，${username}！</h1>
+      <p>您正在尝试登录 UTChinese Network 账户。请使用以下验证码操作：</p>
+      <div style="background-color: #f3f4f6; border-radius: 8px; text-align: center; padding: 24px; margin-bottom: 24px;">
+        <p style="font-size: 36px; font-weight: 700; color: #c8102e; letter-spacing: 8px; margin: 0;">${code}</p>
       </div>
+      <p>此验证码将在 <strong>10分钟</strong> 内失效。请勿与他人分享此代码。</p>
+      <p class="light-text" style="font-size: 14px;">如果您未请求此验证码，请忽略此邮件或联系我们的支持团队。</p>
     `;
+    return this.generateBaseEmailTemplate({ title, preheader, bodyContent });
   }
 
-  // 注册邮件模板
   static generateRegisterEmailTemplate(code, username) {
-    return `
-      <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
-        <div style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
-            <img src="${process.env.FRONTEND_URL || 'http://localhost:3000'}/logo.png" alt="多大中文 Logo" style="height: 40px; width: auto;" onerror="this.style.display='none'">
-            <h1 style="margin: 0; font-size: 28px;">欢迎加入 UTChinese Network!</h1>
-          </div>
-          <p style="margin: 10px 0 0; opacity: 0.9;">多大中文</p>
-        </div>
-        
-        <div style="background: white; padding: 40px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-          <h2 style="color: #333; margin-bottom: 20px;">您好，${username}！</h2>
-          <p style="color: #666; margin-bottom: 30px;">感谢您注册 UTChinese Network 账户！请使用以下验证码完成邮箱验证：</p>
-          
-          <div style="background: #f8f9fa; border: 2px dashed #dc2626; border-radius: 10px; padding: 25px; text-align: center; margin: 30px 0;">
-            <span style="font-size: 32px; font-weight: bold; color: #dc2626; letter-spacing: 8px;">${code}</span>
-          </div>
-          
-          <p style="color: #666; margin-bottom: 20px;">验证码有效期为 <strong>10分钟</strong>，请尽快使用。</p>
-          <p style="color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px;">
-            验证成功后，您就可以正常使用所有功能了。为了账户安全，请不要将验证码告知他人。
-          </p>
-          
-          <div style="text-align: center; margin-top: 30px;">
-            <p style="color: #999; font-size: 12px;">© 2024 UTChinese Network. All rights reserved.</p>
-          </div>
-        </div>
+    const title = '欢迎加入 UTChinese Network';
+    const preheader = `感谢您的注册！您的验证码是 ${code}。`;
+    const bodyContent = `
+      <h1>欢迎，${username}！</h1>
+      <p>感谢您注册 UTChinese Network。请使用以下验证码完成邮箱验证，激活您的账户：</p>
+      <div style="background-color: #f3f4f6; border-radius: 8px; text-align: center; padding: 24px; margin-bottom: 24px;">
+        <p style="font-size: 36px; font-weight: 700; color: #c8102e; letter-spacing: 8px; margin: 0;">${code}</p>
       </div>
+      <p>此验证码将在 <strong>10分钟</strong> 内失效。</p>
+      <p class="light-text" style="font-size: 14px;">验证成功后，您即可开始探索我们的社区。期待您的加入！</p>
     `;
+    return this.generateBaseEmailTemplate({ title, preheader, bodyContent });
   }
 
-  // 邮箱绑定模板
-  static generateBindEmailTemplate(code, username) {
-    return `
-      <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
-        <div style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
-            <img src="${process.env.FRONTEND_URL || 'http://localhost:3000'}/logo.png" alt="多大中文 Logo" style="height: 40px; width: auto;" onerror="this.style.display='none'">
-            <h1 style="margin: 0; font-size: 28px;">UTChinese Network</h1>
-          </div>
-          <p style="margin: 10px 0 0; opacity: 0.9;">多大中文 - 邮箱绑定验证</p>
-        </div>
-        
-        <div style="background: white; padding: 40px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-          <h2 style="color: #333; margin-bottom: 20px;">您好，${username}！</h2>
-          <p style="color: #666; margin-bottom: 30px;">您正在绑定新的邮箱地址，请使用以下验证码完成绑定：</p>
-          
-          <div style="background: #f8f9fa; border: 2px dashed #dc2626; border-radius: 10px; padding: 25px; text-align: center; margin: 30px 0;">
-            <span style="font-size: 32px; font-weight: bold; color: #dc2626; letter-spacing: 8px;">${code}</span>
-          </div>
-          
-          <p style="color: #666; margin-bottom: 20px;">验证码有效期为 <strong>10分钟</strong>，请尽快使用。</p>
-          <p style="color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px;">
-            如果您没有尝试绑定邮箱，请忽略此邮件。为了账户安全，请不要将验证码告知他人。
-          </p>
-          
-          <div style="text-align: center; margin-top: 30px;">
-            <p style="color: #999; font-size: 12px;">© 2024 UTChinese Network. All rights reserved.</p>
-          </div>
-        </div>
-      </div>
-    `;
-  }
+
 
   // 通用验证邮件模板
   static generateVerificationEmailTemplate(code, username) {
@@ -307,9 +422,7 @@ class EmailService {
   // 发送个人资料审核通知给管理员
   static async sendProfileReviewNotification(userProfile, userEmail, userName) {
     try {
-      // 获取所有管理员邮箱
       const adminEmails = await this.getAdminEmails();
-      
       if (adminEmails.length === 0) {
         console.warn('No admin emails found for profile review notification');
         return { success: false, message: 'No admin emails configured' };
@@ -317,32 +430,23 @@ class EmailService {
 
       const subject = 'UTChinese Network - 新的个人资料待审核';
       const html = this.generateProfileReviewNotificationTemplate(userProfile, userEmail, userName);
+      const text = this.generateProfileReviewPlainText(userProfile, userEmail, userName);
 
-      const sendPromises = adminEmails.map(async (adminEmail) => {
-        const { data, error } = await resend.emails.send({
-          from: 'UTChinese Network <no-reply@utchinese.ca>',
-          to: adminEmail,
-          subject,
-          html
-        });
-
-        if (error) {
-          console.error(`发送审核通知给 ${adminEmail} 失败:`, error);
-          throw error;
-        }
-        
-        return data;
+      const { data, error } = await resend.emails.send({
+        from: 'UTChinese Network <support@uoft.pairxy.com>',
+        to: adminEmails,
+        subject,
+        html,
+        text,
       });
 
-      await Promise.all(sendPromises);
-      
-      console.log('个人资料审核通知邮件发送成功');
-      return {
-        success: true,
-        message: '审核通知已发送给管理员',
-        adminCount: adminEmails.length
-      };
+      if (error) {
+        console.error('发送审核通知邮件失败:', error);
+        throw new Error('发送审核通知邮件失败');
+      }
 
+      console.log('个人资料审核通知邮件已成功发送给所有管理员。');
+      return { success: true, message: '审核通知已发送给管理员', adminCount: adminEmails.length };
     } catch (error) {
       console.error('发送个人资料审核通知错误:', error);
       throw error;
@@ -352,15 +456,28 @@ class EmailService {
   // 发送审核结果通知给用户
   static async sendProfileReviewResult(userEmail, userName, reviewResult, reviewNote = '') {
     try {
+      // 检查用户是否为激活状态
+      const user = await prisma.staff.findUnique({
+        where: { email: userEmail },
+        select: { isActive: true }
+      });
+
+      if (!user || !user.isActive) {
+        console.log(`跳过发送邮件给停用用户: ${userEmail}`);
+        return { success: false, message: '用户未激活，跳过邮件发送' };
+      }
+
       const isApproved = reviewResult === 'approved';
       const subject = `UTChinese Network - 个人资料审核${isApproved ? '通过' : '未通过'}`;
       const html = this.generateProfileReviewResultTemplate(userName, isApproved, reviewNote);
+      const text = this.generateProfileReviewResultPlainText(userName, isApproved, reviewNote);
 
       const { data, error } = await resend.emails.send({
-        from: 'UTChinese Network <no-reply@utchinese.ca>',
+        from: 'UTChinese Network <support@uoft.pairxy.com>',
         to: userEmail,
         subject,
-        html
+        html,
+        text,
       });
 
       if (error) {
@@ -369,29 +486,33 @@ class EmailService {
       }
 
       console.log('个人资料审核结果通知邮件发送成功:', data);
-      return {
-        success: true,
-        message: '审核结果通知已发送'
-      };
-
+      return { success: true, message: '审核结果通知已发送' };
     } catch (error) {
       console.error('发送个人资料审核结果错误:', error);
       throw error;
     }
   }
 
-  // 发送账号激活/停用通知邮件
+  // 发送账号激活邮件
   static async sendAccountActivationNotification(userEmail, userName, isActivated, adminName) {
     try {
+      // 如果是停用操作，不发送邮件通知
+      if (!isActivated) {
+        console.log(`跳过发送停用通知给: ${userEmail}`);
+        return { success: false, message: '账号停用时不发送邮件通知' };
+      }
+
       const status = isActivated ? '激活' : '停用';
       const subject = `UTChinese Network - 账号${status}通知`;
       const html = this.generateAccountActivationTemplate(userName, isActivated, adminName);
+      const text = this.generateAccountActivationPlainText(userName, isActivated, adminName);
 
       const { data, error } = await resend.emails.send({
-        from: 'UTChinese Network <no-reply@utchinese.ca>',
+        from: 'UTChinese Network <support@uoft.pairxy.com>',
         to: userEmail,
         subject,
-        html
+        html,
+        text,
       });
 
       if (error) {
@@ -400,11 +521,7 @@ class EmailService {
       }
 
       console.log(`账号${status}通知邮件发送成功:`, data);
-      return {
-        success: true,
-        message: `账号${status}通知已发送`
-      };
-
+      return { success: true, message: `账号${status}通知已发送` };
     } catch (error) {
       console.error(`发送账号激活通知错误:`, error);
       throw error;
@@ -416,17 +533,11 @@ class EmailService {
     try {
       const admins = await prisma.staff.findMany({
         where: {
-          OR: [
-            { role: 'admin' },
-            { canReviewProfiles: true }
-          ],
-          isActive: true
+          OR: [{ role: 'admin' }, { canReviewProfiles: true }],
+          isActive: true,
         },
-        select: {
-          email: true
-        }
+        select: { email: true },
       });
-
       return admins.map(admin => admin.email);
     } catch (error) {
       console.error('获取管理员邮箱列表错误:', error);
@@ -436,208 +547,174 @@ class EmailService {
 
   // 个人资料审核通知邮件模板（发给管理员）
   static generateProfileReviewNotificationTemplate(userProfile, userEmail, userName) {
-    return `
-      <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
-        <div style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
-            <img src="${process.env.FRONTEND_URL || 'http://localhost:3000'}/logo.png" alt="多大中文 Logo" style="height: 40px; width: auto;" onerror="this.style.display='none'">
-            <h1 style="margin: 0; font-size: 28px;">UTChinese Network</h1>
-          </div>
-          <p style="margin: 10px 0 0; opacity: 0.9;">多大中文 - 管理员通知</p>
-        </div>
-        
-        <div style="background: white; padding: 40px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-          <h2 style="color: #333; margin-bottom: 20px;">📋 新的个人资料待审核</h2>
-          <p style="color: #666; margin-bottom: 30px;">用户 <strong>${userName}</strong> 提交了个人资料，请及时审核。</p>
-          
-          <div style="background: #f8f9fa; border-left: 4px solid #dc2626; padding: 20px; margin: 20px 0;">
-            <h3 style="color: #dc2626; margin: 0 0 15px;">📊 资料信息</h3>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 8px 0; font-weight: bold; color: #555; width: 120px;">用户邮箱：</td>
-                <td style="padding: 8px 0; color: #333;">${userEmail}</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 8px 0; font-weight: bold; color: #555;">中文姓名：</td>
-                <td style="padding: 8px 0; color: #333;">${userProfile.name_zh || '未填写'}</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 8px 0; font-weight: bold; color: #555;">英文姓名：</td>
-                <td style="padding: 8px 0; color: #333;">${userProfile.name_en || '未填写'}</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 8px 0; font-weight: bold; color: #555;">部门：</td>
-                <td style="padding: 8px 0; color: #333;">${userProfile.department || '未填写'}</td>
-              </tr>
-              <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 8px 0; font-weight: bold; color: #555;">中文职位：</td>
-                <td style="padding: 8px 0; color: #333;">${userProfile.position_zh || '未填写'}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold; color: #555;">英文职位：</td>
-                <td style="padding: 8px 0; color: #333;">${userProfile.position_en || '未填写'}</td>
-              </tr>
-            </table>
-          </div>
-
-          <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 20px; margin: 20px 0;">
-            <p style="margin: 0; color: #856404; font-weight: 500;">
-              🔔 请登录管理后台及时处理此审核请求，确保团队信息的及时更新。
-            </p>
-          </div>
-          
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin/staff" 
-               style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; display: inline-block;">
-              前往审核
-            </a>
-          </div>
-
-          <p style="color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px;">
-            此邮件由系统自动发送，请及时处理审核请求。如有问题，请联系技术支持。
-          </p>
-          
-          <div style="text-align: center; margin-top: 30px;">
-            <p style="color: #999; font-size: 12px;">© 2024 UTChinese Network. All rights reserved.</p>
-          </div>
-        </div>
+    const title = '新的个人资料待审核';
+    const preheader = `用户 ${userName} 提交了新的个人资料待审核。`;
+    const bodyContent = `
+      <h1>📋 新的个人资料待审核</h1>
+      <p>管理员您好，用户 <strong>${userName}</strong> (${userEmail}) 提交了个人资料，请您及时审核。</p>
+      <div class="card" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+        <h3>提交内容</h3>
+        <p style="margin:0 0 8px;"><strong>中文姓名:</strong> ${userProfile.name_zh || '未填写'}</p>
+        <p style="margin:0 0 8px;"><strong>英文姓名:</strong> ${userProfile.name_en || '未填写'}</p>
+        <p style="margin:0 0 8px;"><strong>部门:</strong> ${userProfile.department || '未填写'}</p>
+        <p style="margin:0 0 8px;"><strong>中文职位:</strong> ${userProfile.position_zh || '未填写'}</p>
+        <p style="margin:0;"><strong>英文职位:</strong> ${userProfile.position_en || '未填写'}</p>
       </div>
+      <table width="100%" cellspacing="0" cellpadding="0"><tr><td>
+        <a href="https://www.utchinese.org/admin/staff" target="_blank" class="button-link">前往审核</a>
+      </td></tr></table>
+      <p class="light-text" style="font-size: 14px; margin-top: 24px;">为确保团队信息准确，请尽快完成审核。</p>
     `;
+    return this.generateBaseEmailTemplate({ title, preheader, bodyContent });
   }
 
   // 个人资料审核结果邮件模板（发给用户）
   static generateProfileReviewResultTemplate(userName, isApproved, reviewNote) {
-    const status = isApproved ? '通过' : '未通过';
-    const statusColor = isApproved ? '#10b981' : '#ef4444';
-    const statusIcon = isApproved ? '✅' : '❌';
-    const bgColor = isApproved ? '#d1fae5' : '#fee2e2';
-    const borderColor = isApproved ? '#10b981' : '#ef4444';
+    const statusText = isApproved ? '审核通过' : '需要修改';
+    const title = `您的个人资料${statusText}`;
+    const preheader = `您提交的个人资料已处理，结果为：${statusText}。`;
 
-    return `
-      <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
-        <div style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
-            <img src="${process.env.FRONTEND_URL || 'http://localhost:3000'}/logo.png" alt="多大中文 Logo" style="height: 40px; width: auto;" onerror="this.style.display='none'">
-            <h1 style="margin: 0; font-size: 28px;">UTChinese Network</h1>
-          </div>
-          <p style="margin: 10px 0 0; opacity: 0.9;">多大中文 - 审核结果通知</p>
-        </div>
-        
-        <div style="background: white; padding: 40px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-          <h2 style="color: #333; margin-bottom: 20px;">您好，${userName}！</h2>
-          
-          <div style="background: ${bgColor}; border-left: 4px solid ${borderColor}; padding: 25px; margin: 30px 0; border-radius: 0 8px 8px 0;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-              <span style="font-size: 24px;">${statusIcon}</span>
-              <h3 style="margin: 0; color: ${statusColor};">个人资料审核${status}</h3>
-            </div>
-            
-            ${isApproved 
-              ? '<p style="margin: 0; color: #065f46;">恭喜！您的个人资料已通过审核，现在可以在团队页面中展示了。感谢您的耐心等待！</p>'
-              : '<p style="margin: 0; color: #991b1b;">很抱歉，您的个人资料未能通过审核。请根据下方反馈意见修改后重新提交。</p>'
-            }
-          </div>
+    const reviewMessage = isApproved 
+      ? '恭喜！您的个人资料已通过审核，现在将公开展示在团队页面。' 
+      : '很抱歉，您的个人资料需要一些修改才能通过审核。';
 
-          ${reviewNote ? `
-            <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin: 20px 0;">
-              <h4 style="color: #dc2626; margin: 0 0 10px;">📝 审核意见：</h4>
-              <p style="margin: 0; color: #555; font-style: italic;">"${reviewNote}"</p>
-            </div>
-          ` : ''}
-
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/profile" 
-               style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; display: inline-block;">
-              ${isApproved ? '查看我的资料' : '修改个人资料'}
-            </a>
-          </div>
-
-          ${!isApproved ? `
-            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 20px; margin: 20px 0;">
-              <p style="margin: 0; color: #856404; font-weight: 500;">
-                💡 提示：请根据审核意见调整您的个人资料，然后重新提交审核。我们会尽快为您处理。
-              </p>
-            </div>
-          ` : ''}
-
-          <p style="color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px;">
-            如有任何疑问，请联系管理员。感谢您对 UTChinese Network 的支持！
-          </p>
-          
-          <div style="text-align: center; margin-top: 30px;">
-            <p style="color: #999; font-size: 12px;">© 2024 UTChinese Network. All rights reserved.</p>
-          </div>
-        </div>
+    const noteBox = reviewNote ? `
+      <div class="card" style="background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 16px; margin-bottom: 24px; border-radius: 8px;">
+        <h3 style="margin: 0 0 8px;">管理员意见：</h3>
+        <p style="margin: 0; color: #6b7280; font-style: italic;">“${reviewNote}”</p>
       </div>
+    ` : '';
+
+    const actionButton = `
+      <a href="https://www.utchinese.org/profile" target="_blank" class="button-link">
+        ${isApproved ? '查看我的资料' : '前往修改'}
+      </a>
     `;
+
+    const bodyContent = `
+      <h1>您好，${userName}！</h1>
+      <p style="margin-bottom: 24px;">${reviewMessage}</p>
+      ${noteBox}
+      <table width="100%" cellspacing="0" cellpadding="0"><tr><td>${actionButton}</td></tr></table>
+      <p class="light-text" style="font-size: 14px; margin-top: 24px;">如有疑问，请联系管理员。</p>
+    `;
+    return this.generateBaseEmailTemplate({ title, preheader, bodyContent });
   }
 
-  // 账号激活/停用通知邮件模板
+  // 账号激活通知邮件模板（只用于激活通知，停用时不发送邮件）
   static generateAccountActivationTemplate(userName, isActivated, adminName) {
-    const status = isActivated ? '激活' : '停用';
-    const statusColor = isActivated ? '#10b981' : '#ef4444';
-    const statusIcon = isActivated ? '✅' : '⏸️';
-    const bgColor = isActivated ? '#d1fae5' : '#fee2e2';
-    const borderColor = isActivated ? '#10b981' : '#ef4444';
 
-    return `
-      <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
-        <div style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
-            <img src="${process.env.FRONTEND_URL || 'http://localhost:3000'}/logo.png" alt="多大中文 Logo" style="height: 40px; width: auto;" onerror="this.style.display='none'">
-            <h1 style="margin: 0; font-size: 28px;">UTChinese Network</h1>
-          </div>
-          <p style="margin: 10px 0 0; opacity: 0.9;">多大中文 - 账号状态通知</p>
-        </div>
-        
-        <div style="background: white; padding: 40px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-          <h2 style="color: #333; margin-bottom: 20px;">您好，${userName}！</h2>
-          
-          <div style="background: ${bgColor}; border-left: 4px solid ${borderColor}; padding: 25px; margin: 30px 0; border-radius: 0 8px 8px 0;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-              <span style="font-size: 24px;">${statusIcon}</span>
-              <h3 style="margin: 0; color: ${statusColor};">您的账号已被${status}</h3>
-            </div>
-            
-            ${isActivated 
-              ? '<p style="margin: 0; color: #065f46;">恭喜！您的账号已被管理员激活，现在可以使用UTChinese Network的所有功能了。感谢您加入我们的社区！</p>'
-              : '<p style="margin: 0; color: #991b1b;">您的账号已被管理员暂时停用。如有疑问，请联系管理员了解详情。</p>'
-            }
-          </div>
+    const title = '您的账号已激活';
+    const preheader = '您的 UTChinese Network 账号已被激活。';
 
-          <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin: 20px 0;">
-            <h4 style="color: #dc2626; margin: 0 0 10px;">📋 操作详情：</h4>
-            <p style="margin: 5px 0; color: #555;"><strong>操作管理员：</strong> ${adminName}</p>
-            <p style="margin: 5px 0; color: #555;"><strong>操作时间：</strong> ${new Date().toLocaleString('zh-CN')}</p>
-            <p style="margin: 5px 0; color: #555;"><strong>账号状态：</strong> ${isActivated ? '已激活' : '已停用'}</p>
-          </div>
-
-          ${isActivated ? `
-            <div style="text-align: center; margin: 30px 0;">
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/profile" 
-                 style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; display: inline-block;">
-                完善个人资料
-              </a>
-            </div>
-          ` : `
-            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 20px; margin: 20px 0;">
-              <p style="margin: 0; color: #856404; font-weight: 500;">
-                💡 如对账号状态有疑问，请联系管理员获取更多信息。
-              </p>
-            </div>
-          `}
-
-          <p style="color: #999; font-size: 14px; border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px;">
-            如有任何问题，请联系管理员。感谢您对 UTChinese Network 的关注！
-          </p>
-          
-          <div style="text-align: center; margin-top: 30px;">
-            <p style="color: #999; font-size: 12px;">© 2024 UTChinese Network. All rights reserved.</p>
-          </div>
-        </div>
-      </div>
+    const bodyContent = `
+      <h1>您好，${userName}！</h1>
+      <p style="margin-bottom: 20px;">恭喜您！您的 UTChinese Network 账户已成功激活，现在可以使用我们平台的全部功能。</p>
+      
+      <p style="margin-bottom: 20px;">通过我们的平台，您可以：</p>
+      <ul style="margin-bottom: 24px; padding-left: 20px; line-height: 1.8;">
+        <li>完善个人资料，展示您的专业背景</li>
+        <li>了解并参与社团活动</li>
+        <li>获取职业发展相关资源</li>
+        <li>与社团成员建立联系</li>
+        <li>及时获取最新资讯和机会</li>
+      </ul>
+      
+      <p style="margin-bottom: 24px;">建议您首先完善个人资料，审核通过后将在团队页面展示：</p>
+      
+      <table width="100%" cellspacing="0" cellpadding="0"><tr><td>
+        <a href="https://www.utchinese.org/profile" target="_blank" class="button-link">完善您的个人资料</a>
+      </td></tr></table>
+      
+      <p style="margin-top: 24px; font-size: 14px; color: #6b7280;">如果您有任何疑问或需要帮助，请随时联系我们的团队。</p>
     `;
+    
+    return this.generateBaseEmailTemplate({ title, preheader, bodyContent });
+  }
+
+  // 生成验证码邮件的纯文本版本
+  static generatePlainTextVersion(subject, verificationCode, username, purpose) {
+    let greeting, body, closing;
+    const commonFooter = `\n\n此验证码将在 10分钟 内失效。请勿与他人分享此代码。\n\n如果您未请求此验证码，请忽略此邮件。\n\n© ${new Date().getFullYear()} UTChinese Network. All rights reserved.`;
+
+    switch (purpose) {
+      case 'register':
+        greeting = `欢迎，${username}！`;
+        body = `感谢您注册 UTChinese Network。请使用以下验证码完成邮箱验证，激活您的账户：\n\n${verificationCode}`;
+        closing = `\n\n验证成功后，您即可开始探索我们的社区。期待您的加入！`;
+        break;
+
+      case 'login':
+      default:
+        greeting = `您好，${username}！`;
+        body = `您正在尝试登录 UTChinese Network 账户。请使用以下验证码完成操作：\n\n${verificationCode}`;
+        closing = ``;
+        break;
+    }
+    
+    return `${greeting}\n\n${body}${closing}${commonFooter}`;
+  }
+
+  // 生成个人资料审核通知的纯文本版本（给管理员）
+  static generateProfileReviewPlainText(userProfile, userEmail, userName) {
+    return `📋 新的个人资料待审核
+    
+管理员您好，用户 ${userName} (${userEmail}) 提交了个人资料，请您及时审核。
+
+提交内容:
+- 中文姓名: ${userProfile.name_zh || '未填写'}
+- 英文姓名: ${userProfile.name_en || '未填写'}
+- 部门: ${userProfile.department || '未填写'}
+- 中文职位: ${userProfile.position_zh || '未填写'}
+- 英文职位: ${userProfile.position_en || '未填写'}
+
+请前往审核: https://www.utchinese.org/admin/staff
+
+为确保团队信息准确，请尽快完成审核。
+
+© ${new Date().getFullYear()} UTChinese Network. All rights reserved.`;
+  }
+
+  // 生成个人资料审核结果的纯文本版本（给用户）
+  static generateProfileReviewResultPlainText(userName, isApproved, reviewNote) {
+    const statusText = isApproved ? '✅ 审核通过' : '❌ 需要修改';
+    const mainMessage = isApproved
+      ? '恭喜！您的个人资料已通过审核，现在将公开展示在团队页面。'
+      : '很抱歉，您的个人资料需要一些修改才能通过审核。';
+    
+    let content = `您好，${userName}！\n\n您提交的个人资料已处理完毕。\n\n${statusText}\n${mainMessage}`;
+    
+    if (reviewNote) {
+      content += `\n\n管理员意见：\n“${reviewNote}”`;
+    }
+
+    const actionText = isApproved ? '查看我的资料' : '前往修改';
+    content += `\n\n${actionText}: https://www.utchinese.org/profile`;
+    
+    content += `\n\n如有疑问，请联系管理员。\n\n© ${new Date().getFullYear()} UTChinese Network. All rights reserved.`;
+    
+    return content;
+  }
+
+  // 生成账号激活通知的纯文本版本（只用于激活通知）
+  static generateAccountActivationPlainText(userName, isActivated, adminName) {
+    let content = `您好，${userName}！\n\n恭喜您！您的 UTChinese Network 账户已成功激活，现在可以使用我们平台的全部功能。`;
+    
+    content += `\n\n通过我们的平台，您可以：`;
+    content += `\n• 完善个人资料，展示您的专业背景`;
+    content += `\n• 了解并参与社团活动`;
+    content += `\n• 获取职业发展相关资源`;
+    content += `\n• 与社团成员建立联系`;
+    content += `\n• 及时获取最新资讯和机会`;
+    
+    content += `\n\n建议您首先完善个人资料，审核通过后将在团队页面展示：`;
+    content += `\nhttps://www.utchinese.org/profile`;
+    
+    content += `\n\n如果您有任何疑问或需要帮助，请随时联系我们的团队。`;
+    content += `\n\n© ${new Date().getFullYear()} UTChinese Network. All rights reserved.`;
+    
+    return content;
   }
 }
 
-module.exports = EmailService; 
+module.exports = EmailService;

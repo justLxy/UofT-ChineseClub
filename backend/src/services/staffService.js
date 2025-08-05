@@ -377,18 +377,24 @@ class StaffService {
       password,
       isActive, 
       role,
+      sendNotificationEmail = false, // Default to false
       permissions = {},
       profileUpdate = {}
     } = updateData;
     
+    // Capture the state before the update for comparison
+    const originalIsActive = targetStaff.isActive;
+    
     const updateFields = {};
     if (username !== undefined) updateFields.username = username;
     if (email !== undefined) updateFields.email = email;
-    if (password !== undefined) updateFields.passwordHash = await bcrypt.hash(password, 10);
+    if (password !== undefined && password.trim() !== "") {
+      updateFields.passwordHash = await bcrypt.hash(password, 10);
+    }
     if (isActive !== undefined) updateFields.isActive = isActive;
     if (role !== undefined) updateFields.role = role;
     
-    // 更新权限字段
+    // Update permissions fields
     if (permissions.canManageEvents !== undefined) updateFields.canManageEvents = permissions.canManageEvents;
     if (permissions.canManageStaff !== undefined) updateFields.canManageStaff = permissions.canManageStaff;
     if (permissions.canReviewProfiles !== undefined) updateFields.canReviewProfiles = permissions.canReviewProfiles;
@@ -400,23 +406,35 @@ class StaffService {
         profile: true
       }
     });
+
+    // If account status changed and notification is requested, send email
+    if (sendNotificationEmail && updatedStaff.isActive !== originalIsActive) {
+      try {
+        const adminUser = await prisma.staff.findUnique({ where: { id: currentUserId }});
+        await EmailService.sendAccountActivationNotification(
+          updatedStaff.email,
+          updatedStaff.username,
+          updatedStaff.isActive,
+          adminUser ? adminUser.username : 'Admin'
+        );
+      } catch (emailError) {
+        console.error(`Failed to send activation notification to ${updatedStaff.email}:`, emailError);
+        // Do not throw error, as the main operation was successful
+      }
+    }
     
-    // 更新 Staff Profile 信息（如果提供了 profileUpdate）
+    // Update Staff Profile information (if provided)
     if (profileUpdate && Object.keys(profileUpdate).length > 0) {
       const existingProfile = await prisma.staffProfile.findUnique({
         where: { staffId: parseInt(id) }
       });
 
       if (existingProfile) {
-        // 保留原有状态字段，除非调用方显式提供新状态
         const { reviewedAt: _ra, reviewedBy: _rb, createdAt: _ca, updatedAt: _ua, id: _pid, staffId: _sid, ...updatableFields } = profileUpdate;
-
-        // 如果没有显式提供状态，默认为 approved
         if (updatableFields.status === undefined) {
           updatableFields.status = 'approved';
           updatableFields.isVisible = true;
         }
-
         await prisma.staffProfile.update({
           where: { staffId: parseInt(id) },
           data: {
@@ -425,12 +443,10 @@ class StaffService {
           }
         });
       } else {
-        // 如果该员工尚未创建资料，则直接创建
         await prisma.staffProfile.create({
           data: {
             ...profileUpdate,
             staffId: parseInt(id),
-            // 新建资料默认设为 approved 并可见，管理员可稍后调整
             status: 'approved',
             isVisible: true,
           }
@@ -438,7 +454,6 @@ class StaffService {
       }
     }
 
-    // 重新获取更新后的数据（包含 profile）
     const refreshedStaff = await prisma.staff.findUnique({
       where: { id: parseInt(id) },
       include: {

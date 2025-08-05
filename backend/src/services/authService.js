@@ -456,51 +456,7 @@ class AuthService {
     };
   }
 
-  // 绑定邮箱
-  static async bindEmail(userId, newEmail, verificationCode) {
-    if (!newEmail || !verificationCode) {
-      throw new Error('新邮箱和验证码不能为空');
-    }
 
-    // 验证验证码
-    const verificationResult = await EmailService.verifyCode(newEmail, verificationCode);
-    if (!verificationResult.success) {
-      throw new Error('验证码验证失败');
-    }
-
-    // 检查新邮箱是否已被其他用户使用
-    const existingUser = await prisma.staff.findUnique({
-      where: { email: newEmail }
-    });
-
-    if (existingUser && existingUser.id !== userId) {
-      throw new Error('该邮箱已被其他用户使用');
-    }
-
-    // 更新用户邮箱
-    const updatedStaff = await prisma.staff.update({
-      where: { id: userId },
-      data: { 
-        email: newEmail,
-        isEmailVerified: true
-      }
-    });
-
-    return {
-      user: {
-        id: updatedStaff.id,
-        username: updatedStaff.username,
-        email: updatedStaff.email,
-        role: updatedStaff.role,
-        permissions: {
-          canManageEvents: updatedStaff.canManageEvents,
-          canManageStaff: updatedStaff.canManageStaff,
-          canReviewProfiles: updatedStaff.canReviewProfiles
-        }
-      },
-      message: '邮箱绑定成功'
-    };
-  }
 
   // 管理员激活/停用用户账号
   static async toggleUserActivation(userId, isActive, adminId) {

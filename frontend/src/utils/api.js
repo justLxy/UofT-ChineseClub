@@ -145,19 +145,7 @@ export const verifyCode = async (email, verificationCode) => {
   }
 };
 
-// 绑定邮箱（需要登录）
-export const bindEmail = async (newEmail, verificationCode) => {
-  try {
-    const response = await api.post('/auth/bind-email', { 
-      newEmail, 
-      verificationCode 
-    });
-    return response.data;
-  } catch (error) {
-    console.error('绑定邮箱错误:', error);
-    throw error;
-  }
-};
+
 
 // 获取当前用户信息
 export const getCurrentUser = async () => {

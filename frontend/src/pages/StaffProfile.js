@@ -799,6 +799,12 @@ const StaffProfile = () => {
             phone: profileData.phone || '',
             mbti: profileData.mbti || ''
           });
+        } else if (user) {
+          // 如果是新用户（没有个人资料），预先填充他们的注册邮箱
+          setFormData(prev => ({
+            ...prev,
+            email: user.email || ''
+          }));
         }
       } catch (error) {
         console.error('Error loading profile:', error);
