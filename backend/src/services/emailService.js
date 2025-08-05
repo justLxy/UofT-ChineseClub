@@ -11,6 +11,139 @@ class EmailService {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
+  // 发送验证码邮件
+  static async sendVerificationCode(email, purpose = 'verification') {
+    try {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error('请输入有效的邮箱格式');
+      }
+
+      // 检查发送频率
+      const existingCode = await prisma.verificationCode.findUnique({ where: { email } });
+      const now = new Date();
+      if (existingCode) {
+        const oneMinuteAgo = new Date(now.getTime() - 60 * 1000);
+        if (existingCode.lastSentAt > oneMinuteAgo) {
+          throw new Error('验证码发送过于频繁，请1分钟后再试');
+        }
+      }
+      
+      let subject, html, username;
+      
+      // 注册流程的特殊处理
+      if (purpose === 'register') {
+        const existingStaff = await prisma.staff.findUnique({ where: { email } });
+        if (existingStaff) {
+          throw new Error('该邮箱已被注册，请使用其他邮箱或直接登录');
+        }
+        username = email.split('@')[0];
+        subject = 'UTChinese Network - 欢迎注册！请验证您的邮箱';
+        html = this.generateRegisterEmailTemplate(this.generateVerificationCode(), username);
+      } else {
+        // 登录等其他流程
+        const staff = await prisma.staff.findUnique({ where: { email } });
+        if (!staff) {
+          throw new Error('邮箱不存在');
+        }
+        if (purpose !== 'login' && !staff.isActive) {
+           throw new Error('账号已被停用，无法执行此操作');
+        }
+        username = staff.username || email.split('@')[0];
+        subject = 'UTChinese Network - 登录验证码';
+        html = this.generateLoginEmailTemplate(this.generateVerificationCode(), username);
+      }
+
+      const verificationCode = this.generateVerificationCode();
+      const expiryTime = new Date(now.getTime() + 10 * 60 * 1000); // 10分钟有效期
+
+      await prisma.verificationCode.upsert({
+        where: { email },
+        update: {
+          code: verificationCode,
+          expiresAt: expiryTime,
+          attempts: 0,
+          lastSentAt: now,
+        },
+        create: {
+          email,
+          code: verificationCode,
+          expiresAt: expiryTime,
+          lastSentAt: now,
+        },
+      });
+
+      const { data, error } = await resend.emails.send({
+        from: 'UTChinese Network <support@uoft.pairxy.com>',
+        to: email,
+        subject,
+        html,
+        text: this.generatePlainTextVersion(subject, verificationCode, username, purpose),
+      });
+
+      if (error) {
+        console.error('发送邮件失败:', error);
+        throw new Error('发送验证码失败，请稍后重试');
+      }
+
+      console.log('验证码邮件发送成功:', data);
+      return {
+        success: true,
+        message: '验证码已发送，请查看您的邮箱',
+        expiryTime: expiryTime.toISOString(),
+      };
+
+    } catch (error) {
+      console.error('发送验证码错误:', error);
+      throw error;
+    }
+  }
+
+  // 验证验证码
+  static async verifyCode(email, code) {
+    try {
+      const verificationRecord = await prisma.verificationCode.findUnique({
+        where: { email },
+      });
+
+      if (!verificationRecord) {
+        throw new Error('请先获取验证码');
+      }
+
+      const now = new Date();
+      if (verificationRecord.expiresAt < now) {
+        await prisma.verificationCode.delete({ where: { email } });
+        throw new Error('验证码已过期，请重新获取');
+      }
+
+      if (verificationRecord.attempts >= 3) {
+        await prisma.verificationCode.delete({ where: { email } });
+        throw new Error('验证码尝试次数过多，请重新获取');
+      }
+
+      if (verificationRecord.code !== code) {
+        await prisma.verificationCode.update({
+          where: { email },
+          data: { attempts: { increment: 1 } },
+        });
+        const remainingAttempts = 3 - (verificationRecord.attempts + 1);
+        throw new Error(`验证码错误，还有${remainingAttempts}次尝试机会`);
+      }
+
+      // 验证成功，删除记录
+      await prisma.verificationCode.delete({ where: { email } });
+
+      return {
+        success: true,
+        message: '验证码验证成功',
+      };
+
+    } catch (error) {
+      console.error('验证验证码错误:', error);
+      throw error;
+    }
+  }
+  
   /**
    * 生成一个现代化的邮件基础模板
    * @param {object} options - 模板选项
@@ -144,245 +277,8 @@ class EmailService {
 </html>
     `;
   }
-
-  // 发送验证码邮件
-  static async sendVerificationCode(email, purpose = 'verification') {
-    try {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        throw new Error('请输入有效的邮箱格式');
-      }
-
-      // 注册流程的特殊处理
-      if (purpose === 'register') {
-        const existingStaff = await prisma.staff.findUnique({ where: { email } });
-
-        if (existingStaff && (existingStaff.isEmailVerified || existingStaff.isActive)) {
-          throw new Error('该邮箱已被注册，请使用其他邮箱或直接登录');
-        }
-
-        if (existingStaff) {
-          const now = new Date();
-          const oneMinuteAgo = new Date(now.getTime() - 60 * 1000);
-          if (existingStaff.lastVerificationCodeSent && existingStaff.lastVerificationCodeSent > oneMinuteAgo) {
-            throw new Error('验证码发送过于频繁，请1分钟后再试');
-          }
-        }
-        
-        const verificationCode = this.generateVerificationCode();
-        const now = new Date();
-        const expiryTime = new Date(now.getTime() + 10 * 60 * 1000);
-
-        try {
-          const staff = await prisma.staff.upsert({
-            where: { email },
-            update: {
-              verificationCode,
-              verificationCodeExpiry: expiryTime,
-              verificationCodeAttempts: 0,
-              lastVerificationCodeSent: now,
-            },
-            create: {
-              email,
-              username: email.split('@')[0],
-              passwordHash: 'temp',
-              isEmailVerified: false,
-              isActive: false,
-              verificationCode,
-              verificationCodeExpiry: expiryTime,
-              verificationCodeAttempts: 0,
-              lastVerificationCodeSent: now,
-            },
-          });
-
-          const subject = 'UTChinese Network - 欢迎注册！请验证您的邮箱';
-          const html = this.generateRegisterEmailTemplate(verificationCode, staff.username);
-          const { data, error } = await resend.emails.send({
-            from: 'UTChinese Network <support@uoft.pairxy.com>',
-            to: email,
-            subject,
-            html,
-            text: this.generatePlainTextVersion(subject, verificationCode, staff.username, purpose),
-          });
-
-          if (error) {
-            // 将Resend的错误抛出，以便在catch块中处理
-            throw error;
-          }
-
-          console.log('注册验证码邮件发送成功:', data);
-          return {
-            success: true,
-            message: '验证码已发送，请查看您的邮箱',
-            expiryTime: expiryTime.toISOString(),
-          };
-
-        } catch (err) {
-          // 如果邮件发送失败，且用户是新创建的，则回滚（删除）该用户
-          if (!existingStaff) {
-            console.log(`邮件发送失败，回滚新创建的用户: ${email}`);
-            await prisma.staff.delete({ where: { email } }).catch(deleteError => {
-              console.error(`回滚删除用户失败 (${email}):`, deleteError);
-            });
-          }
-          throw new Error('发送验证码失败，请稍后重试');
-        }
-      }
-
-      // 登录、绑定邮箱等其他流程
-      const staff = await prisma.staff.findUnique({ where: { email } });
-
-      if (!staff) {
-        throw new Error('邮箱不存在');
-      }
-      
-      // 对于非登录目的，才检查账户是否激活
-      if (purpose !== 'login' && !staff.isActive) {
-        throw new Error('账号已被停用，无法执行此操作');
-      }
-
-
-      const now = new Date();
-      const oneMinuteAgo = new Date(now.getTime() - 60 * 1000);
-      if (staff.lastVerificationCodeSent && staff.lastVerificationCodeSent > oneMinuteAgo) {
-        throw new Error('验证码发送过于频繁，请1分钟后再试');
-      }
-      
-      const verificationCode = this.generateVerificationCode();
-      const expiryTime = new Date(now.getTime() + 10 * 60 * 1000);
-
-      await prisma.staff.update({
-        where: { email },
-        data: {
-          verificationCode,
-          verificationCodeExpiry: expiryTime,
-          verificationCodeAttempts: 0,
-          lastVerificationCodeSent: now,
-        },
-      });
-
-      let subject, html;
-      const username = staff.username || email.split('@')[0];
-
-      switch (purpose) {
-        case 'login':
-          subject = 'UTChinese Network - 登录验证码';
-          html = this.generateLoginEmailTemplate(verificationCode, username);
-          break;
-        
-        default:
-          subject = 'UTChinese Network - 您的验证码';
-          html = this.generateVerificationEmailTemplate(verificationCode, username);
-      }
-
-      const { data, error } = await resend.emails.send({
-        from: 'UTChinese Network <support@uoft.pairxy.com>',
-        to: email,
-        subject,
-        html,
-        text: this.generatePlainTextVersion(subject, verificationCode, username, purpose),
-      });
-
-      if (error) {
-        console.error('发送邮件失败:', error);
-        throw new Error('发送验证码失败，请稍后重试');
-      }
-
-      console.log('验证码邮件发送成功:', data);
-      return {
-        success: true,
-        message: '验证码已发送，请查看您的邮箱',
-        expiryTime: expiryTime.toISOString(),
-      };
-    } catch (error) {
-      console.error('发送验证码错误:', error);
-      throw error;
-    }
-  }
-
-  // 验证验证码
-  static async verifyCode(email, code) {
-    try {
-      const staff = await prisma.staff.findUnique({
-        where: { email }
-      });
-
-      if (!staff) {
-        throw new Error('邮箱不存在');
-      }
-
-      // 检查验证码是否存在
-      if (!staff.verificationCode) {
-        throw new Error('请先获取验证码');
-      }
-
-      // 检查验证码是否过期
-      const now = new Date();
-      if (!staff.verificationCodeExpiry || staff.verificationCodeExpiry < now) {
-        // 清空过期的验证码
-        await prisma.staff.update({
-          where: { email },
-          data: {
-            verificationCode: null,
-            verificationCodeExpiry: null,
-            verificationCodeAttempts: 0
-          }
-        });
-        throw new Error('验证码已过期，请重新获取');
-      }
-
-      // 检查尝试次数
-      if (staff.verificationCodeAttempts >= 3) {
-        // 清空验证码（防止暴力破解）
-        await prisma.staff.update({
-          where: { email },
-          data: {
-            verificationCode: null,
-            verificationCodeExpiry: null,
-            verificationCodeAttempts: 0
-          }
-        });
-        throw new Error('验证码尝试次数过多，请重新获取');
-      }
-
-      // 验证验证码
-      if (staff.verificationCode !== code) {
-        // 增加尝试次数
-        await prisma.staff.update({
-          where: { email },
-          data: {
-            verificationCodeAttempts: staff.verificationCodeAttempts + 1
-          }
-        });
-        
-        const remainingAttempts = 3 - (staff.verificationCodeAttempts + 1);
-        throw new Error(`验证码错误，还有${remainingAttempts}次尝试机会`);
-      }
-
-      // 验证成功，清空验证码并标记邮箱已验证
-      await prisma.staff.update({
-        where: { email },
-        data: {
-          verificationCode: null,
-          verificationCodeExpiry: null,
-          verificationCodeAttempts: 0,
-          isEmailVerified: true
-        }
-      });
-
-      return {
-        success: true,
-        message: '验证码验证成功',
-        staffId: staff.id
-      };
-
-    } catch (error) {
-      console.error('验证验证码错误:', error);
-      throw error;
-    }
-  }
-
-  static generateLoginEmailTemplate(code, username) {
+  
+    static generateLoginEmailTemplate(code, username) {
     const title = '登录验证';
     const preheader = `您的登录验证码是 ${code}。`;
     const bodyContent = `
