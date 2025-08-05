@@ -14,7 +14,9 @@ const FiltersContainer = styled.div`
   }
 `;
 
-const FilterButton = styled(motion.button)`
+const FilterButton = styled(motion.button).withConfig({
+  shouldForwardProp: (prop) => !['isActive'].includes(prop),
+})`
   position: relative;
   padding: 10px 24px;
   background: transparent;
@@ -63,7 +65,9 @@ const countVariants = {
   }
 };
 
-const Count = styled(motion.span)`
+const Count = styled(motion.span).withConfig({
+  shouldForwardProp: (prop) => !['isActive'].includes(prop),
+})`
   display: inline-flex;
   align-items: center;
   justify-content: center;

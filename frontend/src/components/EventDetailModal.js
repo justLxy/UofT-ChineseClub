@@ -236,7 +236,7 @@ const EventDetailModal = ({ event: initialEvent, onClose, isAdmin = false }) => 
     link
   } = event;
 
-  const dateDisplay = formatEventDateTime(startDate, endDate);
+  const dateDisplay = formatEventDateTime(startDate, endDate, i18n.language);
 
   // Default placeholder image from an external source
   const defaultImage = "https://images.unsplash.com/photo-1531058020387-3be344556be6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80";

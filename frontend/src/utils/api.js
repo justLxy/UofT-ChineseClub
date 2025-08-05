@@ -165,7 +165,10 @@ export const getCurrentUser = async () => {
     const response = await api.get('/auth/me');
     return response.data;
   } catch (error) {
-    console.error('获取用户信息错误:', error);
+    // 只在非401错误时打印错误信息，401是正常的未登录状态
+    if (error.response?.status !== 401) {
+      console.error('获取用户信息错误:', error);
+    }
     throw error;
   }
 };

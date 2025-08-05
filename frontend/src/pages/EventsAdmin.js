@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { FiPlus, FiEdit2, FiTrash2, FiStar, FiUpload } from 'react-icons/fi';
 import { getEvents, createEvent, updateEvent, deleteEvent, getFullEventImageUrl, uploadEventImage } from '../utils/api';
 import { formatEventDateTime } from '../utils/dateUtils';
@@ -529,6 +530,7 @@ const DesktopSkeletonRow = styled(EventRow)`
 
 const EventsAdmin = () => {
   const { isAuthenticated, hasPermission, loading: authLoading } = useAuth();
+  const { i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [events, setEvents] = useState([]);
@@ -880,7 +882,7 @@ const EventsAdmin = () => {
               <EventId>{index + 1}</EventId>
               <EventTitle>{event.title}</EventTitle>
               <EventDate>
-                {formatEventDateTime(event.startDate, event.endDate)}
+                {formatEventDateTime(event.startDate, event.endDate, i18n.language)}
               </EventDate>
               <EventStatus status={event.status}>
                 {statusText[event.status]}

@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiCalendar, FiMapPin } from 'react-icons/fi';
-import { getFullEventImageUrl, getEvents } from '../../utils/api';
-import { formatEventDateTime } from '../../utils/dateUtils';
+import { getFullEventImageUrl } from '../../utils/api';
 import SEO from '../../components/SEO';
-import LoadingAnimation from '../../components/LoadingAnimation';
+import EventHero from '../../components/EventHero';
 
 const heroImg = getFullEventImageUrl('/uploads/events/NewYearConcert.jpg');
 
@@ -16,123 +13,7 @@ const PageWrapper = styled.div`
   overflow-x: hidden;
 `;
 
-const BackButton = styled(motion.button)`
-  position: fixed;
-  top: 100px;
-  left: 2rem;
-  z-index: 1000;
-  background: var(--primary);
-  border: none;
-  border-radius: 50px;
-  padding: 12px 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 30px rgba(var(--primary-rgb), 0.4);
-  backdrop-filter: blur(10px);
 
-  &:hover {
-    background: var(--primary-dark);
-    transform: translateX(-3px) translateY(-2px);
-    box-shadow: 0 10px 40px rgba(var(--primary-rgb), 0.6);
-  }
-
-  svg {
-    color: white;
-  }
-`;
-
-const Hero = styled.section`
-  position: relative;
-  height: 70vh;
-  background-image: url(${heroImg});
-  background-size: cover;
-  background-position: center top;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  
-  animation: backgroundScroll 40s ease-in-out infinite;
-  
-  @keyframes backgroundScroll {
-    0% {
-      background-position: center top;
-    }
-    50% {
-      background-position: center bottom;
-    }
-    100% {
-      background-position: center top;
-    }
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      transparent 65%,
-      rgba(0, 0, 0, 0.6) 100%
-    );
-  }
-
-  > div {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 1rem;
-    z-index: 2;
-    padding: 0 2rem;
-  }
-`;
-
-const Title = styled(motion.h1)`
-  font-size: 4rem;
-  margin: 0 0 1.5rem 0;
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  
-  @media (max-width: 768px) {
-    font-size: 2.8rem;
-    margin: 0 0 1rem 0;
-  }
-`;
-
-const EventInfo = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  
-  @media (max-width: 768px) {
-    gap: 0.6rem;
-  }
-`;
-
-const InfoItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1.1rem;
-  font-weight: 500;
-  
-  svg {
-    color: var(--primary-light);
-    flex-shrink: 0;
-  }
-  
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    gap: 0.6rem;
-  }
-`;
 
 const ContentSection = styled.section`
   padding: 5rem 2rem;
@@ -190,35 +71,8 @@ const Paragraph = styled(motion.p)`
 
 const NewYearConcertPage = () => {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
   const isZh = i18n.language === 'zh';
-  const [eventData, setEventData] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchEventData = async () => {
-      try {
-        const events = await getEvents();
-        // 查找新年音乐会相关的活动
-        const concertEvent = events.find(event => 
-          event.title.toLowerCase().includes('new year concert') || 
-          event.title.includes('新年音乐会')
-        );
-        
-        if (concertEvent) {
-          setEventData(concertEvent);
-        }
-      } catch (error) {
-        console.error('Error fetching event data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEventData();
-  }, []);
-
-  // 默认内容（备用）
   const defaultContent = {
     en: {
       title: 'New Year Concert',
@@ -244,21 +98,6 @@ const NewYearConcertPage = () => {
 
   const currentContent = isZh ? defaultContent.zh : defaultContent.en;
 
-  if (loading) {
-    return (
-      <PageWrapper>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh' 
-        }}>
-          <LoadingAnimation />
-        </div>
-      </PageWrapper>
-    );
-  }
-
   return (
     <PageWrapper>
       <SEO
@@ -267,48 +106,11 @@ const NewYearConcertPage = () => {
         url="https://www.utchinese.org/events/new-year-concert"
       />
       
-      <BackButton
-        onClick={() => navigate('/events')}
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.5 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <FiArrowLeft />
-        {isZh ? '返回活动' : 'Back to Events'}
-      </BackButton>
-
-      <Hero>
-        <div>
-          <Title
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-{eventData ? eventData.title : currentContent.title}
-          </Title>
-          
-          {eventData && (
-            <EventInfo
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              <InfoItem>
-                <FiCalendar />
-                <span>{formatEventDateTime(eventData.startDate, eventData.endDate)}</span>
-              </InfoItem>
-              {eventData.location && (
-                <InfoItem>
-                  <FiMapPin />
-                  <span>{eventData.location}</span>
-                </InfoItem>
-              )}
-            </EventInfo>
-          )}
-        </div>
-      </Hero>
+      <EventHero 
+        eventSlug="new-year-concert"
+        defaultTitle={currentContent.title}
+        defaultImage={heroImg}
+      />
 
       <ContentSection>
         {currentContent.paragraphs.map((paragraph, index) => (
