@@ -4,7 +4,16 @@ const prisma = require('../config/database');
 
 // 统一用户认证中间件
 const authenticateUser = async (req, res, next) => {
-  const token = req.cookies.token;
+  // 优先从Cookie获取token，如果没有则从Authorization header获取
+  let token = req.cookies.token;
+  
+  // 如果Cookie中没有token，尝试从Authorization header获取
+  if (!token) {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7);
+    }
+  }
 
   if (!token) {
     return res.status(401).json({ error: '需要认证' });

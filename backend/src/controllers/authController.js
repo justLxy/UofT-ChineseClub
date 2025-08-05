@@ -7,6 +7,7 @@ class AuthController {
       const { identifier, password } = req.body;
       const { token, user } = await AuthService.login(identifier, password);
 
+      // 为了兼容Safari，同时设置Cookie和返回token
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -14,7 +15,8 @@ class AuthController {
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
       });
 
-      res.json({ user });
+      // 同时返回token给前端存储
+      res.json({ user, token });
     } catch (error) {
       console.error('登录错误:', error);
       res.status(401).json({ error: error.message });
@@ -26,6 +28,7 @@ class AuthController {
       const { email, verificationCode } = req.body;
       const { token, user } = await AuthService.loginWithEmail(email, verificationCode);
 
+      // 为了兼容Safari，同时设置Cookie和返回token
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -33,7 +36,8 @@ class AuthController {
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
       });
 
-      res.json({ user });
+      // 同时返回token给前端存储
+      res.json({ user, token });
     } catch (error) {
       console.error('邮箱登录错误:', error);
       res.status(401).json({ error: error.message });
