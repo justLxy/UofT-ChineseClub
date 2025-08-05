@@ -360,8 +360,15 @@ class AuthService {
       throw new Error('激活状态参数无效');
     }
 
+    const parsedUserId = parseInt(userId);
+
+    // **安全校验：防止管理员停用自己**
+    if (parsedUserId === adminId && !isActive) {
+      throw new Error('您不能停用自己的账户。');
+    }
+
     const targetUser = await prisma.staff.findUnique({
-      where: { id: parseInt(userId) },
+      where: { id: parsedUserId },
       select: { id: true, username: true, email: true, isActive: true, role: true }
     });
 
@@ -370,7 +377,7 @@ class AuthService {
     }
 
     if (targetUser.role === 'admin' && !isActive) {
-      throw new Error('不能停用管理员账号');
+      throw new Error('不能停用其他管理员账号。');
     }
 
     const admin = await prisma.staff.findUnique({
@@ -379,7 +386,7 @@ class AuthService {
     });
 
     const updatedUser = await prisma.staff.update({
-      where: { id: parseInt(userId) },
+      where: { id: parsedUserId },
       data: { isActive }
     });
 
