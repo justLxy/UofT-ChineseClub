@@ -377,11 +377,11 @@ class AuthService {
       throw new Error('请输入有效的邮箱格式');
     }
 
-    // 验证邮箱域名限制（仅限多伦多大学邮箱注册）
-    const allowedDomain = '@mail.utoronto.ca';
-    if (!email.toLowerCase().endsWith(allowedDomain)) {
-      throw new Error('注册仅限多伦多大学邮箱 (@mail.utoronto.ca)，其他邮箱请联系管理员手动创建账户');
-    }
+    // // 验证邮箱域名限制（仅限多伦多大学邮箱注册）
+    // const allowedDomain = '@mail.utoronto.ca';
+    // if (!email.toLowerCase().endsWith(allowedDomain)) {
+    //   throw new Error('注册仅限多伦多大学邮箱 (@mail.utoronto.ca)，其他邮箱请联系管理员手动创建账户');
+    // }
 
     // 检查用户名和邮箱是否已存在
     const existingUser = await prisma.staff.findFirst({
