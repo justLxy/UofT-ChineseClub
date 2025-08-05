@@ -29,7 +29,7 @@ class EmailService {
         }
       }
       
-      // **关键修复：只生成一次验证码**
+      // 只生成一次验证码
       const verificationCode = this.generateVerificationCode();
       const expiryTime = new Date(now.getTime() + 10 * 60 * 1000); // 10分钟有效期
       
@@ -486,7 +486,7 @@ class EmailService {
     ` : '';
 
     const actionButton = `
-      <a href="https://www.utchinese.org/profile" target="_blank" class="button-link">
+      <a href="https://www.utchinese.org/staff/profile" target="_blank" class="button-link">
         ${isApproved ? '查看我的资料' : '前往修改'}
       </a>
     `;
@@ -523,7 +523,7 @@ class EmailService {
       <p style="margin-bottom: 24px;">建议您首先完善个人资料，审核通过后将在团队页面展示：</p>
       
       <table width="100%" cellspacing="0" cellpadding="0"><tr><td>
-        <a href="https://www.utchinese.org/profile" target="_blank" class="button-link">完善您的个人资料</a>
+        <a href="https://www.utchinese.org/staff/profile" target="_blank" class="button-link">完善您的个人资料</a>
       </td></tr></table>
       
       <p style="margin-top: 24px; font-size: 14px; color: #6b7280;">如果您有任何疑问或需要帮助，请随时联系我们的团队。</p>
@@ -589,7 +589,7 @@ class EmailService {
     }
 
     const actionText = isApproved ? '查看我的资料' : '前往修改';
-    content += `\n\n${actionText}: https://www.utchinese.org/profile`;
+    content += `\n\n${actionText}: https://www.utchinese.org/staff/profile`;
     
     content += `\n\n如有疑问，请联系管理员。\n\n© ${new Date().getFullYear()} UTChinese Network. All rights reserved.`;
     
@@ -608,7 +608,7 @@ class EmailService {
     content += `\n• 及时获取最新资讯和机会`;
     
     content += `\n\n建议您首先完善个人资料，审核通过后将在团队页面展示：`;
-    content += `\nhttps://www.utchinese.org/profile`;
+    content += `\nhttps://www.utchinese.org/staff/profile`;
     
     content += `\n\n如果您有任何疑问或需要帮助，请随时联系我们的团队。`;
     content += `\n\n© ${new Date().getFullYear()} UTChinese Network. All rights reserved.`;
