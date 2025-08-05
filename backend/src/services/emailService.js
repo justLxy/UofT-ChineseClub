@@ -29,6 +29,10 @@ class EmailService {
         }
       }
       
+      // **关键修复：只生成一次验证码**
+      const verificationCode = this.generateVerificationCode();
+      const expiryTime = new Date(now.getTime() + 10 * 60 * 1000); // 10分钟有效期
+      
       let subject, html, username;
       
       // 注册流程的特殊处理
@@ -39,7 +43,8 @@ class EmailService {
         }
         username = email.split('@')[0];
         subject = 'UTChinese Network - 欢迎注册！请验证您的邮箱';
-        html = this.generateRegisterEmailTemplate(this.generateVerificationCode(), username);
+        // 使用同一个验证码
+        html = this.generateRegisterEmailTemplate(verificationCode, username);
       } else {
         // 登录等其他流程
         const staff = await prisma.staff.findUnique({ where: { email } });
@@ -51,11 +56,9 @@ class EmailService {
         }
         username = staff.username || email.split('@')[0];
         subject = 'UTChinese Network - 登录验证码';
-        html = this.generateLoginEmailTemplate(this.generateVerificationCode(), username);
+        // 使用同一个验证码
+        html = this.generateLoginEmailTemplate(verificationCode, username);
       }
-
-      const verificationCode = this.generateVerificationCode();
-      const expiryTime = new Date(now.getTime() + 10 * 60 * 1000); // 10分钟有效期
 
       await prisma.verificationCode.upsert({
         where: { email },
@@ -107,27 +110,28 @@ class EmailService {
       });
 
       if (!verificationRecord) {
-        throw new Error('请先获取验证码');
+        return { success: false, message: '请先获取验证码' };
       }
 
       const now = new Date();
       if (verificationRecord.expiresAt < now) {
         await prisma.verificationCode.delete({ where: { email } });
-        throw new Error('验证码已过期，请重新获取');
+        return { success: false, message: '验证码已过期，请重新获取' };
       }
 
       if (verificationRecord.attempts >= 3) {
         await prisma.verificationCode.delete({ where: { email } });
-        throw new Error('验证码尝试次数过多，请重新获取');
+        return { success: false, message: '验证码尝试次数过多，请重新获取' };
       }
 
       if (verificationRecord.code !== code) {
+        const newAttempts = verificationRecord.attempts + 1;
         await prisma.verificationCode.update({
           where: { email },
-          data: { attempts: { increment: 1 } },
+          data: { attempts: newAttempts },
         });
-        const remainingAttempts = 3 - (verificationRecord.attempts + 1);
-        throw new Error(`验证码错误，还有${remainingAttempts}次尝试机会`);
+        const remainingAttempts = 3 - newAttempts;
+        return { success: false, message: `验证码错误，还有${remainingAttempts}次尝试机会` };
       }
 
       // 验证成功，删除记录
