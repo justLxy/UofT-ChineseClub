@@ -32,10 +32,14 @@ export const AuthProvider = ({ children }) => {
       } else {
         setIsAuthenticated(false);
         setUser(null);
+        // 如果验证失败，清除可能无效的token
+        localStorage.removeItem('authToken');
       }
     } catch (error) {
       setIsAuthenticated(false);
       setUser(null);
+      // 如果验证失败，清除可能无效的token
+      localStorage.removeItem('authToken');
     } finally {
       setLoading(false);
     }
@@ -45,6 +49,7 @@ export const AuthProvider = ({ children }) => {
     verifyAuth();
 
     const handleAuthLogout = () => {
+      localStorage.removeItem('authToken');
       setIsAuthenticated(false);
       setUser(null);
     };
@@ -54,9 +59,15 @@ export const AuthProvider = ({ children }) => {
   }, [verifyAuth]);
 
   const handleLoginSuccess = (response) => {
-    const { user: loggedInUser } = response;
+    const { user: loggedInUser, token } = response;
     setIsAuthenticated(true);
     setUser(loggedInUser);
+    
+    // 为了兼容Safari，将token存储到localStorage
+    if (token) {
+      localStorage.setItem('authToken', token);
+    }
+    
     return response;
   };
 
@@ -84,6 +95,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {
+      // 清除localStorage中的token
+      localStorage.removeItem('authToken');
       setIsAuthenticated(false);
       setUser(null);
     }

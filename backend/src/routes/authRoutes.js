@@ -24,7 +24,7 @@ router.post('/verify-code', AuthController.verifyCode);
 
 // 需要认证的路由
 router.post('/change-password', authenticateUser, AuthController.changePassword);
-router.post('/bind-email', authenticateUser, AuthController.bindEmail);
+
 
 // 管理员路由 - 用户管理
 router.get('/users', authenticateUser, requireStaffManagement, AuthController.getAllUsers);

@@ -20,6 +20,8 @@ const NYConcert = lazy(() => import('./pages/NYConcert'));
 const Team = lazy(() => import('./pages/Team'));
 const Events = lazy(() => import('./pages/Events'));
 const EventsAdmin = lazy(() => import('./pages/EventsAdmin'));
+const QinSocietyEvent = lazy(() => import('./pages/events/QinSociety'));
+const NewYearConcertEvent = lazy(() => import('./pages/events/NewYearConcert'));
 const StaffProfile = lazy(() => import('./pages/StaffProfile'));
 const StaffAdmin = lazy(() => import('./pages/StaffAdmin'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -128,6 +130,8 @@ const AppContent = () => {
               <Route path="/team" element={<Team />} />
               <Route path="/team/:member" element={<Team />} />
               <Route path="/events" element={<Events />} />
+              <Route path="/events/qin-society" element={<QinSocietyEvent />} />
+              <Route path="/events/new-year-concert" element={<NewYearConcertEvent />} />
               <Route path="/admin/events" element={<EventsAdmin />} />
               <Route path="/admin/staff" element={<StaffAdmin />} />
               <Route path="/staff/profile" element={<StaffProfile />} />

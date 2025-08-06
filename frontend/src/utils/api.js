@@ -34,7 +34,7 @@ const api = axios.create({
   },
 });
 
-// 请求拦截器 - 添加语言
+// 请求拦截器 - 添加语言和认证token
 api.interceptors.request.use(config => {
   // 添加当前语言到请求中
   const currentLanguage = i18n.language || 'en';
@@ -42,6 +42,12 @@ api.interceptors.request.use(config => {
     ...config.params,
     language: currentLanguage 
   };
+
+  // 为了兼容Safari，从localStorage获取token并添加到请求头
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   
   return config;
 }, error => {
@@ -54,6 +60,8 @@ api.interceptors.response.use(
   error => {
     if (error.response && error.response.status === 401) {
       // Token无效或过期
+      // 清除localStorage中的token
+      localStorage.removeItem('authToken');
       // 通知应用用户已注销
       window.dispatchEvent(new Event('auth-logout'));
     }
@@ -145,19 +153,7 @@ export const verifyCode = async (email, verificationCode) => {
   }
 };
 
-// 绑定邮箱（需要登录）
-export const bindEmail = async (newEmail, verificationCode) => {
-  try {
-    const response = await api.post('/auth/bind-email', { 
-      newEmail, 
-      verificationCode 
-    });
-    return response.data;
-  } catch (error) {
-    console.error('绑定邮箱错误:', error);
-    throw error;
-  }
-};
+
 
 // 获取当前用户信息
 export const getCurrentUser = async () => {
@@ -165,7 +161,10 @@ export const getCurrentUser = async () => {
     const response = await api.get('/auth/me');
     return response.data;
   } catch (error) {
-    console.error('获取用户信息错误:', error);
+    // 只在非401错误时打印错误信息，401是正常的未登录状态
+    if (error.response?.status !== 401) {
+      console.error('获取用户信息错误:', error);
+    }
     throw error;
   }
 };

@@ -2,7 +2,8 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FiCalendar, FiMapPin, FiExternalLink } from 'react-icons/fi';
+import { FiCalendar, FiMapPin, FiArrowRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { formatEventDateTime } from '../utils/dateUtils';
 import { getFullEventImageUrl } from '../utils/api';
 import { Link } from 'react-router-dom';
@@ -82,9 +83,17 @@ const StatusBadge = styled.div`
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 280px;
   overflow: hidden;
   transition: transform 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  [data-theme="dark"] & {
+    background: #2a2a2a;
+  }
   
   ${Card}:hover & {
     transform: scale(1.05);
@@ -110,6 +119,7 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
   
   ${Card}:hover & {
@@ -122,7 +132,7 @@ const Content = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 260px; /* 设置固定高度确保所有卡片内容区域一致 */
+  height: 220px; /* 调整高度以适应更高的图片容器 */
 `;
 
 const Title = styled.h3`
@@ -229,7 +239,7 @@ const cardVariants = {
 };
 
 const EventCard = ({ event, index, onClick }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   const { 
     id, 
@@ -244,7 +254,19 @@ const EventCard = ({ event, index, onClick }) => {
     featured 
   } = event;
 
-  const dateDisplay = formatEventDateTime(startDate, endDate);
+    // Mapping of events that have dedicated internal pages
+  // Detect if this event has a bespoke internal page (supports EN & ZH)
+  const internalMappings = [
+    { slug: 'qin-society', keywords: ['qin society', '琴社'] },
+    { slug: 'new-year-concert', keywords: ['new year concert', '新年音乐会'] },
+  ];
+  const lowerTitle = title.toLowerCase();
+  const matched = internalMappings.find(({ keywords }) =>
+    keywords.some((kw) => lowerTitle.includes(kw))
+  );
+  const slug = matched ? matched.slug : null;
+
+  const dateDisplay = formatEventDateTime(startDate, endDate, i18n.language);
 
   // Default placeholder image from an external source
   const defaultImage = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80";
@@ -289,17 +311,24 @@ const EventCard = ({ event, index, onClick }) => {
             <FiMapPin /> {location}
           </InfoItem>
         )}
-        {link && (
-          (title === "UTChinese Network Qin Society Open Ceremony" || title === "New Year Concert") ? (
-            <LinkButton as={Link} to={link} onClick={(e) => e.stopPropagation()}>
-              {t('events.learnMore')} <FiExternalLink />
-            </LinkButton>
-          ) : (
-            <LinkButton href={link} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
-              {t('events.learnMore')} <FiExternalLink />
-            </LinkButton>
-          )
-        )}
+        {slug ? (
+          <LinkButton
+            as={Link}
+            to={`/events/${slug}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t('events.learnMore')} <FiArrowRight />
+          </LinkButton>
+        ) : link ? (
+          <LinkButton
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t('events.learnMore')} <FiArrowRight />
+          </LinkButton>
+        ) : null}
       </Content>
     </Card>
   );

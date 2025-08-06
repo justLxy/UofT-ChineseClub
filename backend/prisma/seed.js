@@ -74,31 +74,7 @@ async function main() {
 
     console.log('Admin account created/updated successfully');
 
-    // Create or update superuser account
-    const superuserPassword = adminPassword; // reuse hashed '123'
-    const superuser = await prisma.staff.upsert({
-      where: { username: 'karenjiujiu.shu' },
-      update: {
-        // 更新时只更新必要的系统字段，保留用户的个人数据
-        role: 'admin',
-        canManageEvents: true,
-        canReviewProfiles: true,
-        canManageStaff: true,
-        isActive: true
-      },
-      create: {
-        username: 'karenjiujiu.shu',
-        email: 'karenjiujiu.shu@mail.utoronto.ca',
-        passwordHash: superuserPassword,
-        role: 'admin',
-        canManageEvents: true,
-        canReviewProfiles: true,
-        canManageStaff: true,
-        isActive: true
-      }
-    });
 
-    console.log('Superuser account created/updated successfully');
 
     // Helper function to calculate event status
     const calculateEventStatus = (startDate, endDate) => {

@@ -999,6 +999,7 @@ const StaffAdmin = () => {
       try {
         const response = await updateStaffAccount(staff.id, { 
           isActive: !staff.isActive,
+          sendNotificationEmail: true,
           permissions: {} // Keep existing permissions
         });
         console.log('Toggle account response:', response);
