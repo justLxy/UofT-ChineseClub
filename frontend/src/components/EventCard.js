@@ -6,7 +6,7 @@ import { FiCalendar, FiMapPin, FiArrowRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { formatEventDateTime } from '../utils/dateUtils';
 import { getFullEventImageUrl } from '../utils/api';
-import { Link } from 'react-router-dom';
+
 
 const Card = styled(motion.div)`
   position: relative;
