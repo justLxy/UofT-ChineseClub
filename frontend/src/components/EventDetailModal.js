@@ -61,18 +61,23 @@ const CloseButton = styled.div`
 const ImageSection = styled.div`
   position: relative;
   width: 100%;
-  height: 250px;
-  
+  /* Let image define its natural height on mobile */
+
   @media (min-width: 768px) {
     width: 45%;
-    height: auto;
   }
 `;
 
 const EventImage = styled.img`
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
+  display: block;
+
+  @media (min-width: 768px) {
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ContentSection = styled.div`
