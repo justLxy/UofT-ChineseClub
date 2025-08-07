@@ -131,7 +131,8 @@ const Content = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 220px; /* 调整高度以适应更高的图片容器 */
+  /* Use min-height to allow content to expand on smaller screens while keeping a baseline height */
+  min-height: 220px;
 `;
 
 const Title = styled.h3`
