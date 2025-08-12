@@ -35,6 +35,12 @@ const StyledHeader = styled.header`
     align-items: center;
     flex-wrap: nowrap;
     gap: 1rem;
+    /* Make header container span full width so logo sits flush left on wide screens */
+    max-width: none;
+    margin: 0;
+    /* Provide a comfortable responsive gutter on wide screens */
+    padding-left: clamp(24px, 4vw, 64px);
+    padding-right: clamp(24px, 4vw, 64px);
     
     @media (max-width: 1024px) {
       gap: 0.5rem;
@@ -42,7 +48,7 @@ const StyledHeader = styled.header`
     
     @media (max-width: 768px) {
       gap: 0.75rem;
-      padding: 0 1rem;
+      padding: 0 1rem; /* restore balanced padding on small screens */
     }
   }
 
