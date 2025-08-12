@@ -5,8 +5,8 @@ import QinSocietyMemberCard from './QinSocietyMemberCard';
 
 
 const SectionWrapper = styled.section`
-  background: rgba(239, 234, 221);
-  // background: linear-gradient(180deg, rgba(239, 234, 221) 60%, rgba(248, 248, 248) 100%)
+  // background: rgba(239, 234, 221);
+  background: var(--background);
   background-size: cover;
   min-height: 100vh;
   width: 100%;
@@ -18,48 +18,50 @@ const SectionWrapper = styled.section`
   object-fit: contain;
   text-align: center;
 
-  h1 {
-    margin-bottom: 6rem;
-    margin-top: 4rem;
-  }
+  // h1 {
+  //   margin-bottom: 6rem;
+  //   margin-top: 4rem;
+  // }
 
-  p {
-    font-size: 1.3rem;
-    max-width: 800px;
-    line-height: 1.6;
-  }
+  // p {
+  //   font-size: 1.3rem;
+  //   max-width: 800px;
+  //   line-height: 1.6;
+  // }
 `;
 
-// 分隔线和板块
-const IntroBlock = styled.div`
-  padding: 5rem 2rem 10rem 2rem;
-  max-width: 900px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: transparent;
-  h1 {
-    margin-bottom: 2rem;
-    margin-top: 0.5rem;
-  }
-  p {
-    font-size: 1.2rem;
-    max-width: 800px;
-    line-height: 1.6;
-    margin-top: 2rem;
-    margin-bottom: 4rem;
-  }
-`;
+// // 分隔线和板块
+// const IntroBlock = styled.div`
+//   padding: 5rem 2rem 10rem 2rem;
+//   max-width: 900px;
+//   width: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   background: transparent;
+//   h1 {
+//     margin-bottom: 2rem;
+//     margin-top: 0.5rem;
+//   }
+//   p {
+//     font-size: 1.2rem;
+//     max-width: 800px;
+//     line-height: 1.6;
+//     margin-top: 2rem;
+//     margin-bottom: 4rem;
+//   }
+// `;
+
 
 // 第二分区
 const InfoBlock = styled.div`
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto 3rem auto;
+  max-width: 1200px;
+  margin: 0 auto 7rem auto;
   display: flex;
   align-items: stretch;
-  background: rgba(239, 234, 221);
+  // background: rgba(239, 234, 221);
+  background: var(--background);
   border-radius: 18px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.06);
   padding: 0;
@@ -71,7 +73,8 @@ const InfoImage = styled.img`
   flex: 1 1 50%;
   width: 50%;
   min-width: 0;
-  height: 100%;
+  min-height: 100%;
+  height: auto;
   border-radius: 14px 0 0 14px;
   object-fit: cover;
   display: block;
@@ -82,27 +85,40 @@ const InfoText = styled.div`
   width: 50%;
   min-width: 0;
   color: #333;
-  font-size: 1.0rem;
-  line-height: 1.8;
+  font-size: 1.2rem;
+  line-height: 1.5;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2.5rem 1.0rem;
+  padding: 2.5rem 2.5rem;
   background: linear-gradient(
     to right,
     rgba(239, 234, 221, 1) 0%,
     rgba(239, 245, 238, 0.85) 60%,
     rgba(239, 245, 238, 1) 100%
   );
+  min-height: 100%;
+  height: auto;
+  word-break: break-word;
+  overflow: auto;
 `;
 
-// 分隔线
+//分隔线
+const DividerWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: #f7f5f0;
+`;
+
 const Divider = styled.hr`
-  width: 60%;
+  width: 10%;
   border: none;
-  border-top: 2px solid #d6cfc2;
-  margin: 2.5rem 0 0.5rem 0;
+  // border-top: 2px solid #d6cfc2;
+  border-top: 2px solid var(--primary-light);
+  // margin: 2.5rem 0 0.5rem 0;
   border-radius: 2px;
+  background: none;
 `;
 
 // 成员卡片分隔线和卡片板块
@@ -154,7 +170,7 @@ const members = [
 // 视频卡片创建
 const VideoBlock = styled.div`
   width: 100%;
-  background: #f3efe7;
+  background: #f7f5f0;
   padding: 2.5rem 0 4rem 0;
   display: flex;
   flex-direction: column;
@@ -319,10 +335,10 @@ const QinSocietySection = () => {
 
   return (
     <SectionWrapper className="qin-section">
-      <IntroBlock>
+      {/* <IntroBlock>
       <h1>{t('QinSociety.title')}</h1>
       <p>{t('QinSociety.description')}</p>
-      </IntroBlock>
+      </IntroBlock> */}
 
       {/* 第二左右分区板块 */}
       <InfoBlock>
@@ -336,7 +352,8 @@ const QinSocietySection = () => {
         </InfoText>
       </InfoBlock>
 
-      <Divider />
+      
+      
        {/* 批量渲染卡片 */}
       <CardBlock>
         <CardTitle>{t('QinSociety.members')}</CardTitle>
@@ -346,6 +363,11 @@ const QinSocietySection = () => {
         ))}
       </CardGrid>
       </CardBlock>
+
+    <DividerWrapper>
+      <Divider />
+    </DividerWrapper>
+
       {/* 视频板块 */}
       <VideoBlock>
         <VideoTitle>{t('QinSociety.videoTitle')}</VideoTitle>
