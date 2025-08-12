@@ -77,7 +77,7 @@ class EmailService {
       });
 
       const { data, error } = await resend.emails.send({
-        from: 'UTChinese Network <support@uoft.pairxy.com>',
+        from: 'UTChinese Network <support@utchinese.org>',
         to: email,
         subject,
         html,
@@ -333,7 +333,7 @@ class EmailService {
       const text = this.generateProfileReviewPlainText(userProfile, userEmail, userName);
 
       const { data, error } = await resend.emails.send({
-        from: 'UTChinese Network <support@uoft.pairxy.com>',
+        from: 'UTChinese Network <support@utchinese.org>',
         to: adminEmails,
         subject,
         html,
@@ -373,7 +373,7 @@ class EmailService {
       const text = this.generateProfileReviewResultPlainText(userName, isApproved, reviewNote);
 
       const { data, error } = await resend.emails.send({
-        from: 'UTChinese Network <support@uoft.pairxy.com>',
+        from: 'UTChinese Network <support@utchinese.org>',
         to: userEmail,
         subject,
         html,
@@ -408,7 +408,7 @@ class EmailService {
       const text = this.generateAccountActivationPlainText(userName, isActivated, adminName);
 
       const { data, error } = await resend.emails.send({
-        from: 'UTChinese Network <support@uoft.pairxy.com>',
+        from: 'UTChinese Network <support@utchinese.org>',
         to: userEmail,
         subject,
         html,
