@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { getFullEventImageUrl } from '../../utils/api';
 import SEO from '../../components/SEO';
 import EventHero from '../../components/EventHero';
+import NYConcertSection from '../../components/NYConcertSection';
 
 const heroImg = getFullEventImageUrl('/uploads/events/NewYearConcert.jpg');
 
@@ -124,6 +125,7 @@ const NewYearConcertPage = () => {
           </Paragraph>
         ))}
       </ContentSection>
+      <NYConcertSection />
     </PageWrapper>
   );
 };

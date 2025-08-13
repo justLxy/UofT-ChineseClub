@@ -15,8 +15,6 @@ import AccountStatusBanner from './components/AccountStatusBanner';
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Join = lazy(() => import('./pages/Join'));
-const QinSociety = lazy(() => import('./pages/QinSociety'));
-const NYConcert = lazy(() => import('./pages/NYConcert'));
 const Team = lazy(() => import('./pages/Team'));
 const Events = lazy(() => import('./pages/Events'));
 const EventsAdmin = lazy(() => import('./pages/EventsAdmin'));
@@ -135,8 +133,6 @@ const AppContent = () => {
               <Route path="/admin/events" element={<EventsAdmin />} />
               <Route path="/admin/staff" element={<StaffAdmin />} />
               <Route path="/staff/profile" element={<StaffProfile />} />
-              <Route path="/qin-society" element={<QinSociety />} />
-              <Route path="/ny-concert" element={<NYConcert />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Modal, { pastEvents, ModalPoster, ModalDesc, ModalHot, ModalTitle } from './NYCModal';
 import PhotoGallery from './NYCPhotogallery';
 
@@ -125,7 +126,7 @@ const NewConcertInfo = styled.div`
 
 const BuyTicketButton = styled.a`
   display: inline-block;
-  background: #e9b97b;
+  background: var(--primary);
   color: #fff;
   font-weight: 600;
   padding: 0.8rem 2rem;
@@ -135,7 +136,8 @@ const BuyTicketButton = styled.a`
   text-decoration: none;
   transition: background 0.2s;
   &:hover {
-    background: #d89a4c;
+    background: var(--primary-light);
+    color: #fff;
   }
 `;
 
@@ -309,8 +311,18 @@ const NYConcertSection = () => {
   return (
     <PageWrapper>
       <HeroSection>
-        <HeroTitle>{t('NYConcert.title')}</HeroTitle>
-        <HeroSubtitle>{t('NYConcert.description')}</HeroSubtitle>
+        <HeroTitle
+          as={motion.h1}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >{t('NYConcert.title')}</HeroTitle>
+        <HeroSubtitle
+          as={motion.p}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >{t('NYConcert.description')}</HeroSubtitle>
       </HeroSection>
 
       {/* 新音乐会板块 */}
@@ -335,9 +347,19 @@ const NYConcertSection = () => {
       {/* 音乐会引言板块 */}
       <IntroSection>
         <IntroContent>
-        <IntroTitle>{t('NYConcert.Introtitle')}</IntroTitle>
+        <IntroTitle
+            as={motion.h2}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+        >{t('NYConcert.Introtitle')}</IntroTitle>
         <IntroLine />
-        <IntroText>{t('NYConcert.Introtext')}</IntroText>
+        <IntroText
+            as={motion.p}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+        >{t('NYConcert.Introtext')}</IntroText>
         <IntroDivider>
           <DividerLine />
           UTChinese Network
