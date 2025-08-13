@@ -6,3 +6,4 @@ migration_lock.toml
 Makefile
 package.json
 schema.prisma
+prisma/migrations/
