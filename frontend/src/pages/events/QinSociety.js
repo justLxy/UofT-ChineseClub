@@ -11,8 +11,8 @@ const heroImg = getFullEventImageUrl('/uploads/events/QinSocietyOpenCeremony.png
 // Member Card styles
 const Card = styled.div`
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  border-radius: 20px;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.1);
   margin: 1rem;
   width: 400px;
   display: flex;
@@ -20,9 +20,30 @@ const Card = styled.div`
   align-items: center;
   text-align: center;
   overflow: hidden;
-  transition: box-shadow 0.3s;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 1px solid rgba(231, 76, 60, 0.1);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
   &:hover {
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    border-color: var(--primary-light);
+    
+    &::before {
+      transform: scaleX(1);
+    }
   }
 `;
 
@@ -33,7 +54,7 @@ const AvatarWrapper = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background: #f5f5f5;
+  background: #f8f9fa;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 `;
@@ -43,11 +64,14 @@ const Avatar = styled.img`
   max-width: 400px;
   height: 220px;
   object-fit: cover;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  transition: transform 0.4s cubic-bezier(.23,1.01,.32,1);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.3s ease;
+  filter: brightness(0.95) saturate(0.9);
+  
   ${Card}:hover & {
-    transform: scale(1.08) translateY(-8px);
+    transform: scale(1.05) translateY(-4px);
+    filter: brightness(1) saturate(1);
   }
 `;
 
@@ -73,72 +97,22 @@ const Description = styled.p`
 
 // QinSociety section styles
 const SectionWrapper = styled.section`
-  background: var(--background);
-  background-size: cover;
+  background: #fff;
   min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #000;
-  box-shadow: 10px 10px 150px 70px rgba(239, 245, 238) inset;
-  object-fit: contain;
+  padding: 2rem 0;
   text-align: center;
-`;
-
-const InfoBlock = styled.div`
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 7rem auto;
-  display: flex;
-  align-items: stretch;
-  background: var(--background);
-  border-radius: 18px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-  padding: 0;
-  gap: 0;
-  overflow: hidden;
-`;
-
-const InfoImage = styled.img`
-  flex: 1 1 50%;
-  width: 50%;
-  min-width: 0;
-  min-height: 100%;
-  height: auto;
-  border-radius: 14px 0 0 14px;
-  object-fit: cover;
-  display: block;
-`;
-
-const InfoText = styled.div`
-  flex: 1 1 50%;
-  width: 50%;
-  min-width: 0;
-  color: #333;
-  font-size: 1.2rem;
-  line-height: 1.5;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2.5rem 2.5rem;
-  background: linear-gradient(
-    to right,
-    rgba(239, 234, 221, 1) 0%,
-    rgba(239, 245, 238, 0.85) 60%,
-    rgba(239, 245, 238, 1) 100%
-  );
-  min-height: 100%;
-  height: auto;
-  word-break: break-word;
-  overflow: auto;
 `;
 
 const DividerWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  background: #f7f5f0;
+  background: #f8f9fa;
 `;
 
 const Divider = styled.hr`
@@ -151,11 +125,13 @@ const Divider = styled.hr`
 
 const CardBlock = styled.div`
   width: 100%;
-  background: #f7f5f0;
-  padding: 2.5rem 0 4rem 0;
+  background: #f8f9fa;
+  padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 0;
+  margin-bottom: 2rem;
 `;
 
 const CardGrid = styled.div`
@@ -172,11 +148,14 @@ const CardTitle = styled.h2`
 
 const VideoBlock = styled.div`
   width: 100%;
-  background: #f7f5f0;
-  padding: 2.5rem 0 4rem 0;
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+  padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 0;
+  margin-bottom: 2rem;
+  border-top: 1px solid rgba(231, 76, 60, 0.1);
 `;
 
 const VideoTitle = styled.h2`
@@ -200,13 +179,21 @@ const VideoItem = styled.div`
   width: 100%;
   max-width: 400px;
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-  padding: 1.2rem;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 1px solid rgba(231, 76, 60, 0.1);
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    border-color: var(--primary-light);
+  }
 `;
 
 const VideoLabel = styled.div`
@@ -219,54 +206,123 @@ const StyledIframe = styled.iframe`
   width: 100%;
   height: 220px;
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   background: #000;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
 `;
 
 const SponsorBlock = styled.div`
   width: 100%;
-  background: linear-gradient(180deg, rgba(239, 245, 238) 60%, #f8f8f8 100%);
-  padding: 4rem 0 4rem 0; 
+  background: #fff;
+  padding: 5rem 2rem; 
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  border-top: 1px solid #e9ecef;
+`;
+
+const SponsorTitle = styled.h2`
+  font-size: 2.2rem;
+  color: #2c2c2c;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-align: center;
+  
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+`;
+
+const SponsorSubtitle = styled.p`
+  font-size: 1.1rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 600px;
 `;
 
 const SponsorGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 3rem 2.5rem;
+  gap: 2rem;
   width: 100%;
-  max-width: 1200px;
-  margin-bottom: 3rem;
+  max-width: 700px;
 `;
 
 const SponsorCard = styled.div`
-  background: #fff;
-  border-radius: 22px;
-  box-shadow: 0 6px 32px rgba(0,0,0,0.08);
+  background: linear-gradient(135deg, #fff 0%, #fefefe 100%);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
   display: flex;
   align-items: center;
-  padding: 2.2rem 2.0rem;
-  min-width: 340px;
-  max-width: 720px;
-  transition: transform 0.25s, box-shadow 0.25s;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1000px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(231, 76, 60, 0.08);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), #ff6b47, var(--primary));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
   &:hover {
-    transform: translateY(-10px) scale(1.04) rotate(-1deg);
-    box-shadow: 0 12px 36px rgba(0,0,0,0.13);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(231, 76, 60, 0.15);
+    border-color: var(--primary-light);
+    
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
   }
 `;
 
 const SponsorLogo = styled.img`
-  width: 240px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
-  border-radius: 16px;
-  margin-right: 2rem;
-  background: #f7f5f0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border-radius: 12px;
+  margin-right: 1.5rem;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  padding: 1rem;
+  border: 1px solid rgba(231, 76, 60, 0.1);
+  transition: transform 0.3s ease;
+  
+  ${SponsorCard}:hover & {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 1rem;
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 const SponsorInfo = styled.div`
@@ -274,20 +330,51 @@ const SponsorInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    align-items: center;
+  }
 `;
 
-const SponsorName = styled.div`
-  font-size: 1.25rem;
+const SponsorName = styled.h3`
+  font-size: 1.4rem;
   font-weight: 700;
-  color: #222;
-  margin-bottom: 0.7rem;
+  color: #2c2c2c;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.3px;
 `;
 
-const SponsorDesc = styled.div`
-  font-size: 1.08rem;
+const SponsorDetailItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: #555;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+  }
+`;
+
+const SponsorIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: 0.5rem;
+  color: var(--primary);
+  font-size: 0.9rem;
+`;
+
+const SponsorText = styled.span`
   color: #666;
-  line-height: 1.6;
-  margin-bottom: 0.2rem;
+  line-height: 1.4;
   text-align: left;
 `;
 
@@ -421,7 +508,7 @@ const Paragraph = styled(motion.p)`
 `;
 
 const QinSocietyPage = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const isZh = i18n.language === 'zh';
 
   const defaultContent = {
@@ -432,7 +519,10 @@ const QinSocietyPage = () => {
       paragraphs: [
         'UTChinese Network Qin Society is dedicated to reviving the timeless art of the Guqin on campus. From the solemn melodies of ancient dynasties to contemporary interpretations, we provide a platform for both aficionados and newcomers to appreciate, learn, and perform.',
         'Our open ceremony marked the beginning of a new cultural journey at the University of Toronto. Distinguished performers presented classics such as "Guangling San" and "Ai Nai", enchanting the audience with the serene resonance of seven strings. Attendees also enjoyed hands-on sessions, exploring finger techniques and posture under the guidance of experienced mentors.',
-        'Looking ahead, Qin Society will host seasonal outdoor gatherings, lecture-recitals, and collaborative concerts with other musical ensembles. Whether you are an absolute beginner or a seasoned qin player, we welcome you to join us and immerse yourself in this poetic soundscape.'
+        'Looking ahead, Qin Society will host seasonal outdoor gatherings, lecture-recitals, and collaborative concerts with other musical ensembles. Whether you are an absolute beginner or a seasoned qin player, we welcome you to join us and immerse yourself in this poetic soundscape.',
+        'Our Performers: Yingxue Zhang, Peters Peng, and Atom Wang. Pieces Performed in Chronological Order: "A Good Time"(Qin(Atom) Xiao(Yingxue)Duet), "Farewell at Yangguan Customs"(Peters), "Herons and Intentions"(Peters), "Flowing Streams"(Atom), "Mei Blossoms"(Yingxue), "Winter Snow"(Atom), "Fishing and Woodcutting - a Reflective Dialogue"(Yingxue), "Dragon Chant from Deep Sea"(Atom). Tea: Aged (10 years) Pu-erh.',
+        'The event started with a brief introduction about the instrument: Qin, followed by a tea break then music performance. It was a truly fun event! Unfortunately, it wasn\'t snowing after the song "Winter Snow" was played. The weather forecast was incorrect. Special thanks to Peters and Leslie for videos and photos, Jason for helping to setup, and Jessica and Amora for their marketing guidance, and of course, you for showing up.',
+        'Shout out to Jiamu Tea Space for sponsoring biodegradable tea cups for our tea!'
       ]
     },
     zh: {
@@ -442,12 +532,32 @@ const QinSocietyPage = () => {
       paragraphs: [
         '多大中文古琴社致力于在校园内复兴古琴这一永恒的艺术。从古代王朝的庄严旋律到当代诠释，我们为琴友和新手提供一个欣赏、学习和演奏的平台。',
         '我们的开幕典礼标志着多伦多大学新文化之旅的开始。杰出的演奏者呈现了《广陵散》和《欸乃》等经典曲目，用七弦的宁静共鸣打动观众。参与者还享受了亲身体验，在经验丰富的导师指导下探索指法和姿态。',
-        '展望未来，琴社将举办季节性户外雅集、讲座音乐会以及与其他音乐团体的合作音乐会。无论您是绝对的初学者还是经验丰富的琴者，我们都欢迎您加入我们，沉浸在这诗意的音景中。'
+        '展望未来，琴社将举办季节性户外雅集、讲座音乐会以及与其他音乐团体的合作音乐会。无论您是绝对的初学者还是经验丰富的琴者，我们都欢迎您加入我们，沉浸在这诗意的音景中。',
+        '我们的表演者：张映雪 (Yingxue Zhang)，彭浩轩(Peters) 和 汪建策 (Atom)。演奏曲目按时间顺序：《良宵引》(琴 (Atom)箫(Yingxue)二重奏)、《阳关三叠》(Peters)、《鹤汀凫渚》(Peters)、《流水》(Atom)、《梅花三弄》(Yingxue)、《冬雪》(Atom)、《渔樵问答》(Yingxue)、《龙吟水深》(Atom)。茶为陈皮(10年)普洱。',
+        '本次雅集开始先向大家介绍了古琴的相关有趣的小知识。在享用茶水之后，本次雅集以一首琴箫合奏的《良宵引》正式开始，又在《沧海龙吟》的龙吟阵阵中结束。幸甚至哉，歌以咏志！如果真有什么遗憾的话，就是弹完《白雪》之后，没有下雪吧。感谢浩轩和Leslie提供照片和视频还有Jason帮忙setup，以及幕后的Jessica和Amora，还有到场的诸位。',
+        '特别鸣谢嘉木茶室提供的环保功夫茶杯！'
       ]
     }
   };
 
+  // All page translations
+  const pageTranslations = {
+    en: {
+      members: 'Qin Society Performers',
+      videoTitle: 'Qin Society Event Videos',
+      sponsorTitle: 'Partners',
+      sponsorSubtitle: 'Thank you to the following partners for their generous support of the Qin Society Opening Ceremony'
+    },
+    zh: {
+      members: '古琴会表演者',
+      videoTitle: '古琴会活动视频',
+      sponsorTitle: '合作伙伴',
+      sponsorSubtitle: '感谢以下合作伙伴对古琴会开社雅集的大力支持'
+    }
+  };
+
   const currentContent = isZh ? defaultContent.zh : defaultContent.en;
+  const t = isZh ? pageTranslations.zh : pageTranslations.en;
 
   return (
     <PageWrapper>
@@ -478,21 +588,11 @@ const QinSocietyPage = () => {
 
       {/* Integrated QinSocietySection content */}
       <SectionWrapper className="qin-section">
-        {/* 第二左右分区板块 */}
-        <InfoBlock>
-          <InfoImage src="/images/Qin_Society/UTChinese Network event draft 2.png" alt="Qin Society" />
-          <InfoText>
-            <h2 style={{marginBottom: '1rem'}}>{t('QinSociety.title2')}</h2>
-            <p>{t('QinSociety.performers')}</p>
-            <p>{t('QinSociety.pieces')}</p>
-            <p>{t('QinSociety.pieces2')}</p>
-            <p>{t('QinSociety.pieces3')}</p>
-          </InfoText>
-        </InfoBlock>
+
 
         {/* 批量渲染卡片 */}
         <CardBlock>
-          <CardTitle>{t('QinSociety.members')}</CardTitle>
+          <CardTitle>{t.members}</CardTitle>
           <CardGrid>
             {members.map((m, i) => (
               <QinSocietyMemberCard key={i} {...m} />
@@ -506,7 +606,7 @@ const QinSocietyPage = () => {
 
         {/* 视频板块 */}
         <VideoBlock>
-          <VideoTitle>{t('QinSociety.videoTitle')}</VideoTitle>
+          <VideoTitle>{t.videoTitle}</VideoTitle>
           <VideoGrid>
             {videos.map((video, idx) => (
               <VideoItem key={idx}>
@@ -524,14 +624,22 @@ const QinSocietyPage = () => {
 
         {/* 赞助商板块 */}
         <SponsorBlock className="qin-sponsor-block">
+          <SponsorTitle>{t.sponsorTitle}</SponsorTitle>
+          <SponsorSubtitle>{t.sponsorSubtitle}</SponsorSubtitle>
           <SponsorGrid>
             {sponsors.map((s, idx) => (
               <SponsorCard key={idx}>
                 <SponsorLogo src={s.logo} alt={s.name} />
                 <SponsorInfo>
                   <SponsorName>{s.name}</SponsorName>
-                  <SponsorDesc>{s.adrs}</SponsorDesc>
-                  <SponsorDesc>{s.phnm}</SponsorDesc>
+                  <SponsorDetailItem>
+                    <SponsorIcon>📍</SponsorIcon>
+                    <SponsorText>{s.adrs}</SponsorText>
+                  </SponsorDetailItem>
+                  <SponsorDetailItem>
+                    <SponsorIcon>📞</SponsorIcon>
+                    <SponsorText>{s.phnm}</SponsorText>
+                  </SponsorDetailItem>
                 </SponsorInfo>
               </SponsorCard>
             ))}
