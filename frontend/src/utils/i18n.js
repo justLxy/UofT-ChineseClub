@@ -8,6 +8,8 @@ const enTranslations = {
     join: 'Join Us',
     team: 'Our Team',
     events: 'Events',
+    QinSociety: 'Qin Society',
+    NYConcert: 'New Year Concert',
     contact: 'Contact',
     language: 'Language',
     home: 'Home',
@@ -201,6 +203,49 @@ const enTranslations = {
     linkedin: 'LinkedIn',
     email: 'Email'
   },
+
+  QinSociety: {
+    title: 'UTChinese Network Qin Society Open Ceremony',
+    description: 'UTChinese Qin Society Open Ceremony Successfully Concluded. First I would like to say "thank you" to everyone who showed up. Our Qin society successfully held its open ceremony elegant gathering on Nov 27, 2024.',
+    title2: 'Qin Society Open Ceremony',
+    performers: 'Our Performers: Yingxue Zhang, Peters Peng, and Atom Wang.',
+    pieces: 'Pieces Performed in Chronological Order:《A Good Time》(Qin(Atom) Xiao(Yingxue)Duet),《Farewell at Yangguan Customs》(Peters),《Herons and Intentions》(Peters),《Flowing Streams》(Atom),《Mei Blossoms》(Yingxue),《Winter Snow》(Atom),《Fishing and Woodcutting - a Reflective Dialogue》(Yingxue),《Dragon Chant from Deep Sea》(Atom). Tea: Aged (10 years) Pu-erh.',
+    pieces2: "The event started with a brief introduction about the instrument: Qin, followed by a tea break then music performance. It was a truly fun event! Unfortunately, it wasn't snowing after the song <winter snow> was played. The weather forecast was incorrect. Special thanks to Peters and Leslie for videos and photos, Jason for helping to setup, and Jessica and Amora for their marketing guidance, and of course, you for showing up.",
+    pieces3: "Shout out to Jiamu Tea Space for sponsoring biodegradable tea cups for our tea!",
+    members: 'Qin Society Performers',
+    videoTitle: 'Qin Society Event Videos'
+  },
+  NYConcert: {
+    title: 'UTChinese New Year Concert',
+    description: "Music is a language without borders, and it is also the way we support children's education and development. Great music is silent, and great love leaves no trace. Let's spend the cold winter with music at the UTChinese New Year Concert.",
+    title2: '2025 UTChinese New Year Charity Concert',
+    description2: 'The UTChinese New Year Concert is an annual tradition that brings together students, alumni, and friends to enjoy a night of music and cultural performances. Experience the beauty of Chinese music and celebrate the Spring Festival with us!',
+    title3: 'Past Events',
+    description3: 'Since 2007, UT Chinese Network has held 14 New Year charity concerts.',
+    date: 'Date: February 10, 2025',
+    time: 'Time: 7:00 PM - 9:30 PM',
+    location: 'Location: Isabel Bader Theatre, 93 Charles St W, Toronto',
+    performances: 'Performances: Chinese orchestra, choir, dance, and more',
+    tickets: 'Tickets: Free for UofT students (registration required)',
+    howToJoin: 'Reserve your seat by registering online. All are welcome! For more details, visit our official WeChat or contact us',
+    buyTickets: 'Buy Tickets',
+    pastTitle1: '2025 New Year Charity Concert',
+    pastDesc1: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere.',
+    pastTitle2: '2024 New Year Concert',
+    pastDesc2: '《Huaxu》',
+    pastTitle3: '2016 New Year Concert',
+    pastDesc3: '《Ten Years A Concert》',
+    pastDetail1: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere. The event showcased the talents of our members and celebrated the rich cultural heritage of the Chinese community at UofT.',
+    pastHot1: 'Hot: 1000+ attendees',
+    pastDetail2: '《Huaxu》 is a musical piece that combines traditional Chinese instruments with modern elements, creating a unique and captivating sound. The performance was well-received by the audience, showcasing the creativity and talent of our musicians.',
+    pastHot2: 'Hot: 800+ attendees', 
+    pastDetail3: '《Ten Years A Concert》 was a special performance celebrating the 10th anniversary of the UTChinese New Year Concert. It featured a compilation of the best performances from previous years, highlighting the growth and evolution of our concert series.',
+    pastHot3: 'Hot: 1200+ attendees',
+    Introtitle: 'Introduction to the UTChinese New Year Concert',
+    Introtext: "Music is a language without borders,and it is also our way of supporting children's education and development. Every year during the Chinese New Year, we use music to convey warmth in the snow and ice of Toronto. At the New Year's Concert, the noble pianist and elegant ballet take you to experience the soul resonance between masters and feel the dialogue between performers and composers across time and space. Whether it is classical and romantic works that have resounded for hundreds of years, or modern songs that are spontaneously sung by the audience, you can always find familiar touches here. From 2007 to the present, in the past thirteen years, we have raised more than 110,000 Canadian dollars (about 550,000 RMB), and donated all of them to charitable organizations such as UNICEF Canada (United Nations Children's Fund). Great sound is silent, and great love leaves no trace.",
+    photoGallery: 'Our Memorable Moments',
+  },
+  
   events: {
     title: 'Exciting Events',
     subtitle: 'Explore the various activities organized by UTChinese, from academic lectures to cultural exchanges, from career development to social gatherings. Join us to experience the charm of Chinese culture, expand your horizons, and meet like-minded friends.',
@@ -589,6 +634,7 @@ const enTranslations = {
     }
   }
 };
+  
 
 // Chinese translations
 const zhTranslations = {
@@ -597,6 +643,8 @@ const zhTranslations = {
     join: '加入我们',
     team: '我们的团队',
     events: '活动',
+    QinSociety: '古琴会',
+    NYConcert: '新年音乐会',
     contact: '联系方式',
     language: '语言',
     home: '首页',
@@ -790,6 +838,48 @@ const zhTranslations = {
     linkedin: 'LinkedIn',
     email: '邮箱'
   },
+  QinSociety: {
+    title: '鼓琴乱白雪，秋逢江上春',
+    description: '多大中文古琴会开社雅集于2024年11月27日圆满举办。首先感谢前来参加活动的大家。在2024年风和日丽没有下雪的小雪，我社成功举办了本社的开社雅集。',
+    title2: '古琴会开社雅集',
+    performers: '我们的表演者：张映雪 (Yingxue Zhang)，彭浩轩(Peters) 和 汪建策 (Atom)',
+    pieces: '演奏曲目按时间顺序：《良宵引》(琴 (Atom)箫(Yingxue)二重奏)、《阳关三叠》(Peters)、《鹤汀凫渚》(Peters)、《流水》(Atom)、《梅花三弄》(Yingxue)、《冬雪》(Atom)、《渔樵问答》(Yingxue)、《龙吟水深》(Atom)。茶为陈皮(10年)普洱。',
+    pieces2: "本次雅集开始先向大家介绍了古琴的相关有趣的小知识。在享用茶水之后 ，本次雅集以一首琴箫合奏的《良宵引》正式开始，又在《沧海龙吟》的龙吟阵阵中结束。幸甚至哉，歌以咏志！如果真有什么遗憾的话，就是弹完《白雪》之后，没有下雪吧。感谢浩轩和Leslie提供照片和视频 还有 Jason帮忙setup，以及幕后的Jessica和Amora，还有到场的诸位。",
+    pieces3: "特别鸣谢嘉木茶室提供的环保功夫茶杯!",
+    members: '古琴会表演者',
+    videoTitle: '古琴会活动视频'
+  },
+  NYConcert: {
+    title: '多大中文新年音乐会',
+    description: '音乐是没有国界的语言，也是我们支持儿童教育和发展的方式。大音希声，大爱无痕。与多大中文新年音乐会一起走过有音乐相伴的寒冬。',
+    title2: '2025多大中文新年慈善音乐会',
+    description2: '多大中文新年慈善音乐会是一个年度传统活动，旨在汇聚学生、校友和朋友们，共同享受一晚音乐和文化表演的盛宴。体验中国音乐之美，与我们一起庆祝春节！',
+    title3: '往期活动回顾',
+    description3: '自2007年起，多大中文（UTChineseNetwork）已举办14场新年慈善音乐会',
+    date: '日期：2024年2月10日',
+    time: '时间：晚上7:00 - 9:30',
+    location: '地点：Isabel Bader Theatre, 93 Charles St W, Toronto',
+    performances: '表演：中乐团、合唱团、舞蹈等',
+    tickets: '门票：多大学生免费（需注册）',
+    howToJoin: '通过在线注册预留您的座位。欢迎所有人！更多详情，请访问我们的官方微信或联系我们',
+    buyTickets: '购票入口',
+    pastTitle1: '2025新年慈善音乐会',
+    pastDesc1: '2025多大中文新年音乐会是一个难忘的夜晚，精彩的表演和温馨的社区氛围让人印象深刻。',
+    pastTitle2: '2024新年音乐会',
+    pastDesc2: '《花叙》',
+    pastTitle3: '2016新年音乐会',
+    pastDesc3: '《十年为一》',
+    pastDetail1: '2025年新年音乐会盛况空前，观众反响热烈，节目精彩纷呈。',
+    pastHot1:'热点回顾：2025年新年音乐会',
+    pastDetail2: '2024年新年音乐会以《花叙》为主题，展现了中国传统文化的魅力。',
+    pastHot2: '热点回顾：2024年新年音乐会',
+    pastDetail3: '2016年新年音乐会《十年为一》庆祝了多大中文十周年，回顾了社团的成长历程。',
+    pastHot3: '热点回顾：2016年新年音乐会',
+    Introtitle: '音乐会引言',
+    Introtext: "音乐是没有国界的语言，也是我们支持儿童教育和发展的方式。每年春节期间，我们用音乐传递温暖，陪伴多伦多的冰雪。新年音乐会中，琴棋书画、古典芭蕾带你感受大师间的心灵共鸣，体会演奏者与作曲家跨越时空的对话。无论是百年传唱的经典浪漫作品，还是观众自发合唱的现代歌曲，你总能在这里找到熟悉的感动。从2007年至今，过去的十三年里，我们筹集了超过11万加元（约55万人民币）的善款，全数捐赠给联合国儿童基金会等慈善机构。大音希声，大爱无痕。",
+    photoGallery: '我们的回忆',
+  },
+  
   events: {
     title: '精彩活动',
     subtitle: '探索多大中文举办的各类活动，从学术讲座到文化交流，从职业发展到社交聚会。加入我们，体验中国文化的魅力，拓展您的视野，结交志同道合的朋友。',
