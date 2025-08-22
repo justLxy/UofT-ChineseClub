@@ -1260,7 +1260,7 @@ const Team = () => {
                 </div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">14</div>
+                <div className="stat-number">{new Date().getFullYear() - 2006}</div>
                 <div className="stat-label">
                   {i18n.language === 'zh' ? '年' : 'Years'}
                 </div>
