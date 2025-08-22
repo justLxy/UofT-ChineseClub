@@ -522,11 +522,11 @@ const StyledTeam = styled.div`
     border: 1px solid rgba(224, 43, 32, 0.1);
     position: relative;
     overflow: hidden;
-    transition: box-shadow 0.2s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
     width: 100%;
     max-width: 100%;
-    will-change: transform;
+    will-change: transform, box-shadow;
     
     @media (max-width: 768px) {
       padding: 1.5rem;
@@ -546,15 +546,52 @@ const StyledTeam = styled.div`
       width: 100%;
       height: 5px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
+      transition: height 0.3s ease;
+    }
+    
+    /* 添加点击提示的伪元素 */
+    &:after {
+      content: '点击查看名片';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      text-align: center;
+      padding: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 10;
+    }
+
+    /* 英文版本的提示文字 */
+    [lang="en"] &:after {
+      content: 'Click to View Card';
     }
     
     &:hover {
-      box-shadow: 0 20px 40px rgba(224, 43, 32, 0.15);
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px rgba(224, 43, 32, 0.2);
+      border-color: rgba(224, 43, 32, 0.3);
+      
+      &:before {
+        height: 8px;
+      }
+      
+      &:after {
+        transform: translateY(0);
+      }
       
       .member-avatar {
-        transform: scale(1.05);
+        transform: scale(1.08);
       }
-    }
+      
+      .member-info {
+        transform: translateY(-2px);
+      }
     }
     
     &:active {
@@ -562,104 +599,118 @@ const StyledTeam = styled.div`
       transition: transform 0.1s ease;
     }
     
-    .member-content {
-      position: relative;
-      z-index: 1;
+    /* 添加一个轻微的脉冲动画提示 */
+    &:not(:hover) {
+      animation: gentle-pulse 4s ease-in-out infinite;
     }
+  }
+  
+  @keyframes gentle-pulse {
+    0%, 100% { 
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    50% { 
+      box-shadow: 0 12px 35px rgba(224, 43, 32, 0.08);
+    }
+  }
+  
+  .member-content {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .member-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    overflow: hidden;
+    border: 4px solid rgba(224, 43, 32, 0.1);
+    transition: transform 0.2s ease;
+    will-change: transform;
     
-    .member-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin: 0 auto 1.5rem;
-      overflow: hidden;
-      border: 4px solid rgba(224, 43, 32, 0.1);
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       transition: transform 0.2s ease;
-      will-change: transform;
+    }
+  }
+  
+  .member-info {
+    text-align: center;
+    transition: transform 0.2s ease;
+    
+    .member-name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: var(--text);
       
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.2s ease;
+      .name-zh {
+        font-size: 1rem;
+        color: var(--text-light);
+        font-weight: normal;
+        margin-left: 0.5rem;
       }
-    }
-    
-    .member-info {
-      text-align: center;
-      transition: transform 0.2s ease;
-      
-      .member-name {
-        font-size: 1.4rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-        color: var(--text);
-        
-        .name-zh {
-          font-size: 1rem;
-          color: var(--text-light);
-          font-weight: normal;
-          margin-left: 0.5rem;
-        }
 
-        .name-en {
-          font-size: 1rem;
-          color: var(--text-light);
-          font-weight: normal;
-          margin-left: 0.5rem;
-        }
+      .name-en {
+        font-size: 1rem;
+        color: var(--text-light);
+        font-weight: normal;
+        margin-left: 0.5rem;
       }
+    }
+    
+    .member-position {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    .member-department {
+      background: rgba(224, 43, 32, 0.1);
+      color: var(--primary);
+      padding: 0.4rem 1rem;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    
+    .member-bio {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .member-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
       
-      .member-position {
-        color: var(--primary);
-        font-weight: 600;
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-      }
-      
-      .member-department {
+      a, span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
         background: rgba(224, 43, 32, 0.1);
         color: var(--primary);
-        padding: 0.4rem 1rem;
-        border-radius: 15px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        margin-bottom: 1rem;
-      }
-      
-      .member-bio {
-        color: var(--text-light);
-        font-size: 0.95rem;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-      
-      .member-links {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
         
-        a, span {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: rgba(224, 43, 32, 0.1);
-          color: var(--primary);
-          transition: all 0.3s ease;
-          cursor: pointer;
-          
-          &:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-          }
+        &:hover {
+          background: var(--primary);
+          color: white;
+          transform: translateY(-2px);
         }
       }
     }
