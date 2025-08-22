@@ -172,7 +172,7 @@ export const getCurrentUser = async () => {
 // 修改密码
 export const changePassword = async (currentPassword, newPassword) => {
   try {
-    const response = await api.put('/auth/password', { 
+    const response = await api.post('/auth/change-password', { 
       currentPassword, 
       newPassword 
     });
