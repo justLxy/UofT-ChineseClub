@@ -773,6 +773,10 @@ const Team = () => {
           return i18n.t('groups.support.title');
         case 'ENGAGEMENT':
           return i18n.t('groups.engagement.title');
+        case 'EXECUTIVE COMMITTEE':
+          return i18n.t('groups.executive_committee.title');
+        case 'PRESIDENT':
+          return i18n.t('groups.president.title');
         default:
           return deptName;
       }

@@ -192,6 +192,14 @@ const enTranslations = {
     engagement: {
       title: 'ENGAGEMENT',
       description: 'The Engagement department is an independent division focused on member engagement, community building, and maintaining strong relationships within the organization. We organize team activities, foster member connections, and ensure everyone feels included and valued in our community.'
+    },
+    executive_committee: {
+      title: 'EXECUTIVE COMMITTEE',
+      description: 'The Executive Committee is responsible for the overall strategic planning and management of the organization, ensuring the smooth operation of all departments and the achievement of long-term goals.'
+    },
+    president: {
+      title: 'PRESIDENT',
+      description: 'The President provides overall leadership to the organization, setting the vision and direction, and representing the organization both internally and externally.'
     }
   },
   contact: {
@@ -285,7 +293,9 @@ const enTranslations = {
         career: 'CAREER & ACADEMIC GROUP',
         operation: 'OPERATION GROUP',
         support: 'SUPPORT GROUP',
-        engagement: 'ENGAGEMENT'
+        engagement: 'ENGAGEMENT',
+        executive_committee: 'EXECUTIVE COMMITTEE',
+        president: 'PRESIDENT'
       },
       bioEn: 'Bio (English)',
       bioEnPlaceholder: 'Tell us about yourself in English...',
@@ -785,8 +795,16 @@ const zhTranslations = {
       description: '支持部门负责社团的对外形象建设和资源获取。我们的团队包括内容营销、赞助合作和设计艺术三个小组，致力于通过创意内容、合作伙伴关系和视觉设计来推广社团品牌和活动。'
     },
     engagement: {
-      title: '活动部',
-      description: '活动部是一个独立的部门，专注于成员参与、社区建设和维护组织内部的良好关系。我们组织团队活动，促进成员之间的联系，确保每个人都能在我们的社区中感受到被包容和重视。'
+      title: '活动部门',
+      description: '活动部门是一个独立的部门，专注于成员参与、社区建设和维护组织内部的良好关系。我们组织团队活动，促进成员之间的联系，确保每个人都能在我们的社区中感受到被包容和重视。'
+    },
+    executive_committee: {
+      title: '执行委员会',
+      description: '执行委员会负责社团的整体战略规划和管理，确保各部门的顺利运作和长期目标的达成。'
+    },
+    president: {
+      title: '主席',
+      description: '主席为社团提供整体领导，设定愿景和方向，并代表社团处理内外事务。'
     }
   },
   contact: {
@@ -879,7 +897,9 @@ const zhTranslations = {
         career: '职业学术部门',
         operation: '运营部门',
         support: '支持部门',
-        engagement: '活动部'
+        engagement: '活动部门',
+        executive_committee: '执行委员会',
+        president: '主席'
       },
       bioEn: '个人简介（英文）',
       bioEnPlaceholder: '请用英文介绍一下您自己...',
