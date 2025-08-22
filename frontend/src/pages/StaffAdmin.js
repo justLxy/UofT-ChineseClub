@@ -911,6 +911,7 @@ const StaffAdmin = () => {
           github: updateData.github,
           wechat: updateData.wechat,
           phone: updateData.phone,
+          mbti: updateData.mbti,
           displayOrder: updateData.displayOrder
         };
 
@@ -940,6 +941,7 @@ const StaffAdmin = () => {
         delete permissionsData.github;
         delete permissionsData.wechat;
         delete permissionsData.phone;
+        delete permissionsData.mbti;
         delete permissionsData.displayOrder;
 
         await updateStaffAccount(selectedItem.id, permissionsData);

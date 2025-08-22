@@ -61,7 +61,8 @@ class StaffService {
       linkedin,
       github,
       wechat,
-      phone
+      phone,
+      mbti
     } = profileData;
     
     // Validation
@@ -112,6 +113,7 @@ class StaffService {
       github,
       wechat,
       phone,
+      mbti,
       status: newStatus,
       isVisible: newVisibility
     };
