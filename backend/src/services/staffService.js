@@ -35,6 +35,17 @@ class StaffService {
     return profile;
   }
 
+  // Helper method to check if user has had previous approved reviews
+  static async hasApprovedReviewHistory(staffId) {
+    const approvedHistory = await prisma.staffProfileHistory.findFirst({
+      where: {
+        staffId: staffId,
+        action: 'approved'
+      }
+    });
+    return !!approvedHistory;
+  }
+
   // Create or update staff profile
   static async saveStaffProfile(staffId, profileData, username, userRole = 'staff') {
     const {
@@ -63,12 +74,29 @@ class StaffService {
       where: { staffId: staffId }
     });
     
-    // Determine status and visibility based on user role
+    // Determine status and visibility based on user role and review history
     const isAdmin = userRole === 'admin';
     
-    // Admin profiles auto-approve, all others require review
-    const newStatus = isAdmin ? 'approved' : 'pending';
-    const newVisibility = isAdmin ? true : false;
+    let newStatus, newVisibility;
+    
+    if (isAdmin) {
+      // Admin profiles auto-approve
+      newStatus = 'approved';
+      newVisibility = true;
+    } else {
+      // Check if user has had previous approved reviews
+      const hasApprovedHistory = await StaffService.hasApprovedReviewHistory(staffId);
+      
+      if (hasApprovedHistory) {
+        // Not first time - auto approve subsequent modifications
+        newStatus = 'approved';
+        newVisibility = true;
+      } else {
+        // First time or never approved - requires review
+        newStatus = 'pending';
+        newVisibility = false;
+      }
+    }
     
     const profileSaveData = {
       name_en,
@@ -148,9 +176,19 @@ class StaffService {
       }
     }
 
+    // Determine appropriate message based on status
+    let message;
+    if (isAdmin) {
+      message = 'Profile saved successfully';
+    } else if (newStatus === 'approved') {
+      message = 'Profile updated successfully';
+    } else {
+      message = 'Profile submitted for review';
+    }
+
     return { 
       profile, 
-      message: isAdmin ? 'Profile saved successfully' : 'Profile submitted for review' 
+      message 
     };
   }
 
