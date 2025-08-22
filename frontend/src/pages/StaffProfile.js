@@ -1380,7 +1380,6 @@ const StaffProfile = () => {
                     required
                   >
                     <option value="">{t('staff.profile.selectDepartment')}</option>
-                    <option value="PRESIDENT">{t('staff.profile.departments.president')}</option>
                     <option value="EXECUTIVE COMMITTEE">{t('staff.profile.departments.executive_committee')}</option>
                     <option value="ARTS & CULTURE GROUP">{t('staff.profile.departments.arts')}</option>
                     <option value="CAREER & ACADEMIC GROUP">{t('staff.profile.departments.career')}</option>

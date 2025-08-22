@@ -776,14 +776,13 @@ class StaffService {
       return member;
     });
 
-    // Custom sorting to prioritize President and Executive Committee departments
+    // Custom sorting to prioritize Executive Committee department
     const sortedMembers = processedMembers.sort((a, b) => {
       // Define priority order for departments
       const getDepartmentPriority = (dept) => {
         const upperDept = dept.toUpperCase();
-        if (upperDept === 'PRESIDENT') return 1;
-        if (upperDept === 'EXECUTIVE COMMITTEE') return 2;
-        return 3; // All other departments
+        if (upperDept === 'EXECUTIVE COMMITTEE') return 1;
+        return 2; // All other departments
       };
 
       const priorityA = getDepartmentPriority(a.department);

@@ -775,8 +775,6 @@ const Team = () => {
           return i18n.t('groups.engagement.title');
         case 'EXECUTIVE COMMITTEE':
           return i18n.t('groups.executive_committee.title');
-        case 'PRESIDENT':
-          return i18n.t('groups.president.title');
         default:
           return deptName;
       }
@@ -888,13 +886,12 @@ const Team = () => {
     return acc;
   }, {});
 
-  // Sort departments with President and Executive Committee first
+  // Sort departments with Executive Committee first
   const sortedDepartmentEntries = Object.entries(groupedMembers).sort(([deptA], [deptB]) => {
     const getDepartmentPriority = (dept) => {
       const upperDept = dept.toUpperCase();
-      if (upperDept === 'PRESIDENT') return 1;
-      if (upperDept === 'EXECUTIVE COMMITTEE') return 2;
-      return 3; // All other departments
+      if (upperDept === 'EXECUTIVE COMMITTEE') return 1;
+      return 2; // All other departments
     };
 
     const priorityA = getDepartmentPriority(deptA);

@@ -196,10 +196,6 @@ const enTranslations = {
     executive_committee: {
       title: 'EXECUTIVE COMMITTEE',
       description: 'The Executive Committee is responsible for the overall strategic planning and management of the organization, ensuring the smooth operation of all departments and the achievement of long-term goals.'
-    },
-    president: {
-      title: 'PRESIDENT',
-      description: 'The President provides overall leadership to the organization, setting the vision and direction, and representing the organization both internally and externally.'
     }
   },
   contact: {
@@ -294,8 +290,7 @@ const enTranslations = {
         operation: 'OPERATION GROUP',
         support: 'SUPPORT GROUP',
         engagement: 'ENGAGEMENT',
-        executive_committee: 'EXECUTIVE COMMITTEE',
-        president: 'PRESIDENT'
+        executive_committee: 'EXECUTIVE COMMITTEE'
       },
       bioEn: 'Bio (English)',
       bioEnPlaceholder: 'Tell us about yourself in English...',
@@ -801,10 +796,6 @@ const zhTranslations = {
     executive_committee: {
       title: '执行委员会',
       description: '执行委员会负责社团的整体战略规划和管理，确保各部门的顺利运作和长期目标的达成。'
-    },
-    president: {
-      title: '主席',
-      description: '主席为社团提供整体领导，设定愿景和方向，并代表社团处理内外事务。'
     }
   },
   contact: {
@@ -898,8 +889,7 @@ const zhTranslations = {
         operation: '运营部门',
         support: '支持部门',
         engagement: '活动部门',
-        executive_committee: '执行委员会',
-        president: '主席'
+        executive_committee: '执行委员会'
       },
       bioEn: '个人简介（英文）',
       bioEnPlaceholder: '请用英文介绍一下您自己...',
