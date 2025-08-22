@@ -25,16 +25,8 @@ router.post('/verify-code', AuthController.verifyCode);
 // 需要认证的路由
 router.post('/change-password', authenticateUser, AuthController.changePassword);
 
-
-// 管理员路由 - 用户管理
-router.get('/users', authenticateUser, requireStaffManagement, AuthController.getAllUsers);
-router.put('/users/:userId/activation', authenticateUser, requireStaffManagement, AuthController.toggleUserActivation);
-
 // 需要管理员权限的路由
 router.get('/me', authenticateUser, AuthController.getCurrentUser);
 router.get('/check-permission/:permission', authenticateUser, AuthController.checkPermission);
-
-// 管理员功能路由
-router.put('/users/:userId/permissions', authenticateUser, requireStaffManagement, AuthController.updateUserPermissions);
 
 module.exports = router;

@@ -194,19 +194,6 @@ export const checkPermission = async (permission) => {
   }
 };
 
-
-
-// 更新用户权限（管理员功能）
-export const updateUserPermissions = async (userId, permissions) => {
-  try {
-    const response = await api.put(`/auth/users/${userId}/permissions`, permissions);
-    return response.data;
-  } catch (error) {
-    console.error('更新权限错误:', error);
-    throw error;
-  }
-};
-
 // ===============================
 // 活动 API
 // ===============================

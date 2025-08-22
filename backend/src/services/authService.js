@@ -149,34 +149,7 @@ class AuthService {
 
 
 
-  static async updateUserPermissions(userId, permissions) {
-    const staff = await prisma.staff.findUnique({ where: { id: userId } });
-    if (!staff) {
-      throw new Error('用户不存在');
-    }
-    
-    const updatedStaff = await prisma.staff.update({
-      where: { id: userId },
-      data: {
-        canManageEvents: permissions.canManageEvents || false,
-        canManageStaff: permissions.canManageStaff || false,
-        canReviewProfiles: permissions.canReviewProfiles || false,
-        role: permissions.role || staff.role
-      }
-    });
-    
-    return {
-      id: updatedStaff.id,
-      username: updatedStaff.username,
-      email: updatedStaff.email,
-      role: updatedStaff.role,
-      permissions: {
-        canManageEvents: updatedStaff.canManageEvents,
-        canManageStaff: updatedStaff.canManageStaff,
-        canReviewProfiles: updatedStaff.canReviewProfiles
-      }
-    };
-  }
+
 
   static async loginWithEmail(email, verificationCode) {
     if (!email || !verificationCode) {
@@ -295,113 +268,6 @@ class AuthService {
         isActive: staff.isActive
       },
       message: '注册成功，等待管理员激活'
-    };
-  }
-
-  static async toggleUserActivation(userId, isActive, adminId) {
-    if (typeof isActive !== 'boolean') {
-      throw new Error('激活状态参数无效');
-    }
-
-    const parsedUserId = parseInt(userId);
-
-    // **安全校验：防止管理员停用自己**
-    if (parsedUserId === adminId && !isActive) {
-      throw new Error('您不能停用自己的账户。');
-    }
-
-    const targetUser = await prisma.staff.findUnique({
-      where: { id: parsedUserId },
-      select: { id: true, username: true, email: true, isActive: true, role: true }
-    });
-
-    if (!targetUser) {
-      throw new Error('目标用户不存在');
-    }
-
-    if (targetUser.role === 'admin' && !isActive) {
-      throw new Error('不能停用其他管理员账号。');
-    }
-
-    const admin = await prisma.staff.findUnique({
-      where: { id: adminId },
-      select: { username: true }
-    });
-
-    const updatedUser = await prisma.staff.update({
-      where: { id: parsedUserId },
-      data: { isActive }
-    });
-
-    try {
-      await EmailService.sendAccountActivationNotification(
-        targetUser.email,
-        targetUser.username,
-        isActive,
-        admin?.username || '管理员'
-      );
-    } catch (emailError) {
-      console.error('发送激活通知邮件失败:', emailError);
-      // 不阻止激活操作，只记录错误
-    }
-
-    return {
-      user: {
-        id: updatedUser.id,
-        username: updatedUser.username,
-        email: updatedUser.email,
-        isActive: updatedUser.isActive
-      },
-      message: `用户${isActive ? '激活' : '停用'}成功`
-    };
-  }
-
-  static async getAllUsers(page = 1, limit = 20, searchTerm = '') {
-    const offset = (page - 1) * limit;
-    
-    const whereClause = searchTerm ? {
-      OR: [
-        { username: { contains: searchTerm } },
-        { email: { contains: searchTerm } }
-      ]
-    } : {};
-
-    const [users, total] = await Promise.all([
-      prisma.staff.findMany({
-        where: whereClause,
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          role: true,
-          isActive: true,
-          isEmailVerified: true,
-          createdAt: true,
-          lastLogin: true,
-          profile: {
-            select: {
-              name_zh: true,
-              name_en: true,
-              status: true
-            }
-          }
-        },
-        orderBy: {
-          createdAt: 'desc'
-        },
-        skip: offset,
-        take: limit
-      }),
-      prisma.staff.count({
-        where: whereClause
-      })
-    ]);
-
-    return {
-      users,
-      total,
-      page,
-      totalPages: Math.ceil(total / limit)
     };
   }
 }

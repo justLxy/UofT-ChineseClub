@@ -113,37 +113,6 @@ class AuthController {
     }
   }
 
-
-
-  // 管理员：激活/停用用户账号
-  static async toggleUserActivation(req, res) {
-    try {
-      const { userId } = req.params;
-      const { isActive } = req.body;
-      const result = await AuthService.toggleUserActivation(userId, isActive, req.userId);
-      res.json(result);
-    } catch (error) {
-      console.error('Toggle user activation error:', error);
-      res.status(400).json({ error: error.message });
-    }
-  }
-
-  // 管理员：获取所有用户列表
-  static async getAllUsers(req, res) {
-    try {
-      const { page = 1, limit = 20, search = '' } = req.query;
-      const result = await AuthService.getAllUsers(
-        parseInt(page), 
-        parseInt(limit), 
-        search
-      );
-      res.json(result);
-    } catch (error) {
-      console.error('Get all users error:', error);
-      res.status(500).json({ error: 'Failed to fetch users' });
-    }
-  }
-
   // 修改密码
   static async changePassword(req, res) {
     try {
@@ -175,26 +144,6 @@ class AuthController {
       res.json({ hasPermission });
     } catch (error) {
       console.error('检查权限错误:', error);
-      res.status(400).json({ error: error.message });
-    }
-  }
-
-
-
-  // 更新用户权限（管理员功能）
-  static async updateUserPermissions(req, res) {
-    try {
-      // 检查当前用户是否有管理员权限
-      const hasPermission = await AuthService.checkPermission(req.userId, 'manageStaff');
-      if (!hasPermission) {
-        return res.status(403).json({ error: '权限不足' });
-      }
-
-      const { userId } = req.params;
-      const user = await AuthService.updateUserPermissions(parseInt(userId), req.body);
-      res.json({ user, message: '权限更新成功' });
-    } catch (error) {
-      console.error('更新权限错误:', error);
       res.status(400).json({ error: error.message });
     }
   }
