@@ -36,7 +36,7 @@ const enTranslations = {
   },
   about: {
     title: 'What is UTChinese?',
-    story1: 'Some say the essence of UTChinese is passion. We\'ve held charity concerts for 14 consecutive years, donating hundreds of thousands of dollars to UNICEF.',
+    story1: `Some say the essence of UTChinese is passion. We've held charity concerts for ${new Date().getFullYear() - 2006} consecutive years, donating hundreds of thousands of dollars to UNICEF.`,
     story2: 'Initially, our members wanted to host entrepreneur forums. They quickly invited Yu Minhong, the founder of Roots, Microsoft Canada\'s CTO, and Coca-Cola\'s Global VP. I admired their resources, but after joining, I realized they had searched the entire internet, found contact information for entrepreneurs and executives, sent hundreds of invitation emails, and finally got lucky with that one percent chance. Later, I joined them.',
     story3: 'Following this approach, we organized the Ace Career Fair. No one expected Apple, Microsoft, and the Big Five banks to become our guests.',
     story4: 'Later, we discovered that as Chinese living in Canada, we sometimes wanted to introduce our homeland but didn\'t know where to start. For this reason, UTChinese\'s founders created the Mulan International Film Festival. We succeeded in "enabling Chinese people to better tell China\'s story, and non-Chinese people to see China comprehensively and objectively" through film.',
@@ -175,7 +175,7 @@ const enTranslations = {
     },
     arts: {
       title: 'ARTS & CULTURE GROUP',
-      description: 'The Arts & Culture Group is dedicated to conveying diverse Eastern and Western cultures through cultural activities. Here, with culture and art as our original intention, we have held charity New Year\'s concerts for 14 consecutive years, with total revenue exceeding 110,000 Canadian dollars. Among them, there are book salons that bring friends together through books, as well as summer-limited Live Houses. We believe these activities deserve to be seen by more people, so every UTChinese member opens a window to present quality content to everyone.'
+      description: `The Arts & Culture Group is dedicated to conveying diverse Eastern and Western cultures through cultural activities. Here, with culture and art as our original intention, we have held charity New Year's concerts for ${new Date().getFullYear() - 2006} consecutive years, with total revenue exceeding 110,000 Canadian dollars. Among them, there are book salons that bring friends together through books, as well as summer-limited Live Houses. We believe these activities deserve to be seen by more people, so every UTChinese member opens a window to present quality content to everyone.`
     },
     career: {
       title: 'CAREER & ACADEMIC GROUP',
@@ -636,7 +636,7 @@ const zhTranslations = {
   },
   about: {
     title: '什么是多大中文?',
-    story1: '有人说多大中文的精髓是情怀，连续十四年的慈善音乐会，为联合国儿童基金会带去数十万刀的捐赠。',
+    story1: `有人说多大中文的精髓是情怀，连续${new Date().getFullYear() - 2006}年的慈善音乐会，为联合国儿童基金会带去数十万刀的捐赠。`,
     story2: '起初，社团的大家想要办企业家论坛，结果很快就请到了俞敏洪、Roots的创始人、微软加拿大的CTO、可口可乐的全球副总裁。本羡慕他们手里已有大量资源，加入了才知道，他们是搜遍整个网络、找到各个企业家或者公司高管的联系方式，发出上百封邮件邀请，最终碰上那百分之一的运气。后来我也加入了他们。',
     story3: '循着这个路子，我们办起了Ace Career Fair。谁都没想到苹果、微软、五大行等都成为了我们的座上客。',
     story4: '之后，我们发现作为生活在加拿大的华人，有时想要介绍我们的祖国时, 却不知道该如何讲起。为了这个，多大中文的创始人们挖了史上最大的坑，木兰国际电影节。我们做到了通过电影的形式"让华人可以更好地讲述中国，让非华人全面客观地看到中国"。',
@@ -775,7 +775,7 @@ const zhTranslations = {
     },
     arts: {
       title: '文化艺术部门',
-      description: 'Arts & Culture Group 致力于通过文化类的活动，传递中西方多元文化。在这里，以文化艺术为初心，我们连续举办了14年的公益新年音乐晚会，总收入超11万加币。其中，有以书会友的读书沙龙，也有夏日限定的 Live House。我们相信这些活动值得被更多人看见，因此每一位多大中文人都推开了窗口，让优质的内容出现在大家面前。'
+      description: `Arts & Culture Group 致力于通过文化类的活动，传递中西方多元文化。在这里，以文化艺术为初心，我们连续举办了${new Date().getFullYear() - 2006}年的公益新年音乐晚会，总收入超11万加币。其中，有以书会友的读书沙龙，也有夏日限定的 Live House。我们相信这些活动值得被更多人看见，因此每一位多大中文人都推开了窗口，让优质的内容出现在大家面前。`
     },
     career: {
       title: '职业学术部门',

@@ -923,7 +923,7 @@ const NewYearConcertPage = () => {
       
       // Past Events
       pastTitle: 'Past Events',
-      pastDescription: 'Since 2007, UT Chinese Network has held 14 New Year charity concerts.',
+      pastDescription: `Since 2007, UT Chinese Network has held ${new Date().getFullYear() - 2006} New Year charity concerts.`,
       pastEvent1Title: '2025 New Year Charity Concert',
       pastEvent1Desc: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere.',
       pastEvent1Detail: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere. The event showcased the talents of our members and celebrated the rich cultural heritage of the Chinese community at UofT.',
@@ -961,7 +961,7 @@ const NewYearConcertPage = () => {
       
       // Past Events
       pastTitle: '往期活动回顾',
-      pastDescription: '自2007年起，多大中文（UTChineseNetwork）已举办14场新年慈善音乐会',
+      pastDescription: `自2007年起，多大中文（UTChineseNetwork）已举办${new Date().getFullYear() - 2006}场新年慈善音乐会`,
       pastEvent1Title: '2025新年慈善音乐会',
       pastEvent1Desc: '2025多大中文新年音乐会是一个难忘的夜晚，精彩的表演和温馨的社区氛围让人印象深刻。',
       pastEvent1Detail: '2025年新年音乐会盛况空前，观众反响热烈，节目精彩纷呈。',
