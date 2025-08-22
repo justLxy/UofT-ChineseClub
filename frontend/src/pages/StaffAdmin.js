@@ -906,6 +906,7 @@ const StaffAdmin = () => {
           department: updateData.department,
           bio_en: updateData.bio_en,
           bio_zh: updateData.bio_zh,
+          avatarUrl: updateData.avatarUrl,
           email: updateData.profileEmail,
           linkedin: updateData.linkedin,
           github: updateData.github,
@@ -936,6 +937,7 @@ const StaffAdmin = () => {
         delete permissionsData.department;
         delete permissionsData.bio_en;
         delete permissionsData.bio_zh;
+        delete permissionsData.avatarUrl;
         delete permissionsData.profileEmail;
         delete permissionsData.linkedin;
         delete permissionsData.github;
