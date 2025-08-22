@@ -775,8 +775,40 @@ class StaffService {
       }
       return member;
     });
+
+    // Custom sorting to prioritize President and Executive Committee departments
+    const sortedMembers = processedMembers.sort((a, b) => {
+      // Define priority order for departments
+      const getDepartmentPriority = (dept) => {
+        const upperDept = dept.toUpperCase();
+        if (upperDept === 'PRESIDENT') return 1;
+        if (upperDept === 'EXECUTIVE COMMITTEE') return 2;
+        return 3; // All other departments
+      };
+
+      const priorityA = getDepartmentPriority(a.department);
+      const priorityB = getDepartmentPriority(b.department);
+
+      // First sort by department priority
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;
+      }
+
+      // Within the same department priority, sort by role (admin first)
+      if (a.staff.role !== b.staff.role) {
+        return a.staff.role === 'admin' ? -1 : 1;
+      }
+
+      // Then by display order
+      if (a.displayOrder !== b.displayOrder) {
+        return a.displayOrder - b.displayOrder;
+      }
+
+      // Finally by creation date (older first)
+      return new Date(a.staff.createdAt) - new Date(b.staff.createdAt);
+    });
     
-    return processedMembers.map(member => transformTeamMemberByLanguage(member, language));
+    return sortedMembers.map(member => transformTeamMemberByLanguage(member, language));
   }
 
   // Public: Get team member by ID

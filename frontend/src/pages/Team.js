@@ -888,6 +888,26 @@ const Team = () => {
     return acc;
   }, {});
 
+  // Sort departments with President and Executive Committee first
+  const sortedDepartmentEntries = Object.entries(groupedMembers).sort(([deptA], [deptB]) => {
+    const getDepartmentPriority = (dept) => {
+      const upperDept = dept.toUpperCase();
+      if (upperDept === 'PRESIDENT') return 1;
+      if (upperDept === 'EXECUTIVE COMMITTEE') return 2;
+      return 3; // All other departments
+    };
+
+    const priorityA = getDepartmentPriority(deptA);
+    const priorityB = getDepartmentPriority(deptB);
+
+    if (priorityA !== priorityB) {
+      return priorityA - priorityB;
+    }
+
+    // If same priority, sort alphabetically
+    return deptA.localeCompare(deptB);
+  });
+
   const totalMembers = teamMembers.length;
   const totalDepartments = departments.length;
 
@@ -1294,7 +1314,7 @@ const Team = () => {
             <AnimatePresence mode="wait">
               {selectedDepartment === 'all' ? (
                 // Show all departments
-                Object.entries(groupedMembers).map(([departmentName, members]) => (
+                sortedDepartmentEntries.map(([departmentName, members]) => (
                   <motion.div
                     key={departmentName}
                     className="department-section"
