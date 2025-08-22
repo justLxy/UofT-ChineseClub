@@ -179,22 +179,7 @@ class AuthController {
     }
   }
 
-  // 创建新用户（管理员功能）
-  static async createUser(req, res) {
-    try {
-      // 检查当前用户是否有管理员权限
-      const hasPermission = await AuthService.checkPermission(req.userId, 'manageStaff');
-      if (!hasPermission) {
-        return res.status(403).json({ error: '权限不足' });
-      }
 
-      const user = await AuthService.createUser(req.body);
-      res.json({ user, message: '用户创建成功' });
-    } catch (error) {
-      console.error('创建用户错误:', error);
-      res.status(400).json({ error: error.message });
-    }
-  }
 
   // 更新用户权限（管理员功能）
   static async updateUserPermissions(req, res) {

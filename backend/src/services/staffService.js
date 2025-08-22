@@ -277,7 +277,7 @@ class StaffService {
   }
 
   // Admin: Create staff account
-  static async createStaffAccount(staffData) {
+  static async createStaffAccount(staffData, currentUserInfo = null) {
     const { 
       username, 
       email, 
@@ -326,6 +326,22 @@ class StaffService {
         isActive
       }
     });
+
+    // 如果账户被激活，发送激活通知邮件
+    if (isActive) {
+      try {
+        const adminName = currentUserInfo?.username || '管理员';
+        await EmailService.sendAccountActivationNotification(
+          email,
+          username,
+          true,
+          adminName
+        );
+      } catch (emailError) {
+        console.error('发送账户激活通知邮件失败:', emailError);
+        // 不阻止账户创建操作，只记录错误
+      }
+    }
     
     // Remove password hash from response
     const { passwordHash: _, ...staffResponse } = newStaff;

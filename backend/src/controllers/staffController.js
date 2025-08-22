@@ -48,7 +48,7 @@ class StaffController {
   // Admin: Create staff account
   static async createStaffAccount(req, res) {
     try {
-      const result = await StaffService.createStaffAccount(req.body);
+      const result = await StaffService.createStaffAccount(req.body, req.user);
       res.status(201).json(result);
     } catch (error) {
       console.error('Error creating staff account:', error);

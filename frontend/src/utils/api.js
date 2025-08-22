@@ -194,16 +194,7 @@ export const checkPermission = async (permission) => {
   }
 };
 
-// 创建用户（管理员功能）
-export const createUser = async (userData) => {
-  try {
-    const response = await api.post('/auth/users', userData);
-    return response.data;
-  } catch (error) {
-    console.error('创建用户错误:', error);
-    throw error;
-  }
-};
+
 
 // 更新用户权限（管理员功能）
 export const updateUserPermissions = async (userId, permissions) => {

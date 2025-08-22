@@ -147,64 +147,7 @@ class AuthService {
     };
   }
 
-  static async createUser(userData) {
-    let { username, email, password, role = 'staff', permissions = {} } = userData;
-    
-    if (!username || !username.trim()) {
-      if (!email) {
-        throw new Error('邮箱不能为空');
-      }
-      username = email.split('@')[0];
-    }
-    
-    if (!email) {
-      throw new Error('邮箱不能为空');
-    }
-    
-    if (!password) {
-      password = '123';
-    }
-    
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      throw new Error('请输入有效的邮箱格式');
-    }
-    
-    const existingUser = await prisma.staff.findFirst({
-      where: { OR: [ { username }, { email } ] }
-    });
-    
-    if (existingUser) {
-      throw new Error('用户名或邮箱已存在');
-    }
-    
-    const passwordHash = await bcrypt.hash(password, 10);
-    
-    const staff = await prisma.staff.create({
-      data: {
-        username,
-        email,
-        passwordHash,
-        role,
-        canManageEvents: permissions.canManageEvents || false,
-        canManageStaff: permissions.canManageStaff || false,
-        canReviewProfiles: permissions.canReviewProfiles || false,
-        isActive: true
-      }
-    });
-    
-    return {
-      id: staff.id,
-      username: staff.username,
-      email: staff.email,
-      role: staff.role,
-      permissions: {
-        canManageEvents: staff.canManageEvents,
-        canManageStaff: staff.canManageStaff,
-        canReviewProfiles: staff.canReviewProfiles
-      }
-    };
-  }
+
 
   static async updateUserPermissions(userId, permissions) {
     const staff = await prisma.staff.findUnique({ where: { id: userId } });
