@@ -59,18 +59,20 @@ const StyledHeader = styled.header`
       background: rgba(255, 255, 255, 0.3);
     }
     
-    /* Language selector */
-    .language-selector-trigger {
-      color: white !important;
-      border-color: rgba(255, 255, 255, 0.3) !important;
-      
-      &:hover {
-        border-color: rgba(255, 255, 255, 0.5) !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-      }
-      
-      .chevron {
-        color: rgba(255, 255, 255, 0.7) !important;
+    /* Language selector - only on desktop */
+    @media (min-width: 769px) {
+      .language-selector-trigger {
+        color: white !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        
+        &:hover {
+          border-color: rgba(255, 255, 255, 0.5) !important;
+          background: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .chevron {
+          color: rgba(255, 255, 255, 0.7) !important;
+        }
       }
     }
     
