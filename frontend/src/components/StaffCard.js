@@ -250,25 +250,31 @@ const CardFooter = styled.div`
     flex-wrap: wrap;
     gap: 1.5rem;
     
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-light);
-      font-size: 0.9rem;
-      
-      .icon {
-        color: var(--primary);
-        font-size: 1rem;
-        flex-shrink: 0;
+          .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-light);
+        font-size: 0.9rem;
+        min-width: 0; // 允许 flex 项目收缩
+        
+        .icon {
+          color: var(--primary);
+          font-size: 1rem;
+          flex-shrink: 0;
+        }
+        
+        span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          max-width: 280px; // 增加最大宽度，为英文内容提供更多空间
+          
+          @media (max-width: 768px) {
+            max-width: 250px;
+          }
+        }
       }
-      
-      span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
   }
   
   @media (max-width: 768px) {
@@ -383,7 +389,7 @@ const StaffCard = ({ staff }) => {
             <PersonalInfo>
               {displayBio ? (
                 <p className="bio">
-                  {displayBio.length > 200 ? displayBio.substring(0, 200) + '...' : displayBio}
+                  {displayBio.length > 500 ? displayBio.substring(0, 500) + '...' : displayBio}
                 </p>
               ) : (
                 <p className="bio no-bio">{t('staff.profile.permissions.noBio')}</p>
