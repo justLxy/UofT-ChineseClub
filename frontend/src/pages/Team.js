@@ -599,6 +599,25 @@ const StyledTeam = styled.div`
       transition: transform 0.1s ease;
     }
     
+    /* Clicked state for immediate feedback */
+    &.clicked {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 30px 60px rgba(224, 43, 32, 0.25);
+      border-color: rgba(224, 43, 32, 0.5);
+      transition: all 0.2s ease;
+      
+      &:before {
+        height: 10px;
+      }
+      
+      .member-avatar {
+        transform: scale(1.1);
+        filter: brightness(1.05);
+      }
+    }
+    
+
+    
     /* 添加一个轻微的脉冲动画提示 */
     &:not(:hover) {
       animation: gentle-pulse 4s ease-in-out infinite;
@@ -752,12 +771,13 @@ const Team = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState('all');
   const [selectedStaff, setSelectedStaff] = useState(null);
-  const [isSelectingStaff, setIsSelectingStaff] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const headerRef = useRef(null);
   const cardsRef = useRef([]);
   const [imageLoadErrors, setImageLoadErrors] = useState({});
+  const [preloadedImages, setPreloadedImages] = useState(new Set());
+  const [clickedCardId, setClickedCardId] = useState(null);
 
   // Helper: translate department name based on current language
   const getDepartmentLabel = (deptName) => {
@@ -909,22 +929,27 @@ const Team = () => {
   const totalDepartments = departments.length;
 
   // Handle route param / query for staff detail modal (username based)
-  const handleStaffClick = (staffUsername) => {
+  const handleStaffClick = (staffUsername, staffId) => {
     const staff = teamMembers.find(member => member.username === staffUsername);
     if (staff) {
-      // Provide immediate visual feedback
-      setIsSelectingStaff(true);
+      // Immediate visual feedback - mark card as clicked
+      setClickedCardId(staffId);
       
-      // Set selected staff immediately for instant UI response
-      setSelectedStaff(staff);
-      
-      // Reset selecting state after modal starts opening
-      setTimeout(() => setIsSelectingStaff(false), 50);
-      
-      // Update URL in a non-blocking transition for seamless experience
-      startTransition(() => {
-        const langParam = i18n.language;
-        navigate(`/team/${staffUsername}?lang=${langParam}`, { replace: true });
+      // Use requestAnimationFrame for smooth transition
+      requestAnimationFrame(() => {
+        // Set selected staff immediately for instant UI response
+        setSelectedStaff(staff);
+        
+        // Reset clicked state after modal starts opening
+        setTimeout(() => {
+          setClickedCardId(null);
+        }, 200);
+        
+        // Update URL in a non-blocking transition for seamless experience
+        startTransition(() => {
+          const langParam = i18n.language;
+          navigate(`/team/${staffUsername}?lang=${langParam}`, { replace: true });
+        });
       });
     }
   };
@@ -969,6 +994,63 @@ const Team = () => {
   useEffect(() => {
     setImageLoadErrors({});
   }, [teamMembers]);
+
+  // Enhanced image preloading for faster modal rendering
+  useEffect(() => {
+    if (teamMembers.length > 0) {
+      const preloadImage = (url, priority = false) => {
+        return new Promise((resolve) => {
+          if (!url || preloadedImages.has(url)) {
+            resolve(true);
+            return;
+          }
+          
+          const img = new Image();
+          img.onload = () => {
+            setPreloadedImages(prev => new Set([...prev, url]));
+            resolve(true);
+          };
+          img.onerror = () => {
+            // Mark as failed but continue
+            setImageLoadErrors(prev => ({
+              ...prev,
+              [url]: true
+            }));
+            resolve(false);
+          };
+          
+          // Set priority for important images
+          if (priority) {
+            img.loading = 'eager';
+          }
+          
+          img.src = url;
+        });
+      };
+
+      // Preload with smart prioritization
+      const allImages = teamMembers.map(member => ({
+        url: getFullAvatarUrl(member.avatarUrl),
+        member: member
+      })).filter(item => item.url);
+
+      // Priority: First 6 members get immediate preload
+      const priorityImages = allImages.slice(0, 6);
+      const backgroundImages = allImages.slice(6, 18); // Next 12 for background loading
+
+      // Load priority images immediately
+      Promise.all(priorityImages.map(item => preloadImage(item.url, true)))
+        .then(() => {
+          // Then load background images with slight delay
+          setTimeout(() => {
+            Promise.all(backgroundImages.map(item => preloadImage(item.url, false)))
+              .catch(() => {
+                // Gracefully handle background preload failures
+              });
+          }, 500);
+        });
+    }
+  }, [teamMembers]); // Remove preloadedImages dependency to prevent infinite loop
 
   if (loading) {
     return (
@@ -1330,7 +1412,7 @@ const Team = () => {
                       {members.map((member, index) => (
                         <motion.div
                           key={member.id}
-                          className="member-card"
+                          className={`member-card ${clickedCardId === member.id ? 'clicked' : ''}`}
                           ref={el => cardsRef.current[index] = el}
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
@@ -1343,7 +1425,7 @@ const Team = () => {
                             y: -8,
                             transition: { duration: 0.2, ease: "easeOut" }
                           }}
-                          onClick={() => handleStaffClick(member.username)}
+                          onClick={() => handleStaffClick(member.username, member.id)}
                           style={{ cursor: 'pointer' }}
                         >
                           <div className="member-content">
@@ -1470,7 +1552,7 @@ const Team = () => {
                     {filteredMembers.map((member, index) => (
                       <motion.div
                         key={member.id}
-                        className="member-card"
+                        className={`member-card ${clickedCardId === member.id ? 'clicked' : ''}`}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ 
@@ -1482,7 +1564,7 @@ const Team = () => {
                           y: -8,
                           transition: { duration: 0.2, ease: "easeOut" }
                         }}
-                        onClick={() => handleStaffClick(member.username)}
+                        onClick={() => handleStaffClick(member.username, member.id)}
                         style={{ cursor: 'pointer' }}
                       >
                         <div className="member-content">
@@ -1594,11 +1676,12 @@ const Team = () => {
         </section>
       </StyledTeam>
 
+
+
       {selectedStaff && (
         <StaffDetailModal
           staff={selectedStaff}
           onClose={handleCloseModal}
-          isQuickOpening={isSelectingStaff}
         />
       )}
     </motion.div>
