@@ -34,7 +34,17 @@ const VideoBackgroundContainer = styled.div`
   @media (max-width: 768px) {
     video {
       /* Optimize for mobile */
-      transform: translate(-50%, -50%) scale(1.1);
+      /* Keep the key content in upper third and zoom slightly to avoid awkward crop */
+      object-position: 50% 35%;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+  }
+
+  /* Extra-tall screens (very portrait) – add a bit more zoom and higher focus */
+  @media (max-aspect-ratio: 9/16) {
+    video {
+      object-position: 50% 30%;
+      transform: translate(-50%, -50%) scale(1.28);
     }
   }
 `;
@@ -159,6 +169,7 @@ const VideoBackground = ({ videoSrc, className }) => {
           muted={isMuted}
           loop
           playsInline
+          autoPlay
           preload="auto"
           style={{ opacity: 0 }}
         >

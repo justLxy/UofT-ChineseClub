@@ -13,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const StyledHome = styled.div`
   .hero {
+    height: 100svh;
     height: 100vh;
     display: flex;
     align-items: center;
