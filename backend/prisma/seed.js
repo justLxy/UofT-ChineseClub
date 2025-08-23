@@ -178,6 +178,18 @@ async function main() {
         location_zh: '多伦多大学哲学家小径',
         featured: true,
         link: 'https://docs.google.com/forms/d/e/1FAIpQLSdCAaPfNFDTFaFwIEp4cYsugSvLQPhBPo_j2hMVa0UlCZ3Fpw/viewform'
+      },
+      {
+        title_en: 'UTSU Clubs Fair 2025',
+        title_zh: '多大学生会社团展览会2025',
+        description_en: 'Join us at the annual UTSU Clubs Fair where student organizations showcase their activities and recruit new members! UTChinese Network will be at booth P13 with exclusive merchandise, interactive mini-games, and live Guqin (Chinese traditional instrument) performances. This is a great opportunity to discover new clubs, meet like-minded people, and get involved in campus life. Come visit our booth to learn about our upcoming events, participate in fun activities, and experience the beauty of Chinese culture through music!',
+        description_zh: '欢迎参加一年一度的多大学生会社团展览会！多大中文将在P13摊位等您，我们准备了各类精美周边产品、有趣的互动小游戏，还有精彩的古琴表演等您来欣赏。这是发现新社团、结识志同道合的人以及参与校园生活的绝佳机会。快来我们的摊位了解即将举办的活动，参与趣味互动，通过音乐感受中华文化的魅力！',
+        imageUrl: '/uploads/events/ClubFair.png',
+        startDate: new Date('2025-08-28T12:00:00'),
+        endDate: new Date('2025-08-28T16:00:00'),
+        location_en: 'Booth P13, King\'s College Circle, University of Toronto',
+        location_zh: 'P13摊位，King\'s College Circle，多伦多大学',
+        featured: true,
       }
     ];
 
