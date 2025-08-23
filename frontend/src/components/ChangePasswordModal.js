@@ -410,7 +410,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSuccess }) => {
                       onClick={() => togglePasswordVisibility('current')}
                       disabled={isLoading}
                     >
-                      {showPasswords.current ? <FiEyeOff /> : <FiEye />}
+                      {showPasswords.current ? <FiEye /> : <FiEyeOff />}
                     </button>
                   </div>
                 </div>
@@ -436,7 +436,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSuccess }) => {
                       onClick={() => togglePasswordVisibility('new')}
                       disabled={isLoading}
                     >
-                      {showPasswords.new ? <FiEyeOff /> : <FiEye />}
+                      {showPasswords.new ? <FiEye /> : <FiEyeOff />}
                     </button>
                   </div>
                   <div className="password-requirements">
@@ -465,7 +465,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSuccess }) => {
                       onClick={() => togglePasswordVisibility('confirm')}
                       disabled={isLoading}
                     >
-                      {showPasswords.confirm ? <FiEyeOff /> : <FiEye />}
+                      {showPasswords.confirm ? <FiEye /> : <FiEyeOff />}
                     </button>
                   </div>
                   {error && (

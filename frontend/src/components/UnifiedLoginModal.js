@@ -865,7 +865,7 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
                           onClick={togglePassword}
                           disabled={isLoading}
                         >
-                          {showPassword ? <FiEyeOff /> : <FiEye />}
+                          {showPassword ? <FiEye /> : <FiEyeOff />}
                         </button>
                       </div>
                     </div>
@@ -1014,7 +1014,7 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
                           onClick={togglePassword}
                           disabled={isLoading}
                         >
-                          {showPassword ? <FiEyeOff /> : <FiEye />}
+                          {showPassword ? <FiEye /> : <FiEyeOff />}
                         </button>
                       </div>
                     </div>

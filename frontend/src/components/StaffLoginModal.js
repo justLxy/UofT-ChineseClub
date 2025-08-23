@@ -346,7 +346,7 @@ const StaffLoginModal = ({ isOpen, onClose, onSuccess }) => {
                     className="toggle-password"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                    {showPassword ? <FiEye /> : <FiEyeOff />}
                   </button>
                 </div>
                 {error && (
