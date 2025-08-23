@@ -24,7 +24,7 @@ const enTranslations = {
   },
   home: {
     hero: {
-      title: 'UTChinese Network',
+      title: 'UTChinese',
       subtitle: 'Connecting Chinese culture with UofT community',
       cta: 'Join Our Community'
     },

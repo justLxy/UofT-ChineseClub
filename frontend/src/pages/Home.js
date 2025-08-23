@@ -36,6 +36,7 @@ const StyledHome = styled.div`
     margin-bottom: 1rem;
     line-height: 1.1;
     position: relative;
+    text-align: center;
     
     .gradient-overlay {
       position: absolute;
@@ -59,6 +60,11 @@ const StyledHome = styled.div`
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+
+    &.no-wrap {
+      white-space: nowrap;
+      max-width: none;
+    }
   }
 
   .hero-cta {
@@ -379,7 +385,7 @@ const StyledHome = styled.div`
 `;
 
 const Home = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const heroRef = useRef(null);
   const titleRef = useRef(null);
   const sectionRefs = useRef([]);
@@ -530,7 +536,7 @@ const Home = () => {
             <span className="gradient-overlay">{t('home.hero.title')}</span>
           </motion.h1>
           
-          <motion.p className="hero-subtitle" variants={itemVariants}>
+          <motion.p className={`hero-subtitle${i18n.language === 'en' ? ' no-wrap' : ''}`} variants={itemVariants}>
             {t('home.hero.subtitle')}
           </motion.p>
           
