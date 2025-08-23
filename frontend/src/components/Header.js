@@ -43,11 +43,15 @@ const StyledHeader = styled.header`
       }
     }
     
-    .user-profile-trigger {
-      color: white;
-      
-      .chevron-icon {
-        color: white;
+    /* Desktop user button (logged-in) */
+    .user-button, .user-info, .user-button .chevron {
+      color: white !important;
+    }
+    
+    /* Mobile profile summary */
+    .mobile-menu {
+      .user-summary, .user-summary svg {
+        color: white !important;
       }
     }
     
