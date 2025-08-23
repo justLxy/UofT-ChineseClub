@@ -29,6 +29,70 @@ const StyledHeader = styled.header`
     background-color: rgba(12, 12, 12, 0.85);
   }
   
+  /* Homepage specific styling for white text on video background */
+  body.homepage &:not(.scrolled) {
+    .nav-link {
+      color: white;
+      
+      &.active:after {
+        background: white;
+      }
+      
+      &:hover {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+    
+    .user-profile-trigger {
+      color: white;
+      
+      .chevron-icon {
+        color: white;
+      }
+    }
+    
+    .divider {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Language selector */
+    .language-selector-trigger {
+      color: white !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.5) !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+      
+      .chevron {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+    }
+    
+    /* Theme switch and other controls */
+    .theme-switch button {
+      color: white;
+      border-color: rgba(255, 255, 255, 0.3);
+      
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+    
+    /* Login button */
+    .login-button {
+      color: white;
+      border-color: rgba(255, 255, 255, 0.5);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white;
+      }
+    }
+  }
+  
   .container {
     display: flex;
     justify-content: space-between;

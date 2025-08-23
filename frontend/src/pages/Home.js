@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ImageCarousel from '../components/ImageCarousel';
+import VideoBackground from '../components/VideoBackground';
 import SEO from '../components/SEO';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,69 +18,8 @@ const StyledHome = styled.div`
     align-items: center;
     justify-content: center;
     position: relative;
-    background: radial-gradient(circle at 50% 50%, rgba(252, 185, 0, 0.1) 0%, rgba(224, 43, 32, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
     overflow: hidden;
     padding-top: 5rem;
-  }
-
-  .hero-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    
-    .hero-bg-circle {
-      position: absolute;
-      border-radius: 50%;
-      background: var(--primary);
-      filter: blur(80px);
-      opacity: 0.1;
-      animation: float 20s infinite ease-in-out;
-    }
-    
-    .hero-bg-circle:nth-child(1) {
-      width: 400px;
-      height: 400px;
-      left: -100px;
-      top: 20%;
-      background: var(--primary);
-      animation-delay: 0s;
-    }
-    
-    .hero-bg-circle:nth-child(2) {
-      width: 300px;
-      height: 300px;
-      right: -50px;
-      top: 10%;
-      background: var(--accent);
-      animation-delay: -5s;
-    }
-    
-    .hero-bg-circle:nth-child(3) {
-      width: 350px;
-      height: 350px;
-      left: 40%;
-      bottom: -100px;
-      background: var(--primary-dark);
-      animation-delay: -10s;
-    }
-  }
-  
-  @keyframes float {
-    0%, 100% {
-      transform: translate(0, 0) scale(1);
-    }
-    25% {
-      transform: translate(5%, 5%) scale(1.1);
-    }
-    50% {
-      transform: translate(0, 10%) scale(1);
-    }
-    75% {
-      transform: translate(-5%, 5%) scale(0.9);
-    }
   }
 
   .hero-content {
@@ -114,7 +54,7 @@ const StyledHome = styled.div`
   .hero-subtitle {
     font-size: clamp(1.2rem, 3vw, 1.8rem);
     margin-bottom: 2.5rem;
-    color: var(--text-light);
+    color: white;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -176,6 +116,8 @@ const StyledHome = styled.div`
       }
     }
   }
+
+
 
   .about-section {
     padding: 8rem 0;
@@ -442,6 +384,15 @@ const Home = () => {
   const sectionRefs = useRef([]);
   
   useEffect(() => {
+    // Add special class for homepage header styling
+    document.body.classList.add('homepage');
+    
+    return () => {
+      document.body.classList.remove('homepage');
+    };
+  }, []);
+  
+  useEffect(() => {
     // Scroll animations
     sectionRefs.current.forEach((section, index) => {
       if (!section) return;
@@ -563,11 +514,9 @@ const Home = () => {
       />
       {/* Hero Section */}
       <section className="hero" ref={heroRef}>
-        <div className="hero-bg">
-          <div className="hero-bg-circle"></div>
-          <div className="hero-bg-circle"></div>
-          <div className="hero-bg-circle"></div>
-        </div>
+        <VideoBackground 
+          videoSrc="/videos/utchinese_promo_2023.mp4"
+        />
         
         <motion.div 
           className="hero-content"
