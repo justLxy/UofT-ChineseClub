@@ -318,7 +318,7 @@ const StaffCard = ({ staff }) => {
 
   // Generate link for QR code (shareable business card link)
   const cardLink = username 
-    ? `${window.location.origin}/team/${username}?lang=${i18n.language}` 
+    ? `${window.location.origin}/team/${username}` 
     : window.location.href;
 
   const handleImageError = () => {

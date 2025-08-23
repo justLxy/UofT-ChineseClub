@@ -947,8 +947,7 @@ const Team = () => {
         
         // Update URL in a non-blocking transition for seamless experience
         startTransition(() => {
-          const langParam = i18n.language;
-          navigate(`/team/${staffUsername}?lang=${langParam}`, { replace: true });
+          navigate(`/team/${staffUsername}`, { replace: true });
         });
       });
     }
