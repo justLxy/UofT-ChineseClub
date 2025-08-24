@@ -708,6 +708,8 @@ const StyledTeam = styled.div`
       line-clamp: 4;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      word-break: break-word;
+      overflow-wrap: anywhere; /* prevent single long words from occupying a line */
     }
     
     .member-links {
@@ -1472,12 +1474,7 @@ const Team = () => {
                               </div>
                               {(member.bio_en || member.bio_zh) && (
                                 <p className="member-bio">
-                                  {(() => {
-                                    const bioText = i18n.language === 'zh' ? member.bio_zh : member.bio_en;
-                                    return bioText && bioText.length > 120 
-                                      ? bioText.substring(0, 120) + '...' 
-                                      : bioText;
-                                  })()}
+                                  {i18n.language === 'zh' ? member.bio_zh : member.bio_en}
                                 </p>
                               )}
                               <div className="member-links">
@@ -1611,12 +1608,7 @@ const Team = () => {
                             </div>
                             {(member.bio_en || member.bio_zh) && (
                               <p className="member-bio">
-                                {(() => {
-                                  const bioText = i18n.language === 'zh' ? member.bio_zh : member.bio_en;
-                                  return bioText && bioText.length > 120 
-                                    ? bioText.substring(0, 120) + '...' 
-                                    : bioText;
-                                })()}
+                                {i18n.language === 'zh' ? member.bio_zh : member.bio_en}
                               </p>
                             )}
                             <div className="member-links">
