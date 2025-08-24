@@ -864,7 +864,9 @@ class StaffService {
         department: true
       },
       orderBy: {
-        department: 'asc'
+        _count: {
+          department: 'desc'  // 按人数降序排列，人多的在前
+        }
       }
     });
     
