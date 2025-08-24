@@ -736,6 +736,24 @@ class StaffService {
     };
   }
 
+  // Helper: Calculate profile completeness score
+  static calculateProfileCompleteness(member) {
+    let score = 0;
+    // 可选字段列表 (不包括必填的 name_en, name_zh, position_en, position_zh, department)
+    const optionalFields = [
+      'bio_en', 'bio_zh', 'avatarUrl', 'email', 
+      'linkedin', 'github', 'wechat', 'phone', 'mbti'
+    ];
+    
+    optionalFields.forEach(field => {
+      if (member[field] && member[field].toString().trim() !== '') {
+        score += 1;
+      }
+    });
+    
+    return score;
+  }
+
   // Public: Get all approved team members
   static async getTeamMembers(department, language = 'en') {
     const whereCondition = {
@@ -798,6 +816,13 @@ class StaffService {
       // Within the same department priority, sort by role (admin first)
       if (a.staff.role !== b.staff.role) {
         return a.staff.role === 'admin' ? -1 : 1;
+      }
+
+      // Then by profile completeness (more complete profiles first)
+      const completenessA = StaffService.calculateProfileCompleteness(a);
+      const completenessB = StaffService.calculateProfileCompleteness(b);
+      if (completenessA !== completenessB) {
+        return completenessB - completenessA; // Higher score first
       }
 
       // Then by display order
@@ -863,11 +888,16 @@ class StaffService {
       _count: {
         department: true
       },
-      orderBy: {
-        _count: {
-          department: 'desc'  // 按人数降序排列，人多的在前
+      orderBy: [
+        {
+          _count: {
+            department: 'desc'  // 按人数降序排列，人多的在前
+          }
+        },
+        {
+          department: 'asc'  // 人数相同时按部门名称字母顺序
         }
-      }
+      ]
     });
     
     return departments.map(dept => ({
