@@ -264,14 +264,21 @@ const CardFooter = styled.div`
           flex-shrink: 0;
         }
         
-        span {
+        span, a {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           max-width: 280px; // 增加最大宽度，为英文内容提供更多空间
+          color: inherit; // 保持继承的颜色
+          text-decoration: none; // 移除下划线
+          transition: opacity 0.2s ease;
           
           @media (max-width: 768px) {
             max-width: 250px;
+          }
+          
+          &:hover {
+            opacity: 0.8;
           }
         }
       }
@@ -329,6 +336,14 @@ const StaffCard = ({ staff }) => {
   useEffect(() => {
     setImageLoadError(false);
   }, [processedAvatarUrl]);
+
+  // Generate MBTI link
+  const getMBTILink = (mbtiType) => {
+    if (!mbtiType) return null;
+    // Extract base MBTI type (remove -T or -A suffix if present)
+    const baseType = mbtiType.split('-')[0].toLowerCase();
+    return `https://www.16personalities.com/ch/${baseType}-人格`;
+  };
 
   return (
     <DigitalBusinessCard
@@ -415,13 +430,13 @@ const StaffCard = ({ staff }) => {
             {linkedin && (
               <div className="contact-item">
                 <FiLinkedin className="icon" />
-                <span>LinkedIn</span>
+                <a href={linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
               </div>
             )}
             {github && (
               <div className="contact-item">
                 <FiGithub className="icon" />
-                <span>GitHub</span>
+                <a href={github} target="_blank" rel="noopener noreferrer">GitHub</a>
               </div>
             )}
             {wechat && (
@@ -433,7 +448,7 @@ const StaffCard = ({ staff }) => {
             {mbti && (
               <div className="contact-item">
                 <FiUser className="icon" />
-                <span>MBTI: {mbti}</span>
+                <a href={getMBTILink(mbti)} target="_blank" rel="noopener noreferrer">MBTI: {mbti}</a>
               </div>
             )}
           </div>
