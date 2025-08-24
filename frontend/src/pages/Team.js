@@ -704,7 +704,8 @@ const StyledTeam = styled.div`
       line-height: 1.6;
       margin-bottom: 1.5rem;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
