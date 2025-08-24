@@ -54,17 +54,15 @@ const StyledHome = styled.div`
   }
 
   .hero-subtitle {
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-size: clamp(0.8rem, 3.5vw, 1.6rem);
     margin-bottom: 2.5rem;
     color: white;
-    max-width: 600px;
+    width: min(92vw, 1000px);
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
-
-    &.no-wrap {
-      white-space: nowrap;
-      max-width: none;
-    }
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .hero-cta {
