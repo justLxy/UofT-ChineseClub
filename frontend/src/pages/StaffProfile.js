@@ -876,9 +876,9 @@ const StaffProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validation
-    if (!formData.name_en || !formData.name_zh || !formData.position_en || 
-        !formData.position_zh || !formData.department) {
+    // Validation - check for empty or whitespace-only fields
+    if (!formData.name_en.trim() || !formData.name_zh.trim() || !formData.position_en.trim() || 
+        !formData.position_zh.trim() || !formData.department.trim()) {
       setMessage(t('staff.profile.error.required'));
       // Clear message after 5 seconds
       setTimeout(() => setMessage(''), 5000);
@@ -887,7 +887,29 @@ const StaffProfile = () => {
 
     setIsSaving(true);
     try {
-      await saveStaffProfile(formData);
+      // Trim all string fields before saving
+      const trimmedFormData = {
+        ...formData,
+        name_en: formData.name_en.trim(),
+        name_zh: formData.name_zh.trim(),
+        position_en: formData.position_en.trim(),
+        position_zh: formData.position_zh.trim(),
+        department: formData.department.trim(),
+        bio_en: formData.bio_en.trim(),
+        bio_zh: formData.bio_zh.trim(),
+        email: formData.email.trim(),
+        linkedin: formData.linkedin.trim(),
+        github: formData.github.trim(),
+        wechat: formData.wechat.trim(),
+        phone: formData.phone.trim(),
+        mbti: formData.mbti.trim()
+      };
+      
+      await saveStaffProfile(trimmedFormData);
+      
+      // Update formData with trimmed values to reflect clean data in UI
+      setFormData(trimmedFormData);
+      
       setMessage(t('staff.profile.saved'));
       setJustSaved(true);
       

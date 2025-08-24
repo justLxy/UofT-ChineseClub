@@ -660,8 +660,24 @@ const EventsAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Basic validation for required fields
+    if (!formData.title_en.trim() || !formData.title_zh.trim()) {
+      setToast({ visible: true, message: '活动标题不能为空' });
+      setTimeout(() => setToast({ visible: false, message: '' }), 3000);
+      return;
+    }
+    
     try {
       let eventData = { ...formData };
+      
+      // Trim all string fields before saving
+      eventData.title_en = formData.title_en.trim();
+      eventData.title_zh = formData.title_zh.trim();
+      eventData.description_en = formData.description_en.trim();
+      eventData.description_zh = formData.description_zh.trim();
+      eventData.location_en = formData.location_en.trim();
+      eventData.location_zh = formData.location_zh.trim();
+      eventData.link = formData.link.trim();
       
       // Combine date and time for startDate
       if (eventData.startDate) {

@@ -593,7 +593,7 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
   const handlePasswordLogin = useCallback(async (e) => {
     e.preventDefault();
     
-    if (!formData.identifier || !formData.password) {
+    if (!formData.identifier.trim() || !formData.password.trim()) {
       setError(t('login.error.required'));
       return;
     }
@@ -602,7 +602,7 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
     setError('');
 
     try {
-      const response = await login(formData.identifier, formData.password);
+      const response = await login(formData.identifier.trim(), formData.password.trim());
       onSuccess && onSuccess(response);
       onClose();
       resetForm();
@@ -618,7 +618,7 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
   const handleEmailLogin = useCallback(async (e) => {
     e.preventDefault();
     
-    if (!formData.email || !formData.verificationCode) {
+    if (!formData.email.trim() || !formData.verificationCode.trim()) {
       setError(t('email.error.required'));
       return;
     }
@@ -627,7 +627,7 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
     setError('');
 
     try {
-      const response = await loginWithEmail(formData.email, formData.verificationCode);
+      const response = await loginWithEmail(formData.email.trim(), formData.verificationCode.trim());
       onSuccess && onSuccess(response);
       onClose();
       resetForm();
@@ -643,12 +643,12 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
   const handleRegister = useCallback(async (e) => {
     e.preventDefault();
     
-    if (!formData.email || !formData.verificationCode || !formData.username || !formData.password) {
+        if (!formData.email.trim() || !formData.verificationCode.trim() || !formData.username.trim() || !formData.password.trim()) {
       setError(t('register.error.required'));
       return;
     }
-
-    if (formData.password.length < 6) {
+    
+    if (formData.password.trim().length < 6) {
       setError(t('register.error.passwordTooShort'));
       return;
     }
@@ -657,13 +657,13 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
     setError('');
 
     try {
-      const response = await register(formData.email, formData.username, formData.password, formData.verificationCode);
+      const response = await register(formData.email.trim(), formData.username.trim(), formData.password.trim(), formData.verificationCode.trim());
       setSuccess(t('register.success'));
       
       // 注册成功后自动登录
       setTimeout(async () => {
         try {
-          const loginResponse = await login(formData.email, formData.password);
+          const loginResponse = await login(formData.email.trim(), formData.password.trim());
           onSuccess && onSuccess(loginResponse);
           onClose();
           resetForm();
@@ -740,11 +740,11 @@ const UnifiedLoginModal = ({ isOpen, onClose, onSuccess }) => {
   const isFormValid = () => {
     switch (activeTab) {
       case 'password':
-        return formData.identifier && formData.password;
+        return formData.identifier.trim() && formData.password.trim();
       case 'email':
-        return formData.email && formData.verificationCode;
+        return formData.email.trim() && formData.verificationCode.trim();
       case 'register':
-        return formData.email && formData.verificationCode && formData.password && formData.username;
+        return formData.email.trim() && formData.verificationCode.trim() && formData.password.trim() && formData.username.trim();
       default:
         return false;
     }

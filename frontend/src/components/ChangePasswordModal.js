@@ -264,32 +264,32 @@ const ChangePasswordModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   const validateForm = () => {
-    if (!formData.currentPassword) {
+    if (!formData.currentPassword.trim()) {
       setError(t('changePassword.error.currentPasswordRequired'));
       return false;
     }
     
-    if (!formData.newPassword) {
+    if (!formData.newPassword.trim()) {
       setError(t('changePassword.error.newPasswordRequired'));
       return false;
     }
     
-    if (formData.newPassword.length < 6) {
+    if (formData.newPassword.trim().length < 6) {
       setError(t('changePassword.error.passwordTooShort'));
       return false;
     }
     
-    if (!formData.confirmPassword) {
+    if (!formData.confirmPassword.trim()) {
       setError(t('changePassword.error.confirmPasswordRequired'));
       return false;
     }
     
-    if (formData.newPassword !== formData.confirmPassword) {
+    if (formData.newPassword.trim() !== formData.confirmPassword.trim()) {
       setError(t('changePassword.error.passwordsDoNotMatch'));
       return false;
     }
     
-    if (formData.currentPassword === formData.newPassword) {
+    if (formData.currentPassword.trim() === formData.newPassword.trim()) {
       setError(t('changePassword.error.samePassword'));
       return false;
     }
@@ -309,7 +309,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSuccess }) => {
     setSuccess('');
 
     try {
-      const response = await changePassword(formData.currentPassword, formData.newPassword);
+      const response = await changePassword(formData.currentPassword.trim(), formData.newPassword.trim());
       
       setSuccess(t('changePassword.success'));
       
