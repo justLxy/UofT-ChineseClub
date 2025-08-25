@@ -1995,6 +1995,7 @@ const StaffAdmin = () => {
                         <label>Department</label>
                         <select value={formData.department || ''} onChange={(e)=>setFormData(prev=>({...prev,department:e.target.value}))}>
                           <option value="">Select Department</option>
+                          <option value="EXECUTIVE COMMITTEE">Executive Committee</option>
                           <option value="ARTS & CULTURE GROUP">Arts & Culture Group</option>
                           <option value="CAREER & ACADEMIC GROUP">Career & Academic Group</option>
                           <option value="OPERATION GROUP">Operation Group</option>
