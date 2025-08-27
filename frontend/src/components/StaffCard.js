@@ -404,7 +404,7 @@ const StaffCard = ({ staff }) => {
             <PersonalInfo>
               {displayBio ? (
                 <p className="bio">
-                  {displayBio.length > 500 ? displayBio.substring(0, 500) + '...' : displayBio}
+                  {displayBio.length > 800 ? displayBio.substring(0, 800) + '...' : displayBio}
                 </p>
               ) : (
                 <p className="bio no-bio">{t('staff.profile.permissions.noBio')}</p>
