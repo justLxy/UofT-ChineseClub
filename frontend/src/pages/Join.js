@@ -660,7 +660,7 @@ const JoinPage = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <a 
-              href="https://docs.google.com/forms/d/e/1FAIpQLSd3q_33MfwIt0BLxrI4uUgeN1y397OuVtv80FSXjhus9wavfQ/viewform" 
+              href="https://docs.google.com/forms/d/16g0F9TWdKbE_soew5FSw_VWSLcRaltLFyY4tthKz3hU/viewform" 
               target="_blank"
               rel="noopener noreferrer"
               className="button"
@@ -863,7 +863,7 @@ const JoinPage = () => {
                           </div>
                         )}
                         <a 
-                          href="https://docs.google.com/forms/d/e/1FAIpQLSd3q_33MfwIt0BLxrI4uUgeN1y397OuVtv80FSXjhus9wavfQ/viewform" 
+                          href="https://docs.google.com/forms/d/16g0F9TWdKbE_soew5FSw_VWSLcRaltLFyY4tthKz3hU/viewform" 
                           target="_blank"
                           rel="noopener noreferrer"
                           className="button secondary"
@@ -893,7 +893,7 @@ const JoinPage = () => {
               <h3>{t('join.form.title')}</h3>
               <p>{t('join.form.description')}</p>
               <a 
-                href="https://docs.google.com/forms/d/e/1FAIpQLSd3q_33MfwIt0BLxrI4uUgeN1y397OuVtv80FSXjhus9wavfQ/viewform" 
+                href="https://docs.google.com/forms/d/16g0F9TWdKbE_soew5FSw_VWSLcRaltLFyY4tthKz3hU/viewform" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="button google-form-button"
@@ -902,7 +902,7 @@ const JoinPage = () => {
               </a>
               <div className="iframe-container">
                 <iframe 
-                  src="https://docs.google.com/forms/d/e/1FAIpQLSd3q_33MfwIt0BLxrI4uUgeN1y397OuVtv80FSXjhus9wavfQ/viewform?embedded=true" 
+                  src="https://docs.google.com/forms/d/16g0F9TWdKbE_soew5FSw_VWSLcRaltLFyY4tthKz3hU/viewform?embedded=true" 
                   width="100%" 
                   height="600" 
                   frameBorder="0" 
