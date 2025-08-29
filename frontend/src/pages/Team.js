@@ -909,8 +909,8 @@ const Team = () => {
     return acc;
   }, {});
 
-  // Sort departments with Executive Committee first
-  const sortedDepartmentEntries = Object.entries(groupedMembers).sort(([deptA], [deptB]) => {
+  // Sort departments with Executive Committee first, then by member count (descending)
+  const sortedDepartmentEntries = Object.entries(groupedMembers).sort(([deptA, membersA], [deptB, membersB]) => {
     const getDepartmentPriority = (dept) => {
       const upperDept = dept.toUpperCase();
       if (upperDept === 'EXECUTIVE COMMITTEE') return 1;
@@ -924,7 +924,12 @@ const Team = () => {
       return priorityA - priorityB;
     }
 
-    // If same priority, sort alphabetically
+    // If same priority (both non-exec departments), sort by member count (descending)
+    if (priorityA === 2) {
+      return membersB.length - membersA.length;
+    }
+
+    // Fallback to alphabetical sorting
     return deptA.localeCompare(deptB);
   });
 
