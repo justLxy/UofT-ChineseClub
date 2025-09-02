@@ -240,6 +240,10 @@ const StyledHome = styled.div`
   .features-section {
     padding: 8rem 0;
     position: relative;
+    
+    .container {
+      max-width: 1400px;
+    }
   }
 
   .features-heading {
@@ -261,8 +265,14 @@ const StyledHome = styled.div`
 
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 2.5rem;
+  }
+
+  @media (min-width: 1200px) {
+    .features-grid {
+      grid-template-columns: repeat(5, minmax(220px, 1fr));
+    }
   }
 
   .feature-card {
@@ -616,6 +626,12 @@ const Home = () => {
                 title: t('groups.support.title'),
                 description: t('groups.support.description').substring(0, 100) + '...',
                 image: 'https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+              },
+              {
+                id: 'engagement',
+                title: t('groups.engagement.title'),
+                description: t('groups.engagement.description').substring(0, 100) + '...',
+                image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
               }
             ].map((feature, index) => (
               <div className="feature-card animated-element" key={index}>
