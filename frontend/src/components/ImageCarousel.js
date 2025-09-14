@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // 导入图片资源
+import image0 from '../assets/images/0.jpg';
 import image1 from '../assets/images/1.jpg';
 import image2 from '../assets/images/2.jpg';
 import image3 from '../assets/images/3.jpg';
@@ -295,7 +296,7 @@ const slideVariants = {
 };
 
 const ImageCarousel = () => {
-  const images = [image1, image2, image3, image4, image5, image6];
+  const images = [image0, image1, image2, image3, image4, image5, image6];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isLoaded, setIsLoaded] = useState(Array(images.length).fill(false));
