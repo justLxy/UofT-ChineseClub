@@ -1211,8 +1211,29 @@ const zhTranslations = {
   }
 };
 
-// Add saved language preference from localStorage
-const savedLanguage = typeof window !== 'undefined' ? localStorage.getItem('preferredLanguage') : null;
+// Function to detect browser language
+const detectBrowserLanguage = () => {
+  if (typeof window === 'undefined') return 'en';
+  
+  // First check if user has manually set a language preference
+  const savedLanguage = localStorage.getItem('preferredLanguage');
+  if (savedLanguage) {
+    return savedLanguage;
+  }
+  
+  // If no saved preference, detect from browser
+  const browserLang = navigator.language || navigator.userLanguage;
+  
+  // Check if browser language starts with 'zh' (Chinese variants like zh-CN, zh-TW, etc.)
+  if (browserLang.toLowerCase().startsWith('zh')) {
+    return 'zh';
+  }
+  
+  // Default to English for all other languages
+  return 'en';
+};
+
+const initialLanguage = detectBrowserLanguage();
 
 i18n
   .use(initReactI18next)
@@ -1221,7 +1242,7 @@ i18n
       en: { translation: enTranslations },
       zh: { translation: zhTranslations }
     },
-    lng: savedLanguage || 'en',
+    lng: initialLanguage,
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false

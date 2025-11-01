@@ -57,19 +57,16 @@ const AppContent = () => {
     }
   };
 
-  // Apply saved theme and language on mount
+  // Apply saved theme on mount and set document language
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    const savedLanguage = localStorage.getItem('preferredLanguage');
     
     if (savedTheme) {
       setTheme(savedTheme);
     }
     
-    if (savedLanguage) {
-      i18n.changeLanguage(savedLanguage);
-      document.documentElement.lang = savedLanguage;
-    }
+    // Set document language to match i18n current language (already initialized in i18n.js)
+    document.documentElement.lang = i18n.language;
     
     // Apply theme variables on mount
     document.documentElement.setAttribute('data-theme', savedTheme || 'light');
