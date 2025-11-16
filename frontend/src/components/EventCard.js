@@ -257,7 +257,7 @@ const EventCard = ({ event, index, onClick }) => {
     // Mapping of events that have dedicated internal pages
   // Detect if this event has a bespoke internal page (supports EN & ZH)
   const internalMappings = [
-    { slug: 'qin-society', keywords: ['qin society', '琴社'] },
+    { slug: 'qin-society', keywords: ['qin society', '琴社', '古琴会', '琴会'] },
     { slug: 'new-year-concert', keywords: ['new year concert', '新年音乐会'] },
   ];
   const lowerTitle = title.toLowerCase();
