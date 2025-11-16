@@ -151,7 +151,9 @@ const EventHero = ({ eventSlug, defaultTitle, defaultImage }) => {
         if (eventSlug === 'qin-society') {
           targetEvent = events.find(event => 
             event.title.toLowerCase().includes('qin society') || 
-            event.title.includes('琴社')
+            event.title.includes('琴社') ||
+            event.title.includes('古琴会') ||
+            event.title.includes('琴会')
           );
         } else if (eventSlug === 'new-year-concert') {
           targetEvent = events.find(event => 
