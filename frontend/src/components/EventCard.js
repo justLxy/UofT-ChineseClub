@@ -61,9 +61,9 @@ const StatusBadge = styled.div`
       case 'ongoing':
         return 'linear-gradient(135deg, #00B09B, #96C93D)';
       case 'upcoming':
-        return 'linear-gradient(135deg, #4776E6, #8E54E9)';
+        return 'linear-gradient(135deg, #FF6B6B, #C92A2A)';
       default:
-        return 'linear-gradient(135deg, #4776E6, #8E54E9)';
+        return 'linear-gradient(135deg, #FF6B6B, #C92A2A)';
     }
   }};
   color: white;
