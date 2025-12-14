@@ -22,8 +22,8 @@ const importAll = (r) => {
   }).map(r);
 };
 
-// Import all jpg, jpeg, png, svg files from assets/images
-const images = importAll(require.context('../assets/images', false, /\.(png|jpe?g|svg)$/));
+// Import all jpg, jpeg, png, svg, mp4, webm files from assets/images
+const mediaFiles = importAll(require.context('../assets/images', false, /\.(png|jpe?g|svg|mp4|webm)$/));
 
 const CarouselContainer = styled.div`
   position: relative;
@@ -90,6 +90,18 @@ const StyledImage = styled.img`
   
   @media (max-width: 768px) {
     object-position: center center; // 确保移动端图片居中显示
+  }
+`;
+
+const StyledVideo = styled.video`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  will-change: transform;
+  
+  @media (max-width: 768px) {
+    object-position: center center;
   }
 `;
 
@@ -312,41 +324,62 @@ const slideVariants = {
 const ImageCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(Array(images.length).fill(false));
+  const [isLoaded, setIsLoaded] = useState(Array(mediaFiles.length).fill(false));
   const timeoutRef = useRef(null);
   const touchStartX = useRef(0);
   const containerRef = useRef(null);
   
-  // 图片预加载
+  // 媒体资源预加载
   useEffect(() => {
-    const preloadImages = () => {
-      images.forEach((src, index) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = () => {
+    const preloadMedia = () => {
+      mediaFiles.forEach((src, index) => {
+        // 判断是否为视频
+        const isVideo = src.match(/\.(mp4|webm)(\?.*)?$/i);
+        
+        if (isVideo) {
+          // 视频不需要像图片那样预加载，直接标记为已加载
+          // 或者可以创建一个隐藏的video元素来预加载，但这里简单处理
           setIsLoaded(prev => {
             const newState = [...prev];
             newState[index] = true;
             return newState;
           });
-        };
+        } else {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => {
+            setIsLoaded(prev => {
+              const newState = [...prev];
+              newState[index] = true;
+              return newState;
+            });
+          };
+          img.onerror = () => {
+             // 即使加载失败也标记为完成，避免无限等待
+             setIsLoaded(prev => {
+              const newState = [...prev];
+              newState[index] = true;
+              return newState;
+            });
+          }
+        }
       });
     };
     
-    preloadImages();
-  }, [images]);
+    preloadMedia();
+  }, [mediaFiles]);
   
   const nextSlide = () => {
     setDirection(1);
     setCurrentIndex(prevIndex => 
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      prevIndex === mediaFiles.length - 1 ? 0 : prevIndex + 1
     );
   };
   
   const prevSlide = () => {
     setDirection(-1);
     setCurrentIndex(prevIndex => 
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      prevIndex === 0 ? mediaFiles.length - 1 : prevIndex - 1
     );
   };
   
@@ -394,6 +427,10 @@ const ImageCarousel = () => {
       }
     };
   }, [currentIndex]);
+
+  const isVideo = (src) => {
+    return src.match(/\.(mp4|webm)(\?.*)?$/i);
+  };
   
   return (
     <CarouselContainer ref={containerRef}>
@@ -414,15 +451,29 @@ const ImageCarousel = () => {
               opacity: { duration: 0.2 }
             }}
           >
-            <StyledImage 
-              src={images[currentIndex]} 
-              alt={`UTChinese Network - Image ${currentIndex + 1}`}
-              loading="eager"
-              style={{ 
-                opacity: isLoaded[currentIndex] ? 1 : 0.5,
-                transition: 'opacity 0.3s ease'
-              }}
-            />
+            {isVideo(mediaFiles[currentIndex]) ? (
+              <StyledVideo
+                src={mediaFiles[currentIndex]}
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{ 
+                  opacity: isLoaded[currentIndex] ? 1 : 0.5,
+                  transition: 'opacity 0.3s ease'
+                }}
+              />
+            ) : (
+              <StyledImage 
+                src={mediaFiles[currentIndex]} 
+                alt={`UTChinese Network - Slide ${currentIndex + 1}`}
+                loading="eager"
+                style={{ 
+                  opacity: isLoaded[currentIndex] ? 1 : 0.5,
+                  transition: 'opacity 0.3s ease'
+                }}
+              />
+            )}
           </ImageSlide>
         </AnimatePresence>
       </ImagesContainer>
@@ -437,7 +488,7 @@ const ImageCarousel = () => {
       </Controls>
       
       <Indicators>
-        {images.map((_, index) => (
+        {mediaFiles.map((_, index) => (
           <Indicator 
             key={index} 
             $active={index === currentIndex} 
