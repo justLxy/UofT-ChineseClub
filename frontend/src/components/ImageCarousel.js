@@ -19,7 +19,7 @@ const importAll = (r) => {
     }
     // Otherwise sort alphabetically
     return nameA.localeCompare(nameB);
-  }).map(r);
+  }).map(key => r(key).default || r(key));
 };
 
 // Import all jpg, jpeg, png, svg, mp4, webm files from assets/images
