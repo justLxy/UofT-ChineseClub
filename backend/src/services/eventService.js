@@ -4,21 +4,47 @@ const { calculateEventStatus, transformEventByLanguage, getImageFilenameFromUrl,
 class EventService {
   // Get all events
   static async getAllEvents(status, language = 'en') {
-    let whereClause = {};
-    
-    if (status) {
-      whereClause.status = status;
-    }
-    
-    const events = await prisma.event.findMany({
-      where: whereClause,
+    // 1. Fetch all events to check their status validity
+    // We fetch all events because we need to check if any 'upcoming' events have become 'ongoing' or 'past'
+    // or if 'ongoing' events have become 'past', regardless of the requested filter.
+    const allEvents = await prisma.event.findMany({
       orderBy: [
         { featured: 'desc' },
         { startDate: 'desc' }
       ]
     });
     
-    return events.map(event => transformEventByLanguage(event, language));
+    // 2. Check and update statuses
+    const updates = [];
+    
+    for (const event of allEvents) {
+      const currentStatus = calculateEventStatus(event.startDate, event.endDate);
+      
+      // If status has changed, update it in database and memory
+      if (event.status !== currentStatus) {
+        // Queue update to database
+        updates.push(prisma.event.update({
+          where: { id: event.id },
+          data: { status: currentStatus }
+        }));
+        
+        // Update in memory so we return correct data
+        event.status = currentStatus;
+      }
+    }
+    
+    // Execute all updates in parallel (fire and forget or await - awaiting ensures consistency)
+    if (updates.length > 0) {
+      await Promise.all(updates);
+    }
+    
+    // 3. Apply filter in memory
+    let filteredEvents = allEvents;
+    if (status) {
+      filteredEvents = allEvents.filter(event => event.status === status);
+    }
+    
+    return filteredEvents.map(event => transformEventByLanguage(event, language));
   }
 
   // Get event by id
@@ -29,6 +55,16 @@ class EventService {
     
     if (!event) {
       throw new Error('Event not found');
+    }
+    
+    // Check and update status if needed
+    const currentStatus = calculateEventStatus(event.startDate, event.endDate);
+    if (event.status !== currentStatus) {
+      await prisma.event.update({
+        where: { id: event.id },
+        data: { status: currentStatus }
+      });
+      event.status = currentStatus;
     }
     
     return transformEventByLanguage(event, language);
