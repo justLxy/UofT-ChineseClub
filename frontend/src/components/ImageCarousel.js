@@ -2,15 +2,28 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// 导入图片资源
-import imageNew from '../assets/images/-1.jpg';
-import image0 from '../assets/images/0.jpg';
-import image1 from '../assets/images/1.jpg';
-import image2 from '../assets/images/2.jpg';
-import image3 from '../assets/images/3.jpg';
-import image4 from '../assets/images/4.jpg';
-import image5 from '../assets/images/5.jpg';
-import image6 from '../assets/images/6.jpg';
+// Dynamically import all images from ../assets/images
+const importAll = (r) => {
+  return r.keys().sort((a, b) => {
+    // Try to sort numerically if files are named like numbers (e.g. -1.jpg, 0.jpg, 1.jpg)
+    // Remove ./ prefix and extension
+    const nameA = a.replace(/^\.\//, '').replace(/\.[^/.]+$/, "");
+    const nameB = b.replace(/^\.\//, '').replace(/\.[^/.]+$/, "");
+    
+    const numA = parseInt(nameA, 10);
+    const numB = parseInt(nameB, 10);
+    
+    // If both are valid numbers, sort numerically
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return numA - numB;
+    }
+    // Otherwise sort alphabetically
+    return nameA.localeCompare(nameB);
+  }).map(r);
+};
+
+// Import all jpg, jpeg, png, svg files from assets/images
+const images = importAll(require.context('../assets/images', false, /\.(png|jpe?g|svg)$/));
 
 const CarouselContainer = styled.div`
   position: relative;
@@ -297,7 +310,6 @@ const slideVariants = {
 };
 
 const ImageCarousel = () => {
-  const images = [imageNew, image0, image1, image2, image3, image4, image5, image6];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isLoaded, setIsLoaded] = useState(Array(images.length).fill(false));
