@@ -43,6 +43,19 @@ The platform includes a range of features for community members, staff, and admi
 - **Language**: JavaScript
 - **Database**: PostgreSQL (Production/Staging) and SQLite (Development) with Prisma as the ORM.
 - **Authentication**: Implements a JWT-based authentication system.
+- **Backups**: Admin JSON export / import (admin-only + password re-auth)
+
+## Data Backup / Restore
+
+### Export (in admin UI)
+- **EventsAdmin**: supports exporting events JSON (admin-only + password re-auth).
+- **StaffAdmin**: supports exporting staff JSON and full backup JSON (admin-only + password re-auth).
+
+### Import / Restore (in admin UI)
+- **StaffAdmin**: supports importing a `full-backup-*.json` file (admin-only + password re-auth).
+- Two modes:
+  - **merge**: upsert into existing DB (may conflict with unique constraints)
+  - **replace**: delete existing data first, then import (disaster recovery)
 
 ### Deployment and Version Control
 

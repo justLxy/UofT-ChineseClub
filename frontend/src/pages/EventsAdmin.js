@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiPlus, FiEdit2, FiTrash2, FiStar, FiUpload } from 'react-icons/fi';
-import { getEvents, createEvent, updateEvent, deleteEvent, getFullEventImageUrl, uploadEventImage } from '../utils/api';
+import { getEvents, createEvent, updateEvent, deleteEvent, getFullEventImageUrl, uploadEventImage, exportEventsJson } from '../utils/api';
 import { formatEventDateTime } from '../utils/dateUtils';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LoadingAnimation from '../components/LoadingAnimation';
+import AdminExportModal from '../components/AdminExportModal';
 
 const AdminContainer = styled.div`
   max-width: 1200px;
@@ -65,6 +66,19 @@ const AddButton = styled(motion.button)`
   svg {
     margin-right: 8px;
     font-size: 1.1rem;
+  }
+`;
+
+const ExportButton = styled(AddButton)`
+  background: linear-gradient(135deg, #111827, #374151);
+  box-shadow: 0 4px 15px rgba(17, 24, 39, 0.25);
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(17, 24, 39, 0.35);
+  }
+
+  [data-theme="dark"] & {
+    background: linear-gradient(135deg, #0f172a, #334155);
   }
 `;
 
@@ -529,7 +543,7 @@ const DesktopSkeletonRow = styled(EventRow)`
 `;
 
 const EventsAdmin = () => {
-  const { isAuthenticated, hasPermission, loading: authLoading } = useAuth();
+  const { isAuthenticated, hasPermission, isAdmin, loading: authLoading } = useAuth();
   const { i18n } = useTranslation();
   const navigate = useNavigate();
 
@@ -540,6 +554,7 @@ const EventsAdmin = () => {
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const fileInputRef = useRef(null);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title_en: '',
     title_zh: '',
@@ -868,14 +883,37 @@ const EventsAdmin = () => {
     <AdminContainer>
       <Header>
         <Title>活动管理</Title>
-        <AddButton 
-          onClick={() => handleOpenModal()}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <FiPlus /> 添加新活动
-        </AddButton>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {isAdmin?.() && (
+            <ExportButton
+              onClick={() => setExportModalOpen(true)}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              title="导出活动数据（JSON）"
+            >
+              导出 JSON
+            </ExportButton>
+          )}
+          <AddButton 
+            onClick={() => handleOpenModal()}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <FiPlus /> 添加新活动
+          </AddButton>
+        </div>
       </Header>
+
+      <AdminExportModal
+        open={exportModalOpen}
+        onClose={() => setExportModalOpen(false)}
+        title="导出活动数据（JSON）"
+        description="将导出所有活动原始字段（中英标题/描述、时间地点、精选标记等）。"
+        confirmText="导出活动 JSON"
+        onConfirm={async (password) => {
+          await exportEventsJson(password);
+        }}
+      />
 
       {events.length > 0 ? (
         <EventsTable>

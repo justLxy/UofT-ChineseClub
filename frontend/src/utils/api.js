@@ -34,6 +34,27 @@ const api = axios.create({
   },
 });
 
+// ===============================
+// Download helper
+// ===============================
+const downloadBlob = (blob, filename) => {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+};
+
+const getFilenameFromContentDisposition = (contentDisposition) => {
+  if (!contentDisposition) return null;
+  // Example: attachment; filename="events-20260208-120000.json"
+  const match = /filename="([^"]+)"/.exec(contentDisposition);
+  return match?.[1] || null;
+};
+
 // 请求拦截器 - 添加语言和认证token
 api.interceptors.request.use(config => {
   // 添加当前语言到请求中
@@ -379,6 +400,74 @@ export const reviewProfile = async (id, reviewData) => {
     throw error;
   }
 }; 
+
+// ===============================
+// Admin Export APIs (JSON backups)
+// ===============================
+
+export const exportEventsJson = async (password) => {
+  const response = await api.post('/admin/exports/events', { password }, { responseType: 'blob' });
+  const filename =
+    getFilenameFromContentDisposition(response.headers?.['content-disposition']) ||
+    `events-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+  downloadBlob(response.data, filename);
+  return { filename };
+};
+
+export const exportStaffJson = async (password) => {
+  const response = await api.post('/admin/exports/staff', { password }, { responseType: 'blob' });
+  const filename =
+    getFilenameFromContentDisposition(response.headers?.['content-disposition']) ||
+    `staff-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+  downloadBlob(response.data, filename);
+  return { filename };
+};
+
+export const exportFullBackupJson = async (password) => {
+  const response = await api.post('/admin/exports/full', { password }, { responseType: 'blob' });
+  const filename =
+    getFilenameFromContentDisposition(response.headers?.['content-disposition']) ||
+    `full-backup-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+  downloadBlob(response.data, filename);
+  return { filename };
+};
+
+// ===============================
+// Admin Import APIs (JSON restore)
+// ===============================
+
+export const importEventsJson = async (file, password, mode = 'merge') => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('password', password);
+  formData.append('mode', mode);
+  const response = await api.post('/admin/imports/events', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+  return response.data;
+};
+
+export const importStaffJson = async (file, password, mode = 'merge') => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('password', password);
+  formData.append('mode', mode);
+  const response = await api.post('/admin/imports/staff', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+  return response.data;
+};
+
+export const importFullBackupJson = async (file, password, mode = 'merge') => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('password', password);
+  formData.append('mode', mode);
+  const response = await api.post('/admin/imports/full', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+  return response.data;
+};
 
 // 更新资料顺序
 export const updateProfileOrder = async (profileId, direction) => {

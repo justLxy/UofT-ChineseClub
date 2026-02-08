@@ -17,7 +17,9 @@ import {
   FiMail,
   FiKey,
   FiToggleLeft,
-  FiToggleRight
+  FiToggleRight,
+  FiDownload,
+  FiUpload
 } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
 import {
@@ -29,9 +31,14 @@ import {
   batchToggleStaffAccounts,
   getAllProfiles,
   reviewProfile,
-  getFullAvatarUrl
+  getFullAvatarUrl,
+  exportStaffJson,
+  exportFullBackupJson,
+  importFullBackupJson
 } from '../utils/api';
 import LoadingAnimation from '../components/LoadingAnimation';
+import AdminExportModal from '../components/AdminExportModal';
+import AdminImportModal from '../components/AdminImportModal';
 
 const StyledStaffAdmin = styled.div`
   min-height: 100vh;
@@ -703,6 +710,9 @@ const StaffAdmin = () => {
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState('desc');
   const [imageLoadErrors, setImageLoadErrors] = useState({});
+  const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [exportType, setExportType] = useState('staff'); // staff | full
+  const [importModalOpen, setImportModalOpen] = useState(false);
 
   // Redirect if no staff management permissions
   useEffect(() => {
@@ -1177,6 +1187,59 @@ const StaffAdmin = () => {
             </select>
           </div>
           
+          {/* Export buttons (admin only) */}
+          {isAdmin?.() && (
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button
+                className="action-button"
+                onClick={() => {
+                  setExportType('staff');
+                  setExportModalOpen(true);
+                }}
+                style={{
+                  background: 'linear-gradient(135deg, #111827, #374151)',
+                  color: 'white',
+                  minWidth: 'fit-content'
+                }}
+                title="导出成员数据（JSON）"
+              >
+                <FiDownload />
+                <span style={{ whiteSpace: 'nowrap' }}>导出成员 JSON</span>
+              </button>
+
+              <button
+                className="action-button"
+                onClick={() => {
+                  setExportType('full');
+                  setExportModalOpen(true);
+                }}
+                style={{
+                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                  color: 'white',
+                  minWidth: 'fit-content'
+                }}
+                title="导出全量备份（JSON）"
+              >
+                <FiDownload />
+                <span style={{ whiteSpace: 'nowrap' }}>导出全量备份</span>
+              </button>
+
+              <button
+                className="action-button"
+                onClick={() => setImportModalOpen(true)}
+                style={{
+                  background: 'linear-gradient(135deg, #0ea5e9, #2563eb)',
+                  color: 'white',
+                  minWidth: 'fit-content'
+                }}
+                title="导入全量备份（JSON）"
+              >
+                <FiUpload />
+                <span style={{ whiteSpace: 'nowrap' }}>导入备份</span>
+              </button>
+            </div>
+          )}
+
           {activeTab === 'accounts' && hasPermission('manageStaff') && (
             <div style={{ 
               display: 'flex', 
@@ -1241,6 +1304,36 @@ const StaffAdmin = () => {
             </div>
           )}
         </div>
+
+        <AdminExportModal
+          open={exportModalOpen}
+          onClose={() => setExportModalOpen(false)}
+          title={exportType === 'full' ? '导出全量备份（JSON）' : '导出成员数据（JSON）'}
+          description={
+            exportType === 'full'
+              ? '将导出活动 + 成员相关所有表的原始字段，用于完整备份/迁移。'
+              : '将导出成员相关表（含账号、profile、历史、验证码等）的原始字段。'
+          }
+          confirmText={exportType === 'full' ? '导出全量备份' : '导出成员 JSON'}
+          onConfirm={async (password) => {
+            if (exportType === 'full') {
+              await exportFullBackupJson(password);
+            } else {
+              await exportStaffJson(password);
+            }
+          }}
+        />
+
+        <AdminImportModal
+          open={importModalOpen}
+          onClose={() => setImportModalOpen(false)}
+          title="导入全量备份（JSON）"
+          description="选择你导出的 full-backup-*.json，将数据写回数据库。"
+          confirmText="导入全量备份"
+          onImport={async ({ file, password, mode }) => {
+            return await importFullBackupJson(file, password, mode);
+          }}
+        />
 
         {isLoading ? (
           <div className="data-list">
