@@ -118,6 +118,18 @@ async function main() {
         featured: true,
       },
       {
+        title_en: 'UTChinese Reading Club',
+        title_zh: '多大中文读书会',
+        description_en: 'UTChinese Reading Club creates a relaxed space to slow down from busy academic life and connect through books, conversation, and shared cultural experiences. This year\'s Lantern Festival themed gathering features film sharing, riddles, games, and casual social activities in a warm and welcoming atmosphere.',
+        description_zh: '多大中文读书会希望在忙碌的学习生活之余，为大家留出一段可以放慢脚步的时光。读书会不止于阅读，今年将以元宵为主题，带来电影分享、猜灯谜、海龟汤和互动游戏，让大家在轻松愉快的氛围中放松身心、结识朋友。',
+        imageUrl: '/uploads/events/reading.png',
+        startDate: new Date('2026-03-15T17:00:00'),
+        endDate: new Date('2026-03-15T19:00:00'),
+        location_en: '3 Gloucester',
+        location_zh: '3 Gloucester',
+        featured: true,
+      },
+      {
         title_en: 'EXCITE Panel Talk',
         title_zh: 'EXCITE小组讨论',
         description_en: 'EXCITE Panel Talk is dedicated to providing a platform for peer-to-peer communication. Everyone\'s growth background is very different, and there is no success in the world that can be completely replicated, but EXCITE hopes that every participant can generate new thinking from peers\' growth experiences.',
