@@ -282,6 +282,8 @@ const StyledHome = styled.div`
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     height: 100%;
+    display: flex;
+    flex-direction: column;
     
     &:hover {
       transform: translateY(-10px);
@@ -295,6 +297,7 @@ const StyledHome = styled.div`
     .feature-image {
       height: 200px;
       overflow: hidden;
+      flex-shrink: 0;
       
       img {
         width: 100%;
@@ -306,6 +309,9 @@ const StyledHome = styled.div`
     
     .feature-content {
       padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       
       h3 {
         margin-bottom: 0.8rem;
@@ -315,6 +321,12 @@ const StyledHome = styled.div`
       p {
         color: var(--text-light);
         margin-bottom: 1rem;
+        flex: 1;
+      }
+      
+      .button {
+        align-self: flex-start;
+        margin-top: auto;
       }
     }
   }
