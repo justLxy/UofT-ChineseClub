@@ -10,6 +10,9 @@ const routes = require('./routes');
 // Initialize Express app
 const app = express();
 
+// Behind Railway / nginx: so req.protocol and secure cookies reflect the client (HTTPS)
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(cors({
   origin: [

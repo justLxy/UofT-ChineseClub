@@ -5,24 +5,39 @@ import i18n from 'i18next';
 export const BASE_URL = (process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000').replace(/\/+$/, '');
 export const API_BASE_URL = `${BASE_URL}/api`;
 
+/**
+ * 生产环境页面为 HTTPS 时，数据库里若存的是 http://（常见于反代后 Express 误判 req.protocol），
+ * 会导致混合内容警告或图片被拦。本地开发保留 http。
+ */
+const upgradeAssetUrlToHttps = (url) => {
+  if (!url || typeof url !== 'string') return url;
+  if (url.startsWith('http://localhost') || url.startsWith('http://127.0.0.1')) return url;
+  if (url.startsWith('http://')) return `https://${url.slice(7)}`;
+  return url;
+};
+
 // 工具函数：处理头像URL
 export const getFullAvatarUrl = (avatarUrl) => {
   if (!avatarUrl) return null;
   // 如果已经是完整URL，直接返回
-  if (avatarUrl.startsWith('http')) return avatarUrl;
+  if (avatarUrl.startsWith('http')) return upgradeAssetUrlToHttps(avatarUrl);
   // 如果是相对路径，拼接BASE_URL
-  return `${BASE_URL}${avatarUrl.startsWith('/') ? '' : '/uploads/staff/'}${avatarUrl}`;
+  return upgradeAssetUrlToHttps(
+    `${BASE_URL}${avatarUrl.startsWith('/') ? '' : '/uploads/staff/'}${avatarUrl}`
+  );
 };
 
 // 工具函数：处理活动图片URL
 export const getFullEventImageUrl = (imageUrl) => {
   if (!imageUrl) return null;
-  if (imageUrl.startsWith('http')) return imageUrl; // 已经是完整 URL
+  if (imageUrl.startsWith('http')) {
+    return upgradeAssetUrlToHttps(imageUrl);
+  }
 
   // 从 /uploads/events/some-image.jpg 转换为 /static/events/some-image.jpg
   const imagePath = imageUrl.replace(/^\/uploads\//, '/static/');
-  
-  return `${BASE_URL}${imagePath}`;
+
+  return upgradeAssetUrlToHttps(`${BASE_URL}${imagePath}`);
 };
 
 // 创建axios实例
