@@ -214,7 +214,7 @@ async function main() {
         endDate: new Date('2026-03-27T17:00:00'),
         location_en: 'Cumberland House (33 St. George St.), Toronto',
         location_zh: 'Cumberland House（33 St. George St.）',
-        featured: false,
+        featured: true,
       }
     ];
 
