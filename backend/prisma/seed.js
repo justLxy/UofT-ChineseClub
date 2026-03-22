@@ -103,7 +103,7 @@ async function main() {
         endDate: new Date('2023-11-20'),
         location_en: 'Room 534, 21 Sussex Ave, Toronto',
         location_zh: '多伦多萨塞克斯大道21号534室',
-        featured: true,
+        featured: false,
       },
       {
         title_en: 'Ace Career Fair',
@@ -115,7 +115,7 @@ async function main() {
         endDate: new Date('2026-03-11T16:30:00'),
         location_en: 'Hart House Debates Room',
         location_zh: 'Hart House Debates Room',
-        featured: true,
+        featured: false,
       },
       {
         title_en: 'UTChinese Reading Club',
@@ -127,7 +127,7 @@ async function main() {
         endDate: new Date('2026-03-15T19:00:00'),
         location_en: '3 Gloucester',
         location_zh: '3 Gloucester',
-        featured: true,
+        featured: false,
       },
       {
         title_en: 'EXCITE Panel Talk',
@@ -150,7 +150,7 @@ async function main() {
         endDate: new Date('2024-01-20T21:30:00'),
         location_en: 'Isabel Bader Theatre',
         location_zh: '伊莎贝尔·巴德剧院',
-        featured: true,
+        featured: false,
         link: 'https://www.youtube.com/watch?v=RX_vrxenzBM'
       },
       {
@@ -175,7 +175,7 @@ async function main() {
         endDate: new Date('2025-11-27T18:00:00'),
         location_en: 'East Asian Study Lounge, 14th Floor, Robarts Library, 130 St George Street',
         location_zh: '东亚研究休息室，罗巴茨图书馆14楼，圣乔治街130号',
-        featured: true,
+        featured: false,
       },
       {
         title_en: 'Qin Society Summer Outdoor Gathering',
@@ -187,7 +187,7 @@ async function main() {
         endDate: new Date('2025-06-27T19:00:00'),
         location_en: 'Philosopher\'s Walk, University of Toronto',
         location_zh: '多伦多大学哲学家小径',
-        featured: true,
+        featured: false,
         link: 'https://docs.google.com/forms/d/e/1FAIpQLSdCAaPfNFDTFaFwIEp4cYsugSvLQPhBPo_j2hMVa0UlCZ3Fpw/viewform'
       },
       {
@@ -200,7 +200,21 @@ async function main() {
         endDate: new Date('2025-08-28T16:00:00'),
         location_en: 'Booth P13, King\'s College Circle, University of Toronto',
         location_zh: 'P13摊位，King\'s College Circle，多伦多大学',
-        featured: true,
+        featured: false,
+      },
+      {
+        title_en: 'HiHi | 海海',
+        title_zh: '「海海 | HiHi」',
+        description_en:
+          'A 2026 initiative unlike our usual programming: a campus social built around cultural exchange. Co-hosted with U of T Myanmar Culture Club, HiHi brought Chinese and Myanmar traditions to the same table—China meets Myanmar. Highlights included China–Myanmar trivia, language exchange (Chinese and Burmese), collaborative coloring of landmark scenes, thanaka (traditional Myanmar face paste) try-ons, and Chinese and Myanmar tea, snacks, and a curated playlist. We hoped to connect Chinese students with Toronto\'s diverse communities and share authentic Chinese culture with friends from around the world.',
+        description_zh:
+          '「海海」是以文化交流为出发点的校内社交活动，与多伦多大学缅甸文化社（UofT Myanmar Culture Club）合作策划。活动包括中缅文化 trivia、语言互动、组队填色中缅特色景点、檀娜卡（thanaka）妆面体验，以及中缅茶点与特别歌单。我们希望连接华人同学与身边不同文化背景的朋友，在课堂之外认识来自五湖四海的同学，也让更多朋友了解真实的中国文化。「人生海海，山山而川」——这一次，我们跨越山海，邀你走进中国与缅甸的传统手艺世界。',
+        imageUrl: '/uploads/events/HaiHai.png',
+        startDate: new Date('2026-03-27T15:00:00'),
+        endDate: new Date('2026-03-27T17:00:00'),
+        location_en: 'Cumberland House (33 St. George St.), Toronto',
+        location_zh: 'Cumberland House（33 St. George St.）',
+        featured: false,
       }
     ];
 
