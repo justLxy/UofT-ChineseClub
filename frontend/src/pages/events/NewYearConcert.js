@@ -204,188 +204,9 @@ const Paragraph = styled(motion.p)`
   }
 `;
 
-// NYConcertSection styles
 const ExtraPageWrapper = styled.div`
   background: #f8f6f2;
   min-height: 100vh;
-`;
-
-const NewConcertSection = styled.section`
-  max-width: 1200px;
-  margin: 0 auto 2rem auto;
-  background: linear-gradient(135deg, #fff 0%, #fefefe 100%);
-  border-radius: 24px;
-  box-shadow: 0 8px 48px rgba(0,0,0,0.06);
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  overflow: hidden;
-  border: 1px solid rgba(231, 76, 60, 0.08);
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary), #ff6b47, var(--primary));
-  }
-
-  @media (max-width: 768px) {
-    margin: 0 1rem 4rem 1rem;
-    flex-direction: column;
-  }
-`;
-
-const NewConcertImageWrapper = styled.div`
-  flex: 0 0 45%;
-  position: relative;
-  overflow: hidden;
-  
-  @media (max-width: 768px) {
-    flex: none;
-    height: 300px;
-  }
-`;
-
-const NewConcertImage = styled.img`
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-  
-  ${NewConcertImageWrapper}:hover & {
-    transform: scale(1.05);
-  }
-
-  @media (max-width: 768px) {
-    min-height: 300px;
-  }
-`;
-
-const NewConcertInfo = styled.div`
-  flex: 1;
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
-  
-  @media (max-width: 768px) {
-    padding: 2rem 1.5rem;
-  }
-`;
-
-const ConcertTitle = styled.h2`
-  font-size: 2.2rem;
-  color: #2c2c2c;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  line-height: 1.2;
-  
-  @media (max-width: 768px) {
-    font-size: 1.8rem;
-  }
-`;
-
-const ConcertDescription = styled.p`
-  font-size: 1.1rem;
-  color: #666;
-  line-height: 1.7;
-  margin-bottom: 2rem;
-  max-width: none;
-`;
-
-const ConcertDetails = styled.div`
-  margin-bottom: 2.5rem;
-`;
-
-const DetailItem = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.8rem;
-  font-size: 1rem;
-  color: #555;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const DetailLabel = styled.span`
-  font-weight: 600;
-  color: var(--primary);
-  min-width: 80px;
-  margin-right: 0.5rem;
-`;
-
-const DetailValue = styled.span`
-  color: #333;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
-`;
-
-const BuyTicketButton = styled.a`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--primary) 0%, #ff4757 100%);
-  color: #fff;
-  font-weight: 600;
-  padding: 1rem 2.5rem;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.3);
-  border: none;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s ease;
-  }
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(231, 76, 60, 0.4);
-    
-    &::before {
-      left: 100%;
-    }
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const InfoBadge = styled.span`
-  background: linear-gradient(135deg, #fff5f5 0%, #fee);
-  color: var(--primary);
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border: 1px solid rgba(231, 76, 60, 0.2);
 `;
 
 const IntroSection = styled.section`
@@ -905,18 +726,6 @@ const NewYearConcertPage = () => {
   // All page translations
   const pageTranslations = {
     en: {
-      // Concert Section
-      concertTitle: '2025 UTChinese New Year Charity Concert',
-      concertDescription: 'The UTChinese New Year Concert is an annual tradition that brings together students, alumni, and friends to enjoy a night of music and cultural performances. Experience the beauty of Chinese music and celebrate the Spring Festival with us!',
-      date: 'Date:',
-      dateValue: 'February 1, 2025',
-      time: 'Time:',
-      timeValue: '7:00 PM - 9:30 PM',
-      location: 'Location:',
-      locationValue: 'Isabel Bader Theatre, Toronto',
-      buyTickets: 'Buy Tickets',
-      charityBadge: 'Charity Concert',
-      
       // Intro Section
       introTitle: 'Introduction to the UTChinese New Year Concert',
       introText: "Music is a language without borders,and it is also our way of supporting children's education and development. Every year during the Chinese New Year, we use music to convey warmth in the snow and ice of Toronto. At the New Year's Concert, the noble pianist and elegant ballet take you to experience the soul resonance between masters and feel the dialogue between performers and composers across time and space. Whether it is classical and romantic works that have resounded for hundreds of years, or modern songs that are spontaneously sung by the audience, you can always find familiar touches here. From 2007 to the present, in the past thirteen years, we have raised more than 110,000 Canadian dollars (about 550,000 RMB), and donated all of them to charitable organizations such as UNICEF Canada (United Nations Children's Fund). Great sound is silent, and great love leaves no trace.",
@@ -943,18 +752,6 @@ const NewYearConcertPage = () => {
       photoGallery: 'Our Memorable Moments'
     },
     zh: {
-      // Concert Section
-      concertTitle: '2025多大中文新年慈善音乐会',
-      concertDescription: '多大中文新年慈善音乐会是一个年度传统活动，旨在汇聚学生、校友和朋友们，共同享受一晚音乐和文化表演的盛宴。体验中国音乐之美，与我们一起庆祝春节！',
-      date: '日期:',
-      dateValue: '2025年2月1日',
-      time: '时间:',
-      timeValue: '晚上7:00 - 9:30',
-      location: '地点:',
-      locationValue: 'Isabel Bader Theatre, Toronto',
-      buyTickets: '购票入口',
-      charityBadge: '慈善音乐会',
-      
       // Intro Section
       introTitle: '音乐会引言',
       introText: "音乐是没有国界的语言，也是我们支持儿童教育和发展的方式。每年春节期间，我们用音乐传递温暖，陪伴多伦多的冰雪。新年音乐会中，琴棋书画、古典芭蕾带你感受大师间的心灵共鸣，体会演奏者与作曲家跨越时空的对话。无论是百年传唱的经典浪漫作品，还是观众自发合唱的现代歌曲，你总能在这里找到熟悉的感动。从2007年至今，过去的十三年里，我们筹集了超过11万加元（约55万人民币）的善款，全数捐赠给联合国儿童基金会等慈善机构。大音希声，大爱无痕。",
@@ -1039,41 +836,7 @@ const NewYearConcertPage = () => {
         ))}
       </ContentSection>
 
-      {/* Integrated NYConcertSection content */}
       <ExtraPageWrapper>
-
-        {/* 新音乐会板块 */}
-        <NewConcertSection>
-          <NewConcertImageWrapper>
-            <NewConcertImage src="/images/2024NYConcert/nyc2025.jpg" alt="2025 Concert" />
-          </NewConcertImageWrapper>
-          <NewConcertInfo>
-            <ConcertTitle>{t.concertTitle}</ConcertTitle>
-            <ConcertDescription>{t.concertDescription}</ConcertDescription>
-            
-            <ConcertDetails>
-              <DetailItem>
-                <DetailLabel>{t.date}</DetailLabel>
-                <DetailValue>{t.dateValue}</DetailValue>
-              </DetailItem>
-              <DetailItem>
-                <DetailLabel>{t.time}</DetailLabel>
-                <DetailValue>{t.timeValue}</DetailValue>
-              </DetailItem>
-              <DetailItem>
-                <DetailLabel>{t.location}</DetailLabel>
-                <DetailValue>{t.locationValue}</DetailValue>
-              </DetailItem>
-            </ConcertDetails>
-            
-            <ButtonWrapper>
-              <BuyTicketButton href="https://www.eventbrite.com/e/utchinese-new-year-concert-2025-tickets-1141714602109?aff=oddtdtcreator" target="_blank" rel="noopener noreferrer">
-                {t.buyTickets}
-              </BuyTicketButton>
-              <InfoBadge>{t.charityBadge}</InfoBadge>
-            </ButtonWrapper>
-          </NewConcertInfo>
-        </NewConcertSection>
 
         {/* 音乐会引言板块 */}
         <IntroSection>
