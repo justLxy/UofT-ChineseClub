@@ -4,7 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiPlus, FiEdit2, FiTrash2, FiStar, FiUpload } from 'react-icons/fi';
 import { getEvents, createEvent, updateEvent, deleteEvent, getFullEventImageUrl, uploadEventImage, exportEventsJson } from '../utils/api';
-import { formatEventDateTime } from '../utils/dateUtils';
+import {
+  formatEventDateTime,
+  localDateTimeToUtcIso,
+  localEndOfDayToUtcIso,
+  utcInstantToLocalDateTimeParts
+} from '../utils/dateUtils';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LoadingAnimation from '../components/LoadingAnimation';
@@ -605,16 +610,18 @@ const EventsAdmin = () => {
     if (event) {
       // Edit mode
       setCurrentEvent(event);
+      const startParts = utcInstantToLocalDateTimeParts(event.startDate);
+      const endParts = event.endDate ? utcInstantToLocalDateTimeParts(event.endDate) : { date: '', time: '' };
       setFormData({
         title_en: event.title_en || '',
         title_zh: event.title_zh || '',
         description_en: event.description_en || '',
         description_zh: event.description_zh || '',
         imageUrl: event.imageUrl || '',
-        startDate: new Date(event.startDate).toISOString().split('T')[0],
-        startTime: new Date(event.startDate).toTimeString().split(' ')[0].substring(0, 5),
-        endDate: event.endDate ? new Date(event.endDate).toISOString().split('T')[0] : '',
-        endTime: event.endDate ? new Date(event.endDate).toTimeString().split(' ')[0].substring(0, 5) : '',
+        startDate: startParts.date,
+        startTime: startParts.time,
+        endDate: endParts.date,
+        endTime: endParts.time,
         location_en: event.location_en || '',
         location_zh: event.location_zh || '',
         link: event.link || '',
@@ -694,18 +701,15 @@ const EventsAdmin = () => {
       eventData.location_zh = formData.location_zh.trim();
       eventData.link = formData.link.trim();
       
-      // Combine date and time for startDate
+      // Store as UTC ISO from the admin's local date/time (server TZ must not shift the instant)
       if (eventData.startDate) {
-        eventData.startDate = eventData.startTime 
-          ? `${eventData.startDate}T${eventData.startTime}:00`
-          : `${eventData.startDate}T00:00:00`;
+        eventData.startDate = localDateTimeToUtcIso(eventData.startDate, eventData.startTime);
       }
-      
-      // Combine date and time for endDate
       if (eventData.endDate) {
-        eventData.endDate = eventData.endTime 
-          ? `${eventData.endDate}T${eventData.endTime}:00`
-          : `${eventData.endDate}T23:59:59`;
+        eventData.endDate =
+          eventData.endTime && String(eventData.endTime).trim()
+            ? localDateTimeToUtcIso(eventData.endDate, eventData.endTime)
+            : localEndOfDayToUtcIso(eventData.endDate);
       }
       
       // Remove separate time fields before sending to API

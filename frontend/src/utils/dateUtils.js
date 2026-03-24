@@ -103,4 +103,40 @@ export const getEventStatus = (startDate, endDate) => {
   } else {
     return 'ongoing';
   }
+};
+
+/**
+ * Admin form: combine local calendar date (YYYY-MM-DD) and time (HH:mm) into UTC ISO for the API.
+ * Parsing in the browser uses the user's local timezone; the server must not receive a bare
+ * "YYYY-MM-DDTHH:mm:ss" string (that is interpreted as *server* local time, often UTC).
+ */
+export const localDateTimeToUtcIso = (dateStr, timeStr) => {
+  if (!dateStr) return null;
+  const trimmed = timeStr && String(timeStr).trim();
+  const local = trimmed
+    ? new Date(`${dateStr}T${trimmed}:00`)
+    : new Date(`${dateStr}T00:00:00`);
+  if (Number.isNaN(local.getTime())) return null;
+  return local.toISOString();
+};
+
+/** End of local calendar day as UTC ISO (for optional end time). */
+export const localEndOfDayToUtcIso = (dateStr) => {
+  if (!dateStr) return null;
+  const local = new Date(`${dateStr}T23:59:59.999`);
+  if (Number.isNaN(local.getTime())) return null;
+  return local.toISOString();
+};
+
+/** UTC instant from API → YYYY-MM-DD and HH:mm for date/time inputs in the user's local zone. */
+export const utcInstantToLocalDateTimeParts = (isoUtc) => {
+  if (!isoUtc) return { date: '', time: '' };
+  const d = new Date(isoUtc);
+  if (Number.isNaN(d.getTime())) return { date: '', time: '' };
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const h = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  return { date: `${y}-${m}-${day}`, time: `${h}:${min}` };
 }; 
