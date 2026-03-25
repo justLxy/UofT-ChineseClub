@@ -788,21 +788,26 @@ const NewYearConcertPage = () => {
       // Past Events
       pastTitle: 'Past Events',
       pastDescription: `Since 2007, UT Chinese Network has held ${new Date().getFullYear() - 2006} New Year charity concerts.`,
-      pastEvent1Title: '2026 New Year Charity Concert',
-      pastEvent1Desc: 'The 2026 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere.',
-      pastEvent1Detail: 'The 2026 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere. The event showcased the talents of our members and celebrated the rich cultural heritage of the Chinese community at UofT.',
-      pastEvent1Hot: 'Hot: 1000+ attendees',
-      pastEvent1VideoHighlights: '2026 performance highlights',
-      
-      pastEvent2Title: '2024 New Year Concert',
-      pastEvent2Desc: '《Huaxu》',
-      pastEvent2Detail: '《Huaxu》 is a musical piece that combines traditional Chinese instruments with modern elements, creating a unique and captivating sound. The performance was well-received by the audience, showcasing the creativity and talent of our musicians.',
-      pastEvent2Hot: 'Hot: 800+ attendees',
-      
-      pastEvent3Title: '2016 New Year Concert',
-      pastEvent3Desc: '《Ten Years A Concert》',
-      pastEvent3Detail: '《Ten Years A Concert》 was a special performance celebrating the 10th anniversary of the UTChinese New Year Concert. It featured a compilation of the best performances from previous years, highlighting the growth and evolution of our concert series.',
-      pastEvent3Hot: 'Hot: 1200+ attendees',
+      pastEvent2026Title: '2026 New Year Charity Concert',
+      pastEvent2026Desc: 'The 2026 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere.',
+      pastEvent2026Detail: 'The 2026 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere. The event showcased the talents of our members and celebrated the rich cultural heritage of the Chinese community at UofT.',
+      pastEvent2026Hot: 'Hot: 1000+ attendees',
+      pastEvent2026VideoHighlights: '2026 performance highlights',
+
+      pastEvent2025Title: '2025 New Year Charity Concert',
+      pastEvent2025Desc: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere.',
+      pastEvent2025Detail: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere. The event showcased the talents of our members and celebrated the rich cultural heritage of the Chinese community at UofT.',
+      pastEvent2025Hot: 'Hot: 1000+ attendees',
+
+      pastEvent2024Title: '2024 New Year Concert',
+      pastEvent2024Desc: '《Huaxu》',
+      pastEvent2024Detail: '《Huaxu》 is a musical piece that combines traditional Chinese instruments with modern elements, creating a unique and captivating sound. The performance was well-received by the audience, showcasing the creativity and talent of our musicians.',
+      pastEvent2024Hot: 'Hot: 800+ attendees',
+
+      pastEvent2016Title: '2016 New Year Concert',
+      pastEvent2016Desc: '《Ten Years A Concert》',
+      pastEvent2016Detail: '《Ten Years A Concert》 was a special performance celebrating the 10th anniversary of the UTChinese New Year Concert. It featured a compilation of the best performances from previous years, highlighting the growth and evolution of our concert series.',
+      pastEvent2016Hot: 'Hot: 1200+ attendees',
       
       // Photo Gallery
       photoGallery: 'Our Memorable Moments'
@@ -815,21 +820,26 @@ const NewYearConcertPage = () => {
       // Past Events
       pastTitle: '往期活动回顾',
       pastDescription: `自2007年起，多大中文（UTChineseNetwork）已举办${new Date().getFullYear() - 2006}场新年慈善音乐会`,
-      pastEvent1Title: '2026新年慈善音乐会',
-      pastEvent1Desc: '2026多大中文新年音乐会是一个难忘的夜晚，精彩的表演和温馨的社区氛围让人印象深刻。',
-      pastEvent1Detail: '2026年新年音乐会盛况空前，观众反响热烈，节目精彩纷呈。',
-      pastEvent1Hot: '热点回顾：2026年新年音乐会',
-      pastEvent1VideoHighlights: '2026 精彩节目回放',
-      
-      pastEvent2Title: '2024新年音乐会',
-      pastEvent2Desc: '《花叙》',
-      pastEvent2Detail: '2024年新年音乐会以《花叙》为主题，展现了中国传统文化的魅力。',
-      pastEvent2Hot: '热点回顾：2024年新年音乐会',
-      
-      pastEvent3Title: '2016新年音乐会',
-      pastEvent3Desc: '《十年为一》',
-      pastEvent3Detail: '2016年新年音乐会《十年为一》庆祝了多大中文十周年，回顾了社团的成长历程。',
-      pastEvent3Hot: '热点回顾：2016年新年音乐会',
+      pastEvent2026Title: '2026新年慈善音乐会',
+      pastEvent2026Desc: '2026多大中文新年音乐会是一个难忘的夜晚，精彩的表演和温馨的社区氛围让人印象深刻。',
+      pastEvent2026Detail: '2026年新年音乐会盛况空前，观众反响热烈，节目精彩纷呈。',
+      pastEvent2026Hot: '热点回顾：2026年新年音乐会',
+      pastEvent2026VideoHighlights: '2026 精彩节目回放',
+
+      pastEvent2025Title: '2025新年慈善音乐会',
+      pastEvent2025Desc: '2025多大中文新年音乐会是一个难忘的夜晚，精彩的表演和温馨的社区氛围让人印象深刻。',
+      pastEvent2025Detail: '2025年新年音乐会盛况空前，观众反响热烈，节目精彩纷呈。',
+      pastEvent2025Hot: '热点回顾：2025年新年音乐会',
+
+      pastEvent2024Title: '2024新年音乐会',
+      pastEvent2024Desc: '《花叙》',
+      pastEvent2024Detail: '2024年新年音乐会以《花叙》为主题，展现了中国传统文化的魅力。',
+      pastEvent2024Hot: '热点回顾：2024年新年音乐会',
+
+      pastEvent2016Title: '2016新年音乐会',
+      pastEvent2016Desc: '《十年为一》',
+      pastEvent2016Detail: '2016年新年音乐会《十年为一》庆祝了多大中文十周年，回顾了社团的成长历程。',
+      pastEvent2016Hot: '热点回顾：2016年新年音乐会',
       
       // Photo Gallery
       photoGallery: '我们的回忆'
@@ -838,31 +848,43 @@ const NewYearConcertPage = () => {
 
   const t = isZh ? pageTranslations.zh : pageTranslations.en;
 
-  // Past events data  
+  // Past events data（eventKey 用于弹窗：2026 多视频、2016 单场视频，其余海报）
   const pastEvents = [
     {
-      img: "/images/2024NYConcert/nyc_edited.jpg",
-      title: t.pastEvent1Title,
-      desc: t.pastEvent1Desc,
-      fullImg: "/images/2024NYConcert/nyc_edited.jpg",
-      detail: t.pastEvent1Detail,
-      hot: t.pastEvent1Hot
+      eventKey: '2026',
+      img: '/images/NYCPhotos/_DSC3416.jpg',
+      title: t.pastEvent2026Title,
+      desc: t.pastEvent2026Desc,
+      fullImg: '/images/NYCPhotos/_DSC3416.jpg',
+      detail: t.pastEvent2026Detail,
+      hot: t.pastEvent2026Hot
     },
     {
-      img: "/images/2024NYConcert/poster2.jpg",
-      title: t.pastEvent2Title,
-      desc: t.pastEvent2Desc,
-      fullImg: "/images/2024NYConcert/poster2.jpg",
-      detail: t.pastEvent2Detail,
-      hot: t.pastEvent2Hot
+      eventKey: '2025',
+      img: '/images/2024NYConcert/nyc_edited.jpg',
+      title: t.pastEvent2025Title,
+      desc: t.pastEvent2025Desc,
+      fullImg: '/images/2024NYConcert/nyc_edited.jpg',
+      detail: t.pastEvent2025Detail,
+      hot: t.pastEvent2025Hot
     },
     {
-      img: "/images/2024NYConcert/nyc_2016.png",
-      title: t.pastEvent3Title,
-      desc: t.pastEvent3Desc,
-      fullImg: "/images/2024NYConcert/nyc_2016.png",
-      detail: t.pastEvent3Detail,
-      hot: t.pastEvent3Hot
+      eventKey: '2024',
+      img: '/images/2024NYConcert/poster2.jpg',
+      title: t.pastEvent2024Title,
+      desc: t.pastEvent2024Desc,
+      fullImg: '/images/2024NYConcert/poster2.jpg',
+      detail: t.pastEvent2024Detail,
+      hot: t.pastEvent2024Hot
+    },
+    {
+      eventKey: '2016',
+      img: '/images/2024NYConcert/nyc_2016.png',
+      title: t.pastEvent2016Title,
+      desc: t.pastEvent2016Desc,
+      fullImg: '/images/2024NYConcert/nyc_2016.png',
+      detail: t.pastEvent2016Detail,
+      hot: t.pastEvent2016Hot
     }
   ];
 
@@ -924,8 +946,8 @@ const NewYearConcertPage = () => {
           <PastEventsTitle>{t.pastTitle}</PastEventsTitle>
           <PastEventText>{t.pastDescription}</PastEventText>
           <PastEventsGrid>
-            {pastEvents.map((event, idx) => (
-              <PastEventCard key={idx} onClick={() => setModalEvent(event)} style={{cursor:'pointer'}}>
+            {pastEvents.map((event) => (
+              <PastEventCard key={event.eventKey} onClick={() => setModalEvent(event)} style={{cursor:'pointer'}}>
                 <PastEventImage src={event.img} alt={event.title} />
                 <PastEventInfo>
                   <PastEventSubTitle>{event.title}</PastEventSubTitle>
@@ -940,13 +962,13 @@ const NewYearConcertPage = () => {
         <Modal
           open={!!modalEvent}
           onClose={() => setModalEvent(null)}
-          wide={modalEvent?.title === t.pastEvent1Title}
+          wide={modalEvent?.eventKey === '2026'}
         >
           {modalEvent && (
             <>
-              {modalEvent.title === t.pastEvent1Title ? (
+              {modalEvent.eventKey === '2026' ? (
                 <ModalVideosSection>
-                  <ModalVideosHeading>{t.pastEvent1VideoHighlights}</ModalVideosHeading>
+                  <ModalVideosHeading>{t.pastEvent2026VideoHighlights}</ModalVideosHeading>
                   {NYC_HIGHLIGHT_VIDEOS.map((v) => (
                     <VideoEmbedBlock key={v.youtubeId}>
                       <VideoEmbedLabel>
@@ -964,7 +986,7 @@ const NewYearConcertPage = () => {
                     </VideoEmbedBlock>
                   ))}
                 </ModalVideosSection>
-              ) : modalEvent.title === t.pastEvent3Title ? (
+              ) : modalEvent.eventKey === '2016' ? (
                 <div style={{ width: '100%', aspectRatio: '16/9', marginBottom: '1.2rem' }}>
                   <iframe
                     width="100%"
