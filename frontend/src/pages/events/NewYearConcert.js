@@ -69,6 +69,10 @@ const ModalContent = styled.div`
   }
 `;
 
+const ModalContentWide = styled(ModalContent)`
+  width: min(96vw, 880px);
+`;
+
 const ModalClose = styled.button`
   position: absolute;
   top: 1rem; right: 1rem;
@@ -125,7 +129,46 @@ const ModalHot = styled.div`
   margin-bottom: 0.5rem;
 `;
 
+const VideoEmbedBlock = styled.div`
+  margin-bottom: 1.5rem;
 
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+`;
+
+const VideoEmbedLabel = styled.h4`
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #3b2e1a;
+`;
+
+const VideoAspect = styled.div`
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+`;
+
+const ModalVideosSection = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const ModalVideosHeading = styled.p`
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1rem;
+  text-align: center;
+`;
 
 // Photo gallery data
 const galleryImages = [
@@ -141,6 +184,17 @@ const galleryImages = [
   "/images/NYCPhotos/212-export-多大中文-DSC09153.jpg",
   "/images/NYCPhotos/294-export-多大中文-DSC09368.jpg",
   "/images/NYCPhotos/302-export-多大中文-DSC09390.jpg"
+];
+
+/** 2025 新年音乐会精彩节目（YouTube 视频 ID 与双语标题） */
+const NYC_HIGHLIGHT_VIDEOS = [
+  { youtubeId: 'j2fpBq5wSAQ', titleEn: 'James', titleZh: 'James' },
+  { youtubeId: 'NZRqberAc4I', titleEn: 'Jiming Yue', titleZh: '寄明月' },
+  { youtubeId: 'EfSgJuP34-Q', titleEn: 'Allegro', titleZh: 'Allegro' },
+  { youtubeId: 'SGOAENpCY40', titleEn: 'Toronto Pops Orchestra', titleZh: 'Toronto Pops Orchestra' },
+  { youtubeId: 'oIzH_PlgQ0c', titleEn: 'Piano Solo', titleZh: '钢琴独奏' },
+  { youtubeId: 'cXHk01AiDnc', titleEn: 'Guqin', titleZh: '古琴' },
+  { youtubeId: '0AfVkqgTLmI', titleEn: 'A cappella', titleZh: '阿卡贝拉' }
 ];
 
 const PageWrapper = styled.div`
@@ -612,14 +666,15 @@ const GalleryBarActive = styled.div`
 `;
 
 // Modal Component
-const Modal = ({ open, onClose, children }) => {
+const Modal = ({ open, onClose, children, wide }) => {
   if (!open) return null;
+  const Content = wide ? ModalContentWide : ModalContent;
   return (
     <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={e => e.stopPropagation()}>
+      <Content onClick={e => e.stopPropagation()}>
         <ModalClose onClick={onClose}>&times;</ModalClose>
         {children}
-      </ModalContent>
+      </Content>
     </ModalOverlay>
   );
 };
@@ -737,6 +792,7 @@ const NewYearConcertPage = () => {
       pastEvent1Desc: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere.',
       pastEvent1Detail: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere. The event showcased the talents of our members and celebrated the rich cultural heritage of the Chinese community at UofT.',
       pastEvent1Hot: 'Hot: 1000+ attendees',
+      pastEvent1VideoHighlights: '2025 performance highlights',
       
       pastEvent2Title: '2024 New Year Concert',
       pastEvent2Desc: '《Huaxu》',
@@ -763,6 +819,7 @@ const NewYearConcertPage = () => {
       pastEvent1Desc: '2025多大中文新年音乐会是一个难忘的夜晚，精彩的表演和温馨的社区氛围让人印象深刻。',
       pastEvent1Detail: '2025年新年音乐会盛况空前，观众反响热烈，节目精彩纷呈。',
       pastEvent1Hot: '热点回顾：2025年新年音乐会',
+      pastEvent1VideoHighlights: '2025 精彩节目回放',
       
       pastEvent2Title: '2024新年音乐会',
       pastEvent2Desc: '《花叙》',
@@ -880,10 +937,34 @@ const NewYearConcertPage = () => {
         </PastEventsSection>
 
         {/* 往期活动卡片弹窗 */}
-        <Modal open={!!modalEvent} onClose={() => setModalEvent(null)}>
+        <Modal
+          open={!!modalEvent}
+          onClose={() => setModalEvent(null)}
+          wide={modalEvent?.title === t.pastEvent1Title}
+        >
           {modalEvent && (
             <>
-              {modalEvent.title === t.pastEvent3Title ? (
+              {modalEvent.title === t.pastEvent1Title ? (
+                <ModalVideosSection>
+                  <ModalVideosHeading>{t.pastEvent1VideoHighlights}</ModalVideosHeading>
+                  {NYC_HIGHLIGHT_VIDEOS.map((v) => (
+                    <VideoEmbedBlock key={v.youtubeId}>
+                      <VideoEmbedLabel>
+                        {isZh ? v.titleZh : v.titleEn}
+                      </VideoEmbedLabel>
+                      <VideoAspect>
+                        <iframe
+                          src={`https://www.youtube.com/embed/${v.youtubeId}`}
+                          title={isZh ? v.titleZh : v.titleEn}
+                          loading="lazy"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      </VideoAspect>
+                    </VideoEmbedBlock>
+                  ))}
+                </ModalVideosSection>
+              ) : modalEvent.title === t.pastEvent3Title ? (
                 <div style={{ width: '100%', aspectRatio: '16/9', marginBottom: '1.2rem' }}>
                   <iframe
                     width="100%"
