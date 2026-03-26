@@ -798,6 +798,7 @@ const NewYearConcertPage = () => {
       pastEvent2025Desc: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere.',
       pastEvent2025Detail: 'The 2025 UTChinese New Year Concert was a night to remember, featuring stunning performances and a warm community atmosphere. The event showcased the talents of our members and celebrated the rich cultural heritage of the Chinese community at UofT.',
       pastEvent2025Hot: 'Hot: 1000+ attendees',
+      pastEvent2025VideoHighlights: '2025 performance highlights',
 
       pastEvent2024Title: '2024 New Year Concert',
       pastEvent2024Desc: '《Huaxu》',
@@ -830,6 +831,7 @@ const NewYearConcertPage = () => {
       pastEvent2025Desc: '2025多大中文新年音乐会是一个难忘的夜晚，精彩的表演和温馨的社区氛围让人印象深刻。',
       pastEvent2025Detail: '2025年新年音乐会盛况空前，观众反响热烈，节目精彩纷呈。',
       pastEvent2025Hot: '热点回顾：2025年新年音乐会',
+      pastEvent2025VideoHighlights: '2025 精彩节目回放',
 
       pastEvent2024Title: '2024新年音乐会',
       pastEvent2024Desc: '《花叙》',
@@ -962,7 +964,7 @@ const NewYearConcertPage = () => {
         <Modal
           open={!!modalEvent}
           onClose={() => setModalEvent(null)}
-          wide={modalEvent?.eventKey === '2026'}
+          wide={['2026', '2025'].includes(modalEvent?.eventKey)}
         >
           {modalEvent && (
             <>
@@ -985,6 +987,22 @@ const NewYearConcertPage = () => {
                       </VideoAspect>
                     </VideoEmbedBlock>
                   ))}
+                </ModalVideosSection>
+              ) : modalEvent.eventKey === '2025' ? (
+                <ModalVideosSection>
+                  <ModalVideosHeading>{t.pastEvent2025VideoHighlights}</ModalVideosHeading>
+                  <VideoEmbedBlock>
+                    <VideoEmbedLabel>{modalEvent.title}</VideoEmbedLabel>
+                    <VideoAspect>
+                      <iframe
+                        src="https://www.youtube.com/embed/cPltKyv-7gw"
+                        title={isZh ? '2025 精彩节目视频' : '2025 performance video'}
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </VideoAspect>
+                  </VideoEmbedBlock>
                 </ModalVideosSection>
               ) : modalEvent.eventKey === '2016' ? (
                 <div style={{ width: '100%', aspectRatio: '16/9', marginBottom: '1.2rem' }}>
