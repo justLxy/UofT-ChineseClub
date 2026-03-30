@@ -20,6 +20,7 @@ const Events = lazy(() => import('./pages/Events'));
 const EventsAdmin = lazy(() => import('./pages/EventsAdmin'));
 const QinSocietyEvent = lazy(() => import('./pages/events/QinSociety'));
 const NewYearConcertEvent = lazy(() => import('./pages/events/NewYearConcert'));
+const HaihaiEvent = lazy(() => import('./pages/events/Haihai'));
 const StaffProfile = lazy(() => import('./pages/StaffProfile'));
 const StaffAdmin = lazy(() => import('./pages/StaffAdmin'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -126,6 +127,7 @@ const AppContent = () => {
               <Route path="/events" element={<Events />} />
               <Route path="/events/qin-society" element={<QinSocietyEvent />} />
               <Route path="/events/new-year-concert" element={<NewYearConcertEvent />} />
+              <Route path="/events/hihi" element={<HaihaiEvent />} />
               <Route path="/admin/events" element={<EventsAdmin />} />
               <Route path="/admin/staff" element={<StaffAdmin />} />
               <Route path="/staff/profile" element={<StaffProfile />} />

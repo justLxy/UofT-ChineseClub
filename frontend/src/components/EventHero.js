@@ -160,6 +160,12 @@ const EventHero = ({ eventSlug, defaultTitle, defaultImage }) => {
             event.title.toLowerCase().includes('new year concert') || 
             event.title.includes('新年音乐会')
           );
+        } else if (eventSlug === 'hihi') {
+          targetEvent = events.find(event =>
+            event.title.toLowerCase().includes('hihi') ||
+            event.title.toLowerCase().includes('haihai') ||
+            event.title.includes('海海')
+          );
         }
         
         if (targetEvent) {

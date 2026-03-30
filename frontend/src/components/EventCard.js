@@ -259,6 +259,7 @@ const EventCard = ({ event, index, onClick }) => {
   const internalMappings = [
     { slug: 'qin-society', keywords: ['qin society', '琴社', '古琴会', '琴会'] },
     { slug: 'new-year-concert', keywords: ['new year concert', '新年音乐会'] },
+    { slug: 'hihi', keywords: ['hihi', 'haihai', '海海'] },
   ];
   const lowerTitle = title.toLowerCase();
   const matched = internalMappings.find(({ keywords }) =>
