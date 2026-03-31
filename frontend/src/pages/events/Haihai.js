@@ -166,16 +166,10 @@ const GalleryHeader = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
 `;
 
 const GalleryTitleGroup = styled.div`
-  max-width: 600px;
+  max-width: 100%;
 `;
 
 const GalleryTitle = styled.h2`
@@ -191,36 +185,6 @@ const GallerySubtitle = styled.p`
   color: var(--text-light);
   margin: 0;
   line-height: 1.6;
-`;
-
-const DetailList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  min-width: 300px;
-`;
-
-const DetailItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  font-size: 0.95rem;
-  
-  [data-theme='dark'] & {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-`;
-
-const DetailLabel = styled.span`
-  color: var(--text-light);
-`;
-
-const DetailValue = styled.span`
-  font-weight: 500;
-  color: var(--text);
-  text-align: right;
-  max-width: 60%;
 `;
 
 const PhotoGrid = styled.div`
@@ -492,11 +456,6 @@ const HaihaiPage = () => {
       storyTitle: 'China Meets Myanmar, and strangers quickly became tablemates.',
       storyText:
         'From opening conversations to the last group photo on the steps outside, HiHi turned cultural exchange into something tactile: listen, taste, paint, speak, and laugh together.',
-      details: [
-        { label: 'Co-host', value: 'U of T Myanmar Culture Club' },
-        { label: 'Format', value: 'Interactive campus social with hands-on stations' },
-        { label: 'Atmosphere', value: 'Casual, welcoming, multilingual, and community-driven' }
-      ],
       highlights: [
         {
           title: 'Shared Culture, Not Parallel Booths',
@@ -573,11 +532,6 @@ const HaihaiPage = () => {
       storyTitle: '中国遇见缅甸，陌生人很快就坐到了同一张桌边。',
       storyText:
         '从开场寒暄到最后走到门口合影，「海海」把文化交流做成了一种可以听、可以尝、可以画、可以聊的共同体验。',
-      details: [
-        { label: '联合策划', value: '多大中文 x UofT Myanmar Culture Club' },
-        { label: '活动形式', value: '带互动环节的校园社交活动' },
-        { label: '现场氛围', value: '轻松、友好、多语境、很有社区感' }
-      ],
       highlights: [
         {
           title: '不是并排摆摊，而是真的一起交流',
@@ -721,15 +675,6 @@ const HaihaiPage = () => {
                 <GalleryTitle>{currentContent.galleryTitle}</GalleryTitle>
                 <GallerySubtitle>{currentContent.gallerySubtitle}</GallerySubtitle>
               </GalleryTitleGroup>
-              
-              <DetailList>
-                {currentContent.details.map((detail) => (
-                  <DetailItem key={detail.label}>
-                    <DetailLabel>{detail.label}</DetailLabel>
-                    <DetailValue>{detail.value}</DetailValue>
-                  </DetailItem>
-                ))}
-              </DetailList>
             </GalleryHeader>
 
             <PhotoGrid>
