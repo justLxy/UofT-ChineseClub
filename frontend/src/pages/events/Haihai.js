@@ -14,6 +14,60 @@ const PageWrapper = styled.div`
   color: var(--text);
 `;
 
+const ContentSection = styled.section`
+  padding: 5rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.8;
+  font-size: 1.15rem;
+  background: var(--background);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 2px;
+  }
+`;
+
+const Paragraph = styled(motion.p)`
+  margin-bottom: 2rem;
+  color: var(--text);
+  font-weight: 400;
+  text-align: justify;
+  
+  &:first-of-type {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 2px;
+      background: var(--primary-light);
+      border-radius: 1px;
+    }
+  }
+  
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+`;
+
 const EditorialSection = styled.section`
   padding: 6rem 2rem;
   background: var(--background-alt);
@@ -63,9 +117,13 @@ const StatementText = styled.p`
 
 const FeatureGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 3rem 2rem;
   margin-bottom: 6rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
 `;
 
 const FeatureItem = styled(motion.div)`
@@ -227,6 +285,59 @@ const PhotoCaption = styled.div`
   text-align: left;
 `;
 
+const PostersSection = styled.section`
+  padding: 6rem 2rem;
+  background: var(--background);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  
+  [data-theme='dark'] & {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+`;
+
+const PostersInner = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+const PostersTitle = styled(motion.h2)`
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 3rem;
+  color: var(--text);
+  text-align: center;
+`;
+
+const PostersGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+`;
+
+const PosterImageWrapper = styled(motion.div)`
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+  
+  [data-theme='dark'] & {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.02);
+  }
+`;
+
+const PosterImage = styled.img`
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+`;
+
 const LightboxOverlay = styled(motion.div)`
   position: fixed;
   inset: 0;
@@ -357,6 +468,13 @@ const photoLayout = [
   { col: 4, row: 2 }
 ];
 
+const posters = [
+  '/images/Haihai/Haihai-poster.jpg',
+  '/images/Haihai/Haihai-poster-2.jpg',
+  '/images/Haihai/Haihai-poster-2024.png',
+  '/images/Haihai/Haihai-poster-2025.jpg'
+];
+
 const HaihaiPage = () => {
   const { i18n } = useTranslation();
   const isZh = i18n.language === 'zh';
@@ -368,6 +486,8 @@ const HaihaiPage = () => {
       seoTitle: 'HiHi | Haihai | UTChinese Network',
       seoDescription:
         'Step into HiHi, UTChinese Network\'s cross-cultural social event created with the U of T Myanmar Culture Club.',
+      slogan: 'Life is vast like the ocean, yet as simple as it is.',
+      introText: 'In a world where people come and go, encounters are like ocean currents. Our events bring together people from all corners of the world, who eventually flow toward different futures. Different languages, different cultural backgrounds, yet sharing the same foreign land and the same hopes for the future. In these short four years of university life, we are so lucky to stand at the intersection of these differences, witnessing and embracing the colorfulness of this world together.',
       eyebrow: 'Cross-Cultural Social',
       storyTitle: 'China Meets Myanmar, and strangers quickly became tablemates.',
       storyText:
@@ -389,19 +509,15 @@ const HaihaiPage = () => {
             'Short language interactions gave people easy first lines, making it natural to ask questions, compare expressions, and keep the conversation going.'
         },
         {
-          title: 'Hands-On Creative Tables',
+          title: 'Hands-On Tables & Warm Atmosphere',
           description:
-            'Art-based stations made the room feel alive, helping guests learn through making while keeping the pace relaxed and social.'
-        },
-        {
-          title: 'Tea, Snacks, and Playlist Energy',
-          description:
-            'Food and music kept the afternoon grounded and warm, creating the kind of environment where people stayed, chatted, and came away with new friends.'
+            'Art-based stations, food, and music kept the afternoon grounded and relaxed. Guests learned through making, staying longer to chat and connect with new friends.'
         }
       ],
       galleryTitle: 'The room in motion',
       gallerySubtitle:
         'These photos capture what made HiHi special: people gathering around the same table, trying something new, and letting culture become conversation.',
+      postersTitle: 'Past Posters',
       photos: [
         {
           src: '/images/Haihai/53d2876d1a9fad7ddfd32ccc9c4a1ef9.jpg',
@@ -451,6 +567,8 @@ const HaihaiPage = () => {
       title: '海海 | HiHi',
       seoTitle: '海海 | HiHi | UTChinese Network',
       seoDescription: '走进海海，体验多大中文与 UofT Myanmar Culture Club 联合策划的跨文化社交活动。',
+      slogan: '人生海海，山山而川，不过尔尔。',
+      introText: '人来人往的世界里，际遇就像海里的洋流。我们的活动也是，来自五湖四海的人汇集在一起，终又流向不同的远方。不同的语言，不同的文化背景，同样的异国他乡，还有对未来同样的期许。大学生活短短四年，我们好幸运，可以站在这些异同的交汇点，共同见证并拥抱这个世界的多彩。',
       eyebrow: '跨文化社交',
       storyTitle: '中国遇见缅甸，陌生人很快就坐到了同一张桌边。',
       storyText:
@@ -472,19 +590,15 @@ const HaihaiPage = () => {
             '简短的语言交流给了大家一个非常轻松的开场白，也让不同文化背景的同学更容易延伸出新的话题。'
         },
         {
-          title: '动手做，比单纯听更容易靠近',
+          title: '手作与茶点，让交流更具温度',
           description:
-            '从合作填色到手作互动，创意桌把整场活动带进了更松弛的节奏，让文化体验变得具体、可参与，也更有记忆点。'
-        },
-        {
-          title: '茶点与歌单让交流更自然',
-          description:
-            '食物与音乐让这场活动始终保持温度。大家不是匆匆打卡后离开，而是愿意继续坐下来聊天、分享和认识新朋友。'
+            '从合作填色到手作互动，加上精心准备的食物与音乐，让整场活动保持松弛的节奏。大家愿意停下来，边做边聊，认识新朋友。'
         }
       ],
       galleryTitle: '那些正在发生的瞬间',
       gallerySubtitle:
         '这些照片记录下了「海海」最动人的部分: 大家围坐、尝试、创作、交谈，让文化真正变成彼此之间的连接。',
+      postersTitle: '往期海报',
       photos: [
         {
           src: '/images/Haihai/53d2876d1a9fad7ddfd32ccc9c4a1ef9.jpg',
@@ -547,6 +661,25 @@ const HaihaiPage = () => {
         defaultTitle={currentContent.title}
         defaultImage={heroImg}
       />
+
+      <ContentSection>
+        <Paragraph
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true, amount: 0.5 }}
+        >
+          {currentContent.slogan}
+        </Paragraph>
+        <Paragraph
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true, amount: 0.5 }}
+        >
+          {currentContent.introText}
+        </Paragraph>
+      </ContentSection>
 
       <EditorialSection>
         <EditorialInner>
@@ -622,6 +755,32 @@ const HaihaiPage = () => {
           </GallerySection>
         </EditorialInner>
       </EditorialSection>
+
+      <PostersSection>
+        <PostersInner>
+          <PostersTitle
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            {currentContent.postersTitle}
+          </PostersTitle>
+          <PostersGrid>
+            {posters.map((poster, index) => (
+              <PosterImageWrapper
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true, amount: 0.2 }}
+              >
+                <PosterImage src={poster} alt={`Haihai Poster ${index + 1}`} loading="lazy" />
+              </PosterImageWrapper>
+            ))}
+          </PostersGrid>
+        </PostersInner>
+      </PostersSection>
 
       <AnimatePresence>
         {activePhoto && (
