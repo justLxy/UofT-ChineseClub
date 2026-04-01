@@ -284,11 +284,27 @@ const PosterImageWrapper = styled(motion.div)`
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   background: rgba(0, 0, 0, 0.02);
+  position: relative;
   
   [data-theme='dark'] & {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     background: rgba(255, 255, 255, 0.02);
   }
+`;
+
+const PosterYear = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+  color: white;
+  padding: 2rem 1.5rem 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+  pointer-events: none;
 `;
 
 const PosterImage = styled.img`
@@ -433,10 +449,10 @@ const photoLayout = [
 ];
 
 const posters = [
-  '/images/Haihai/Haihai-poster.jpg',
-  '/images/Haihai/Haihai-poster-2.jpg',
-  '/images/Haihai/Haihai-poster-2024.png',
-  '/images/Haihai/Haihai-poster-2025.jpg'
+  { src: '/images/Haihai/Haihai-poster-2026.png', year: '2026' },
+  { src: '/images/Haihai/Haihai-poster-2025.jpg', year: '2025' },
+  { src: '/images/Haihai/Haihai-poster-2024.png', year: '2024' },
+  { src: '/images/Haihai/Haihai-poster-2.jpg', year: '2023' }
 ];
 
 const HaihaiPage = () => {
@@ -720,7 +736,8 @@ const HaihaiPage = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true, amount: 0.2 }}
               >
-                <PosterImage src={poster} alt={`Haihai Poster ${index + 1}`} loading="lazy" />
+                <PosterImage src={poster.src} alt={`Haihai Poster ${poster.year}`} loading="lazy" />
+                <PosterYear>{poster.year}</PosterYear>
               </PosterImageWrapper>
             ))}
           </PostersGrid>
