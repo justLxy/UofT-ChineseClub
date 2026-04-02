@@ -189,7 +189,7 @@ const ReadingClubPage = () => {
         {
           year: '2026',
           title: 'Lantern Festival Special',
-          image: '/images/reading/lantern.png',
+          image: '/images/Reading/lantern.png',
           paragraphs: [
             'This is perhaps one of the rare days in traditional Chinese festivals that is so "outward-looking". New Year\'s Eve is inward-looking, with family reunions and staying behind closed doors; while the Lantern Festival is outward-looking, walking through streets and alleys, brightly lit. People walk out of their homes and merge into the lights.',
             'The steaming tangyuan, the lantern riddles hidden between the lines, the true and false turtle soup that makes people unable to stop, amidst the lights and laughter, the meaning of the festival gradually becomes vivid. We want to use such a night to gently put reunion, curiosity, and fun together, so everyone can get closer to each other in guessing and listening, discover a little new surprise in familiar traditions, and let everyone who comes here take away a little warmth from the lights.',
@@ -199,7 +199,7 @@ const ReadingClubPage = () => {
         {
           year: '2024.10',
           title: 'Sleepless Night - Halloween Special',
-          image: '/images/reading/halloween.jpg',
+          image: '/images/Reading/halloween.jpg',
           paragraphs: [
             'The Halloween bell has struck at this moment, please listen carefully to its warm invitation. As someone who has been summoned, I believe you are ready to enter the unknown world. Why are you here? You should find the answer yourself, I believe you are ready at this moment. Then please bring some dusty memories and explore the unknown secrets.',
             'In this night that refuses to sleep, the boundary between reality and fiction will become blurred, silence, gaze, footsteps, and whispers may all become part of the story. We welcome you to transform into a character from suspense, horror, or thriller genres, and we also welcome you to weave new origins and secrets for yourself outside the existing characters. Perhaps behind every mask hides another identity, every appearance is like the beginning of a story, and what is truly fascinating is never just the character itself, but how you will tell that "belonging to yourself" night.'
@@ -208,7 +208,7 @@ const ReadingClubPage = () => {
         {
           year: '2024.04',
           title: 'Tracing the Fog',
-          image: '/images/reading/mystery.jpg',
+          image: '/images/Reading/mystery.jpg',
           paragraphs: [
             'For cases that wander in the gray area of law and morality, do individuals have the power to judge? The knight dueling with the devil, at the moment of defeating the devil, stained with the devil\'s blood, also becomes a devil. When you gaze into the abyss, the abyss also gazes into you.',
             'Tracing the fog, what we seek is never just the answer.',
@@ -219,7 +219,7 @@ const ReadingClubPage = () => {
         {
           year: '2024.03',
           title: 'A City, A Group of People',
-          image: '/images/reading/one-city.jpg',
+          image: '/images/Reading/one-city.jpg',
           paragraphs: [
             'A city is a scenery, and also a destiny; a group of people are passers-by, and also footnotes of the times.',
             'From Shanghai in "Blossoms", to Taipei in "Taipei People", to the western village written in "Red Poppies", what we read is not only the appearance of different cities, but also people\'s choices, encounters, and partings in the torrent of the times. The city carries memories, people write stories, and the stories eventually become part of the city.',
@@ -229,7 +229,7 @@ const ReadingClubPage = () => {
         {
           year: '2023',
           title: 'Please Enter the Bookstore - Valentine\'s Day Special',
-          image: '/images/reading/valentine.jpg',
+          image: '/images/Reading/valentine.jpg',
           paragraphs: [
             'Everyone is born with their own unique scent, and we follow the scent to find like-minded people. In the vast crowd, brushing past hundreds of people every day, pedestrians are submerged in the reinforced concrete jungle, hard to trace.',
             'The winter in this city is long, like a railway with no end in sight. We are the trains running on it. Travel-worn people bury their heads in sleep, people holding books plunge into other people\'s stories.',
@@ -241,7 +241,7 @@ const ReadingClubPage = () => {
         {
           year: '2022',
           title: 'City',
-          image: '/images/reading/city.jpg',
+          image: '/images/Reading/city.jpg',
           paragraphs: [
             'We walk in the winter of a foreign land, enjoying and remembering, the cities of hometown, cities of longing, cities of romance, cities of fantasy, and cities of reality in our hearts overlap... We meet, resonate, and then know that we are not alone. All thoughts and imaginations were lit up that night, carrying the thoughts of every heart, exploring the boundless ocean of life and existence, the brilliant starry sky.',
             '【City】 can be starry sky and silver waves, or it can be thousands of lights and all kinds of life.',
@@ -263,7 +263,7 @@ const ReadingClubPage = () => {
         {
           year: '2026',
           title: '《华灯初上》元宵节特别企划',
-          image: '/images/reading/lantern.png',
+          image: '/images/Reading/lantern.png',
           paragraphs: [
             '这或许是中国传统节日里，少有的如此"出走"的一天。除夕是向内的，阖家团圆，闭门守岁；而元宵是向外的，走街串巷，灯火通明。人们走出家门，汇入灯火之中。',
             '热气氤氲的汤圆、藏在字句之间的灯谜、真假难辨又令人欲罢不能的海龟汤，在一盏盏灯火与一声声笑语之间，节日的意味也渐渐变得鲜活起来。我们想借这样一个夜晚，把团圆、好奇与趣味轻轻放在一起，让每个人都能在猜谜与倾听中靠近彼此，在熟悉的传统里，也发现一点新的惊喜，也让每一个来到这里的人，都能带走一点灯火里的暖意。',
@@ -273,7 +273,7 @@ const ReadingClubPage = () => {
         {
           year: '2024.10',
           title: '《不眠之夜》万圣节特别企划',
-          image: '/images/reading/halloween.jpg',
+          image: '/images/Reading/halloween.jpg',
           paragraphs: [
             '万圣节的钟声已在此刻敲响，请仔细聆听它的盛情邀请。作为受到召唤的人，相信你已经准备好进入未知的世界。为什么来到这里？这应该由您自己找答案，我相信您此刻已经准备好了。那么就请带着些尘封的记忆，探寻不为人知的秘密吧。',
             '在这场不肯入睡的夜里，现实与虚构的边界会变得模糊，沉默、注视、脚步与低语都可能成为故事的一部分。我们欢迎您化身为某一位来自悬疑、恐怖或惊悚题材中的人物，也欢迎您在既有角色之外，为自己编织新的来历与秘密。或许每一张面具背后都藏着另一重身份，每一次亮相都像是一段故事的开端，而真正令人着迷的，从来不只是角色本身，而是你将如何讲述那个“属于自己”的夜晚。'
@@ -282,7 +282,7 @@ const ReadingClubPage = () => {
         {
           year: '2024.04',
           title: '《迷雾寻踪》',
-          image: '/images/reading/mystery.jpg',
+          image: '/images/Reading/mystery.jpg',
           paragraphs: [
             '对于游离于法律和道德灰色地带的案件，个人有没有审判的权力？与恶魔决斗的骑士，在击败恶魔的瞬间，身染恶魔之血的自己，也成为了恶魔。当你在凝视深渊时，深渊也在凝视你。',
             '迷雾寻踪，寻的从来不只是答案。',
@@ -293,7 +293,7 @@ const ReadingClubPage = () => {
         {
           year: '2024.03',
           title: '《一座城，一群人》',
-          image: '/images/reading/one-city.jpg',
+          image: '/images/Reading/one-city.jpg',
           paragraphs: [
             '一座城，是风景，也是命运；一群人，是过客，也是时代的注脚。',
             '从《繁花》里的上海，到《台北人》中的台北，再到《尘埃落定》书写的西部村庄，我们读见的不只是不同城市的面貌，更是人在时代洪流中的选择、相逢与离别。城承载记忆，人书写故事，而故事最后也成了城市的一部分。',
@@ -303,7 +303,7 @@ const ReadingClubPage = () => {
         {
           year: '2023',
           title: '《请进书店 X 任意东西读书会》情人节特别企划',
-          image: '/images/reading/valentine.jpg',
+          image: '/images/Reading/valentine.jpg',
           paragraphs: [
             '每个人生来都会有自己独特的气味，我们循着气味，寻找志同道合的人。茫茫人海，每天与上百人擦肩而过，行人淹没在钢筋丛林之中，踪迹难寻。',
             '这座城市的冬天冗长，像是一条看不到尽头的铁轨。我们是行驶其上的火车。风尘仆仆的人埋头睡觉，捧着书的人一头栽进别人的故事里。',
@@ -315,7 +315,7 @@ const ReadingClubPage = () => {
         {
           year: '2022',
           title: '《城》',
-          image: '/images/reading/city.jpg',
+          image: '/images/Reading/city.jpg',
           paragraphs: [
             '我们行走在异乡的冬季中，畅享着回忆着，心中的一座座故乡之城、思念之城、浪漫之城、幻想之城、现实之城叠重而至……我们相遇，共鸣而后知道自己并不孤单。所有的想法和脑洞在那晚被点亮，带着每一颗心的思绪，探寻生活和生命的无边海洋，灿烂星空。',
             '【城】可以是繁星碧空和银涛雪浪，也可以是万户灯火和百态人生。',
