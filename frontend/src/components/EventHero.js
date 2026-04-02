@@ -166,6 +166,11 @@ const EventHero = ({ eventSlug, defaultTitle, defaultImage }) => {
             event.title.toLowerCase().includes('haihai') ||
             event.title.includes('海海')
           );
+        } else if (eventSlug === 'reading-club') {
+          targetEvent = events.find(event =>
+            event.title.toLowerCase().includes('reading club') ||
+            event.title.includes('读书会')
+          );
         }
         
         if (targetEvent) {
